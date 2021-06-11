@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on 磊磊落落</title>
+    <link>https://olzhy.github.io/pages/</link>
+    <description>Recent content in Pages on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 19 Jul 2019 00:01:14 +0000</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/pages/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>LeetCode 题目Golang实现汇总</title>
+      <link>https://olzhy.github.io/leetcode-golang-implementations/</link>
+      <pubDate>Fri, 19 Jul 2019 00:01:14 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/leetcode-golang-implementations/</guid>
+      <description>GitHub: github.com/olzhy/leetcode
+   题号 题目 难度 实现     2 Add Two Numbers 中 Golang   3 Longest Substring 中 Golang   5 Longest Palindromic Substring 中 Golang   6 ZigZag Conversion 中 Golang   8 String to Integer 中 Golang   12 Integer to Roman 中 Golang   17 Letter Combinations of A&amp;hellip; 中 Golang   19 Remove Nth Node From End of List 中 Golang   24 Swap Nodes In Pairs 中 Golang   33 Search in Rotated Sorted Array 中 Golang   34 Find First and Last Position… 中 Golang   48 Rotate Image 中 Golang   54 Spiral Matrix 中 Golang   55 Jump Game 中 Golang   56 Merge Intervals 中 Golang   59 Spiral Matrix II 中 Golang   60 Permutation Sequence 中 Golang   61 Rotate List 中 Golang   71 Simplify Path 中 Golang   73 Set Matrix Zeroes 中 Golang   74 Search a 2D Matrix 中 Golang   75 Sort Colors 中 Golang   77 Combinations 中 Golang   81 Search in Rotated Sorted Array II 中 Golang   86 Partition List 中 Golang   91 Decode Ways 中 Golang   92 Reverse Linked List II 中 Golang   93 Restore IP Addresses 中 Golang   94 Binary Tree Inorder Traversal 中 Golang   95 Unique Binary Search Trees II 中 Golang   96 Unique Binary Search Trees 中 Golang   98 Validate Binary Search Tree 中 Golang   102 Binary Tree Level Order Traversal 中 Golang   103 Binary Tree Zigzag Level Order Traversal 中 Golang   105 Construct Binary Tree from Preorder&amp;hellip; 中 Golang, Python   106 Construct Binary Tree from Inorder&amp;hellip; 中 Golang   130 Surrounded Regions 中 Golang   143 Reorder List 中 Golang   144 Binary Tree Preorder Traversal 中 Golang   145 Binary Tree Postorder Traversal 难 Golang   151 Reverse Words in a String 中 Golang   165 Compare Version Numbers 中 Golang   198 House Robber 易 Golang   199 Binary Tree Right Side View 中 Golang   206 Reverse Linked List 易 Golang   224 Basic Calculator 难 Golang   338 Couting Bits 中 Golang   355 Design Twitter 中 Golang   393 UTF-8 Validation 中 Golang   413 Arithmetic Slices 中 Golang   451 Sort Characters By Frequency 中 Golang   477 Total Hamming Distance 中 Golang   508 Most Frequent Subtree Sum 中 Golang   513 Find Bottom Left Tree Value 中 Golang   515 Find Largest Value in Each Tree Row 中 Golang   641 Design Circular Deque 中 Golang   701 Insert into a Binary Search Tree 中 Golang   707 Design Linked List 中 Golang, Python   807 Max Increase to Keep City&amp;hellip; 中 Golang   856 Score of Parentheses 中 Golang   885 Spiral Matrix III 中 Golang   889 Construct Binary Tree from&amp;hellip; 中 Golang   911 Online Election 中 Golang   946 Validate Stack Sequences 中 Golang   958 Check Completeness of a Binary Tree 中 Golang   981 Time Based Key-Value Store 中 Golang   1008 Construct Binary Search Tree&amp;hellip; 中 Golang    </description>
+    </item>
+    
+    <item>
+      <title>Thanks</title>
+      <link>https://olzhy.github.io/thanks/</link>
+      <pubDate>Mon, 12 Nov 2018 12:15:39 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/thanks/</guid>
+      <description>谢谢您的打赏，我会努力写更多有价值的文章！
+2021
+ 02.18微信用户A*e打赏  2020</description>
+    </item>
+    
+    <item>
+      <title>友情链接</title>
+      <link>https://olzhy.github.io/links/</link>
+      <pubDate>Sat, 28 Oct 2017 10:35:42 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/links/</guid>
+      <description>Go语言中文网 | Tony Bai | Jing blog | Xiaobin’s Blog | 土木坛子 | 有点才艺的孟仔</description>
+    </item>
+    
+    <item>
+      <title>关于本站</title>
+      <link>https://olzhy.github.io/about/</link>
+      <pubDate>Mon, 23 Oct 2017 02:05:07 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/about/</guid>
+      <description>关于博主
+“大丈夫行事，当磊磊落落，如日月皎然。”——《晋书》
+磊磊落落：IT从业者，生活记录者。博客名称取自《晋书》，勉励本人光明磊落做人做事。该博客是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。
+许可证
+本站文章及图片采用知识共享署名4.0许可证进行许可，转载请注明原文出处。</description>
+    </item>
+    
+  </channel>
+</rss>

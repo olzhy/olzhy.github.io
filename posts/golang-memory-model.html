@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Golang 内存模型 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Golang 内存模型</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年01月25日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><strong>1 指令顺序调整</strong></p>
+<p>对于单goroutine程序代码，编译器和处理器有时会调整源码中的指令顺序来做一些优化。当然，此类调整在当前gorouine程序来看并不会改变其源码指令所指定的行为。但在多个线程共享内存的情形下，某个goroutine内部的指令顺序调整可能会影响到依赖其指令顺序的其他goroutine的行为。</p>
+<p>看一段代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">done</span> <span style="color:#66d9ef">bool</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">setup</span>() {
+    <span style="color:#a6e22e">s</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+    <span style="color:#a6e22e">done</span> = <span style="color:#66d9ef">true</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">done</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">s</span>)
+    }
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">go</span> <span style="color:#a6e22e">setup</span>()
+    <span style="color:#66d9ef">for</span> !<span style="color:#a6e22e">done</span> {
+    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">s</span>)
+}
+</code></pre></div><p>如上代码，main函数等待setup将s赋值成功，期待打印出“hello world”。但main函数打印结果可能与预期不同，有可能打印为空串。原因在于该代码受编译器版本或运行时影响，即当前程序使用不同的编译器版本或在不同体系结构系统上运行时，结果可能不同。</p>
+<p>原因在于如上代码中的setup函数的两行赋值语句指令顺序可能会被编译器或运行时CPU更改，即变为：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">setup</span>() {
+    <span style="color:#a6e22e">done</span> = <span style="color:#66d9ef">true</span>
+    <span style="color:#a6e22e">s</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">done</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">s</span>)
+    }
+}
+</code></pre></div><p>更改后，执行setup的goroutine本身的行为未受影响，其打印结果总会是“hello world”。</p>
+<p>但依赖done变量写入的main函数goroutine的行为会受影响，其打印结果不一定是“hello world”。</p>
+<p><strong>2 Golang内存顺序保证</strong></p>
+<p>从如上例子可以看出，并发场景下，为保障程序逻辑正确性，需要想办法保障不同goroutine中的代码执行先后顺序。</p>
+<p>不同的CPU体系结构提供不同的fence指令来防止指令顺序重排。而直接在代码中使用fence来作逻辑控制，抬高了并发编程的门槛。Golang并未内置直接操作CPU fence指令的函数或方法，而是提供了诸多“happens before”（先于）机制来保障程序执行顺序。</p>
+<ul>
+<li><strong>初始化</strong>
+初始化顺序保证：</li>
+</ul>
+<p>a）当前包所有包级变量初始化先与init函数执行；</p>
+<p>b）依赖包init函数执行先于当前包包级变量初始化；</p>
+<p>c）所有依赖包包级变量初始化与init函数执行均先于main函数执行。</p>
+<p>所以一个包含依赖包的程序的初始化执行顺序为：</p>
+<p>依赖包包级变量初始化 &lt; 依赖包init函数执行 &lt; 当前包包级变量初始化 &lt; 当前包init函数执行（&lt;表示先于）。 下面用一段代码证明上述初始化顺序。 在$GOPATH/src/github.com/p下有这样一段代码p.go：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">p</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> = <span style="color:#66d9ef">func</span>() <span style="color:#66d9ef">int</span> { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;variable init in p&#34;</span>); <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span> }()
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;p init&#34;</span>)
+}
+</code></pre></div><p>在$GOPATH/src/github.com/test下的main.go依赖了p包，代码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/p&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">b</span> = <span style="color:#66d9ef">func</span>() <span style="color:#66d9ef">int</span> { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;variable init in main&#34;</span>); <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">2</span> }()
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;main init&#34;</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+
+}
+</code></pre></div><p>运行main.go，输出结果为：</p>
+<pre><code>variable init in p
+p init
+variable init in main
+main init
+</code></pre><ul>
+<li><strong>goroutine创建与销毁</strong>
+goroutine创建顺序保证：</li>
+</ul>
+<p>a）一个goroutine的创建先于其执行。</p>
+<p>例如，如下代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
+    <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello&#34;</span>
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+        <span style="color:#a6e22e">b</span> = <span style="color:#e6db74">&#34;world&#34;</span>
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">b</span>)
+        }()
+    }()
+}
+</code></pre></div><p>f函数中，a的赋值先于fmt.Println(a)；b的赋值先于fmt.Println(b)，其打印结果总是：</p>
+<pre><code>hello
+world
+</code></pre><p>goroutine销毁（无顺序保证）：</p>
+<p>goroutine的销毁并未有先于程序任何事件点的保障。</p>
+<p>请看如下代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>() {
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello&#34;</span>
+    }()
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+}
+</code></pre></div><p>在未加任何同步的情况下，a在一个goroutine是否赋值成功，对任何其他需要“observe”其值的goroutine是没有保证的。</p>
+<p>所以若一个goroutine需要“observe”另一个goroutine，请使用同步机制（如锁）或使用Channel通信来保证执行顺序。</p>
+<ul>
+<li><strong>Channel通信</strong>
+Channel通信顺序保证：</li>
+</ul>
+<p>a）一个Channel的发送操作先于发送操作完成；</p>
+<p>b）一个Channel的接收操作先于接收操作完成；</p>
+<p>c）不论是Buffered Channel还是Unbuffered Channel，一个Channel的第N个成功发送先于第N个成功接收完成；</p>
+<p>d）一个容量为M的Channel的第N个成功接收先于第N+M个成功发送完成（特别当M=0时，其为Unbuffered Channel，其第N个成功接收先于第N个成功发送完成）；</p>
+<p>e）一个Channel的关闭先于接收完成（Channel关闭时返回“零值”）。</p>
+<p>看一段代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">done</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">bool</span>, <span style="color:#ae81ff">3</span>)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+        <span style="color:#a6e22e">done</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">true</span>
+    }()
+    <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">done</span>
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+}
+</code></pre></div><p>这段代码输出“hello world”是有保证的。因a的写入先于done的发送，done的发送先于done的接收完成，done的接收完成先于a的打印。</p>
+<p>若将如上代码稍作改动，将done的发送改为done的close，其仍可以保证打印结果为“hello world”。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">done</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">bool</span>, <span style="color:#ae81ff">3</span>)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+        close(<span style="color:#a6e22e">done</span>)
+    }()
+    <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">done</span>
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+}
+</code></pre></div><p>原因是，Channel的关闭要先于接收完成。</p>
+<p>再看一段代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">done</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">bool</span>)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+        <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">done</span>
+    }()
+    <span style="color:#a6e22e">done</span> <span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">true</span>
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+}
+</code></pre></div><p>这段代码将Channel通信中第一段代码的发送与接收互换位置，并改用Unbuffered Channel，仍可以保证打印结果为“hello world”。原因在于，a的写入先于done接收，done接收先于done发送完成，done发送完成先于a的打印。</p>
+<p>上述规则中的规则d）可以使用Buffered Channel的容量作并发限制。</p>
+<p>如下代码，在同一时刻至多有2个work()在执行。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;time&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">works</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">func</span>(){
+        <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;working 0&#34;</span>) },
+        <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;working 1&#34;</span>) },
+        <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;working 2&#34;</span>) },
+        <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;working 3&#34;</span>) },
+        <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;working 4&#34;</span>) },
+        <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;working 5&#34;</span>) },
+        <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;working 6&#34;</span>) },
+        <span style="color:#66d9ef">func</span>() { <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;working 7&#34;</span>) },
+    }
+    <span style="color:#a6e22e">limit</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>, <span style="color:#ae81ff">2</span>)
+
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">work</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">works</span> {
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#66d9ef">func</span>()) {
+            <span style="color:#a6e22e">limit</span> <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span>
+            <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+            <span style="color:#a6e22e">work</span>()
+            <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">limit</span>
+        }(<span style="color:#a6e22e">work</span>)
+    }
+    <span style="color:#66d9ef">select</span> {}
+}
+</code></pre></div><ul>
+<li><strong>锁</strong>
+锁顺序保证：</li>
+</ul>
+<p>a）对于sync.Mutex或sync.RWMutex变量l，第N个l.Unlock()调用先于第N+1个l.Lock()调用返回；</p>
+<p>b）对于sync.RWMutex变量l，第N个l.Unlock()调用先于第N个l.RLock()，l.RUnlock()调用先于第N+M(M&gt;=0)个l.Lock()；</p>
+<p>请看如下代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;sync&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">l</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Mutex</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">Lock</span>()
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+        <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">Unlock</span>()
+    }()
+    <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">Lock</span>()
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+}
+</code></pre></div><p>可以保证其打印结果为“hello world”，因启动的goroutine中第一次l.Unlock()调用先于main中第二次l.Lock()调用返回。</p>
+<p>接下来将Mutex改为RWMutex，代码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;sync&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">l</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">RWMutex</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">RLock</span>()
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+        <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">RUnlock</span>()
+    }()
+    <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">Lock</span>()
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+}
+</code></pre></div><p>同样可以保证打印结果为“hello world”，因启动的goroutine中第一次l.RUnlock()调用先于main中第一次l.Lock()。</p>
+<p>同理，若改为如下方式，同样可以保证打印结果。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;sync&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">l</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">RWMutex</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">Lock</span>()
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+        <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">Unlock</span>()
+    }()
+    <span style="color:#a6e22e">l</span>.<span style="color:#a6e22e">RLock</span>()
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>)
+}
+</code></pre></div><p>因启动的goroutine中第一次l.Unlock()调用先于main中第一次l.RLock()。</p>
+<ul>
+<li><strong>Once</strong>
+sync.Once用来对多个goroutine同时调用某个函数时（once.Do(f)），保证仅有一个goroutine可以调用f()，其余goroutine的调用会阻塞直至f()返回。</li>
+</ul>
+<p>如下代码，setup函数仅会执行一次。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;sync&#34;</span>
+    <span style="color:#e6db74">&#34;time&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#66d9ef">string</span>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">once</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Once</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">setup</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;setup calling&#34;</span>)
+    <span style="color:#a6e22e">a</span> = <span style="color:#e6db74">&#34;hello world&#34;</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">4</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">i</span> <span style="color:#66d9ef">int</span>) {
+            <span style="color:#a6e22e">once</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">setup</span>)
+            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">i</span>)
+        }(<span style="color:#a6e22e">i</span>)
+    }
+    <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+}
+</code></pre></div><p>输出结果为：</p>
+<pre><code>setup calling
+hello world 2
+hello world 3
+hello world 0
+hello world 1
+</code></pre><p>额外注意：若main函数在新启goroutine时，未将i提取为函数参数，会发生多个goroutine重用最后i值的情况。</p>
+<p>如如下代码所示：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">4</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+            <span style="color:#a6e22e">once</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#a6e22e">setup</span>)
+            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">i</span>)
+        }()
+    }
+    <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+}
+</code></pre></div><p>打印结果为：</p>
+<pre><code>setup calling
+hello world 4
+hello world 4
+hello world 4
+hello world 4
+</code></pre><p>所以新启动程序时，宿主函数的参数使用要注意将其放入新的函数的参数列表或者在goroutine启动前使用原变量值的新实例。如如下代码所示。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">4</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">i</span>
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+            <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>)
+        }()
+    }
+    <span style="color:#f92672">...</span>
+}
+</code></pre></div><blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/ref/mem">https://golang.org/ref/mem</a><!-- raw HTML omitted --></p>
+<p>[2] <!-- raw HTML omitted --><a href="http://nil.csail.mit.edu/6.824/2016/notes/gomem.pdf">http://nil.csail.mit.edu/6.824/2016/notes/gomem.pdf</a><!-- raw HTML omitted --></p>
+<p>[3] <!-- raw HTML omitted --><a href="https://go101.org/article/memory-model.html">https://go101.org/article/memory-model.html</a><!-- raw HTML omitted --></p>
+<p>[4] <!-- raw HTML omitted --><a href="https://medium.com/@edwardpie/understanding-the-memory-model-of-golang-part-1-9814f95621b4">https://medium.com/@edwardpie/understanding-the-memory-model-of-golang-part-1-9814f95621b4</a><!-- raw HTML omitted --></p>
+<p>[5] <!-- raw HTML omitted --><a href="https://medium.com/@edwardpie/understanding-the-memory-model-of-golang-part-2-972fe74372ba">https://medium.com/@edwardpie/understanding-the-memory-model-of-golang-part-2-972fe74372ba</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

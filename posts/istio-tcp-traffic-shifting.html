@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Istio流量管理之TCP流量转移 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="工具使用, 服务网格, Service Mesh, 云原生, Istio">
+  <meta name="description"
+    content="Istio流量管理之TCP流量转移 (TCP Traffic Shifting of Istio Traffic Management)">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Istio流量管理之TCP流量转移</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年12月26日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>在上文“<a href="https://olzhy.github.io/posts/istio-traffic-shifting.html">Istio流量管理之流量转移</a>”中，我们使用Istio为7层HTTP应用作了流量按比例分配测试。本文使用Istio自带的tcp-echo样例对4层TCP应用作一下测试。</p>
+<p>关于Istio安装等环境准备，请参阅“<a href="https://olzhy.github.io/posts/istio-get-started.html">Istio安装使用</a>”。</p>
+<h3 id="1-tcp-echo源码解析">1 tcp-echo源码解析</h3>
+<p>tcp-echo是一个4层应用。其启动后会一直监听所暴露的端口，并等待TCP连接，连接成功后提供ping/pong请求响应。从源码可以看到，其接收到一串字符后会拼上一个前缀并返回给客户端。</p>
+<p><a href="https://github.com/istio/istio/blob/master/samples/tcp-echo/src/main.go#L63">main.go</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {<span style="color:#f92672">...</span>}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">serve</span>(<span style="color:#a6e22e">addr</span>, <span style="color:#a6e22e">prefix</span> <span style="color:#66d9ef">string</span>) {<span style="color:#f92672">...</span>}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">handleConnection</span>(<span style="color:#a6e22e">conn</span> <span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Conn</span>, <span style="color:#a6e22e">prefix</span> <span style="color:#66d9ef">string</span>) {
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Close</span>()
+	<span style="color:#a6e22e">reader</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bufio</span>.<span style="color:#a6e22e">NewReader</span>(<span style="color:#a6e22e">conn</span>)
+	<span style="color:#66d9ef">for</span> {
+		<span style="color:#75715e">// read client request data
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">bytes</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">reader</span>.<span style="color:#a6e22e">ReadBytes</span>(byte(<span style="color:#e6db74">&#39;\n&#39;</span>))
+		<span style="color:#f92672">...</span>
+		<span style="color:#75715e">// prepend prefix and send as response
+</span><span style="color:#75715e"></span>		<span style="color:#a6e22e">line</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s %s&#34;</span>, <span style="color:#a6e22e">prefix</span>, <span style="color:#a6e22e">bytes</span>)
+		<span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Write</span>([]byte(<span style="color:#a6e22e">line</span>))
+	}
+}
+</code></pre></div><p>下面我们在本地启动运行一下该程序。暴露端口为9000，前缀为“hello”。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ go run main.go <span style="color:#ae81ff">9000</span> hello
+
+listening on <span style="color:#f92672">[</span>::<span style="color:#f92672">]</span>:9000, prefix: hello
+</code></pre></div><p>服务端起来了，我们使用nc命令发起TCP连接请求并发送字符串“world”。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ nc localhost <span style="color:#ae81ff">9000</span>
+
+world
+hello world
+</code></pre></div><p>可以看到服务端拼接了前缀“hello”，返回“hello world”。</p>
+<p>本地测试完成，下面我们尝试使用Istio samples文件夹下自带的部署文件将其部署到Docker Desktop Kubernetes集群。</p>
+<h3 id="2-tcp-echo-kubernetes部署">2 tcp-echo Kubernetes部署</h3>
+<p>使用samples文件夹下自带的tcp-echo描述文件将其部署至Kubernetes集群。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ kubectl apply -n istio-demo -f samples/tcp-echo/tcp-echo-services.yaml
+</code></pre></div><p>可以看到，该部署文件有两个Deployment，对应两个版本的tcp-echo，版本v1的输出前缀为“one”，版本v2的输出前缀为“two”。每个Deployment暴露两个端口9000与9001，通过同一个Service对外提供服务。访问Service时，会轮训两个版本的tcp-echo。</p>
+<p><a href="https://raw.githubusercontent.com/istio/istio/release-1.8/samples/tcp-echo/tcp-echo-services.yaml">samples/tcp-echo/tcp-echo-services.yaml</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: v1
+<span style="color:#66d9ef">kind</span>: Service
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: tcp-echo
+  <span style="color:#66d9ef">labels</span>:
+    <span style="color:#66d9ef">app</span>: tcp-echo
+    <span style="color:#66d9ef">service</span>: tcp-echo
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">ports</span>:
+  - <span style="color:#66d9ef">name</span>: tcp
+    <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">9000</span>
+  - <span style="color:#66d9ef">name</span>: tcp-other
+    <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">9001</span>
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">app</span>: tcp-echo
+---
+<span style="color:#66d9ef">apiVersion</span>: apps/v1
+<span style="color:#66d9ef">kind</span>: Deployment
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: tcp-echo-v1
+  <span style="color:#66d9ef">labels</span>:
+    <span style="color:#66d9ef">app</span>: tcp-echo
+    <span style="color:#66d9ef">version</span>: v1
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">matchLabels</span>:
+      <span style="color:#66d9ef">app</span>: tcp-echo
+      <span style="color:#66d9ef">version</span>: v1
+  <span style="color:#66d9ef">template</span>:
+    <span style="color:#66d9ef">metadata</span>:
+      <span style="color:#66d9ef">labels</span>:
+        <span style="color:#66d9ef">app</span>: tcp-echo
+        <span style="color:#66d9ef">version</span>: v1
+    <span style="color:#66d9ef">spec</span>:
+      <span style="color:#66d9ef">containers</span>:
+      - <span style="color:#66d9ef">name</span>: tcp-echo
+        <span style="color:#66d9ef">image</span>: docker.io/istio/tcp-echo-server:<span style="color:#ae81ff">1.2</span>
+        <span style="color:#66d9ef">imagePullPolicy</span>: IfNotPresent
+        <span style="color:#66d9ef">args</span>: [ <span style="color:#e6db74">&#34;9000,9001,9002&#34;</span>, <span style="color:#e6db74">&#34;one&#34;</span> ]
+        <span style="color:#66d9ef">ports</span>:
+        - <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">9000</span>
+        - <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">9001</span>
+---
+<span style="color:#66d9ef">apiVersion</span>: apps/v1
+<span style="color:#66d9ef">kind</span>: Deployment
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: tcp-echo-v2
+  <span style="color:#66d9ef">labels</span>:
+    <span style="color:#66d9ef">app</span>: tcp-echo
+    <span style="color:#66d9ef">version</span>: v2
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">replicas</span>: <span style="color:#ae81ff">1</span>
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">matchLabels</span>:
+      <span style="color:#66d9ef">app</span>: tcp-echo
+      <span style="color:#66d9ef">version</span>: v2
+  <span style="color:#66d9ef">template</span>:
+    <span style="color:#66d9ef">metadata</span>:
+      <span style="color:#66d9ef">labels</span>:
+        <span style="color:#66d9ef">app</span>: tcp-echo
+        <span style="color:#66d9ef">version</span>: v2
+    <span style="color:#66d9ef">spec</span>:
+      <span style="color:#66d9ef">containers</span>:
+      - <span style="color:#66d9ef">name</span>: tcp-echo
+        <span style="color:#66d9ef">image</span>: docker.io/istio/tcp-echo-server:<span style="color:#ae81ff">1.2</span>
+        <span style="color:#66d9ef">imagePullPolicy</span>: IfNotPresent
+        <span style="color:#66d9ef">args</span>: [ <span style="color:#e6db74">&#34;9000,9001,9002&#34;</span>, <span style="color:#e6db74">&#34;two&#34;</span> ]
+        <span style="color:#66d9ef">ports</span>:
+        - <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">9000</span>
+        - <span style="color:#66d9ef">containerPort</span>: <span style="color:#ae81ff">9001</span>
+</code></pre></div><p>tcp-echo部署完成，因为我们需要一个带nc命令的Pod来测试tcp-echo。所以下面部署一下Istio自带的sleep应用，该应用包含基础命名curl、nc等，就是用来辅助我们做测试的。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ kubectl apply -n istio-demo -f samples/sleep/sleep.yaml
+</code></pre></div><p>部署完成，进入sleep Pod，执行测试命令。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl exec -ti sleep-854565cb79-pcgjv -c sleep -n istio-demo -- sh -c <span style="color:#e6db74">&#39;for i in $(seq 1 10); do echo hello | nc tcp-echo 9000; done&#39;</span>
+
+two hello
+two hello
+one hello
+one hello
+two hello
+two hello
+one hello
+one hello
+two hello
+two hello
+</code></pre></div><p>请求tcp-echo 10次，前缀有时为“one”，有时为“two”，说明有时请求到版本v1，有时请求到版本v2。</p>
+<p>因Kubernetes无法做流量按比例分配，下面使用Istio来尝试实现一下。</p>
+<h3 id="3-使用istio对tcp-echo作流量分配">3 使用Istio对tcp-echo作流量分配</h3>
+<p>使用Istio自带的描述文件为tcp-echo配置Gateway，Virtual Service，Destination Rule。</p>
+<p>描述文件<a href="https://raw.githubusercontent.com/istio/istio/release-1.8/samples/tcp-echo/tcp-echo-all-v1.yaml">samples/tcp-echo/tcp-echo-all-v1.yaml</a>内容如下，tcp-echo会通过Gateway以31400端口提供v1版本的TCP服务。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: networking.istio.io/v1alpha3
+<span style="color:#66d9ef">kind</span>: Gateway
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: tcp-echo-gateway
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">selector</span>:
+    <span style="color:#66d9ef">istio</span>: ingressgateway
+  <span style="color:#66d9ef">servers</span>:
+  - <span style="color:#66d9ef">port</span>:
+      <span style="color:#66d9ef">number</span>: <span style="color:#ae81ff">31400</span>
+      <span style="color:#66d9ef">name</span>: tcp
+      <span style="color:#66d9ef">protocol</span>: TCP
+    <span style="color:#66d9ef">hosts</span>:
+    - <span style="color:#e6db74">&#34;*&#34;</span>
+---
+<span style="color:#66d9ef">apiVersion</span>: networking.istio.io/v1alpha3
+<span style="color:#66d9ef">kind</span>: DestinationRule
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: tcp-echo-destination
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">host</span>: tcp-echo
+  <span style="color:#66d9ef">subsets</span>:
+  - <span style="color:#66d9ef">name</span>: v1
+    <span style="color:#66d9ef">labels</span>:
+      <span style="color:#66d9ef">version</span>: v1
+  - <span style="color:#66d9ef">name</span>: v2
+    <span style="color:#66d9ef">labels</span>:
+      <span style="color:#66d9ef">version</span>: v2
+---
+<span style="color:#66d9ef">apiVersion</span>: networking.istio.io/v1alpha3
+<span style="color:#66d9ef">kind</span>: VirtualService
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: tcp-echo
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">hosts</span>:
+  - <span style="color:#e6db74">&#34;*&#34;</span>
+  <span style="color:#66d9ef">gateways</span>:
+  - tcp-echo-gateway
+  <span style="color:#66d9ef">tcp</span>:
+  - <span style="color:#66d9ef">match</span>:
+    - <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">31400</span>
+    <span style="color:#66d9ef">route</span>:
+    - <span style="color:#66d9ef">destination</span>:
+        <span style="color:#66d9ef">host</span>: tcp-echo
+        <span style="color:#66d9ef">port</span>:
+          <span style="color:#66d9ef">number</span>: <span style="color:#ae81ff">9000</span>
+        <span style="color:#66d9ef">subset</span>: v1
+</code></pre></div><p>应用该配置文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl apply -n istio-demo -f samples/tcp-echo/tcp-echo-all-v1.yaml
+</code></pre></div><p>查看Gateway外部访问IP及端口，本文使用Docker Desktop内置Kubernetes，所以外部访问IP即为localhost。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get service/istio-ingressgateway -n istio-system
+</code></pre></div><p>以Gateway地址请求tcp-echo 10次，发现输出前缀均为“one”，命令如下。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>seq <span style="color:#ae81ff">1</span> 10<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> echo hello | nc localhost 31400; <span style="color:#66d9ef">done</span>
+
+one hello
+one hello
+one hello
+one hello
+one hello
+one hello
+one hello
+one hello
+one hello
+one hello
+</code></pre></div><p>下面尝试将80%的流量打到v1，20%的流量打到v2。描述文件<a href="https://raw.githubusercontent.com/istio/istio/release-1.8/samples/tcp-echo/tcp-echo-20-v2.yaml">samples/tcp-echo/tcp-echo-20-v2.yaml</a>内容如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#66d9ef">apiVersion</span>: networking.istio.io/v1alpha3
+<span style="color:#66d9ef">kind</span>: VirtualService
+<span style="color:#66d9ef">metadata</span>:
+  <span style="color:#66d9ef">name</span>: tcp-echo
+<span style="color:#66d9ef">spec</span>:
+  <span style="color:#66d9ef">hosts</span>:
+  - <span style="color:#e6db74">&#34;*&#34;</span>
+  <span style="color:#66d9ef">gateways</span>:
+  - tcp-echo-gateway
+  <span style="color:#66d9ef">tcp</span>:
+  - <span style="color:#66d9ef">match</span>:
+    - <span style="color:#66d9ef">port</span>: <span style="color:#ae81ff">31400</span>
+    <span style="color:#66d9ef">route</span>:
+    - <span style="color:#66d9ef">destination</span>:
+        <span style="color:#66d9ef">host</span>: tcp-echo
+        <span style="color:#66d9ef">port</span>:
+          <span style="color:#66d9ef">number</span>: <span style="color:#ae81ff">9000</span>
+        <span style="color:#66d9ef">subset</span>: v1
+      <span style="color:#66d9ef">weight</span>: <span style="color:#ae81ff">80</span>
+    - <span style="color:#66d9ef">destination</span>:
+        <span style="color:#66d9ef">host</span>: tcp-echo
+        <span style="color:#66d9ef">port</span>:
+          <span style="color:#66d9ef">number</span>: <span style="color:#ae81ff">9000</span>
+        <span style="color:#66d9ef">subset</span>: v2
+      <span style="color:#66d9ef">weight</span>: <span style="color:#ae81ff">20</span>
+</code></pre></div><p>应用配置文件命令如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl apply -n istio-demo -f samples/tcp-echo/tcp-echo-20-v2.yaml
+</code></pre></div><p>然后再次以Gateway地址请求tcp-echo 10次，发现前缀大概率为“one”，命令如下。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#66d9ef">for</span> i in <span style="color:#66d9ef">$(</span>seq <span style="color:#ae81ff">1</span> 10<span style="color:#66d9ef">)</span>; <span style="color:#66d9ef">do</span> echo hello | nc localhost 31400; <span style="color:#66d9ef">done</span>
+
+two hello
+one hello
+two hello
+one hello
+one hello
+one hello
+one hello
+one hello
+one hello
+one hello
+</code></pre></div><p>测试结束，使用如下命令删除sleep，tcp-echo应用，及路由配置。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl delete -n istio-demo -f samples/tcp-echo/tcp-echo-services.yaml
+$ kubectl delete -n istio-demo -f samples/sleep/sleep.yaml
+$ kubectl delete -n istio-demo -f samples/tcp-echo/tcp-echo-all-v1.yaml
+</code></pre></div><p>总结本文，首先介绍了Istio除了作7层流量转移外，还支持4层流量转移。然后对tcp-echo样例分别进行了本地测试，Kubernetes部署，及Istio流量转移测试。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <a href="https://istio.io/latest/docs/tasks/traffic-management/tcp-traffic-shifting/">Istio TCP Traffic Shifting</a></p>
+<p>[2] <a href="https://istio.io/latest/docs/concepts/traffic-management/">Istio Traffic Management</a></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">#工具使用</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

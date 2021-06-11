@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/python/</link>
+    <description>Recent content in Python on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 10 Oct 2020 11:29:15 +0800</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>感知机算法及Python实现</title>
+      <link>https://olzhy.github.io/posts/perceptron-python-implementation.html</link>
+      <pubDate>Sat, 10 Oct 2020 11:29:15 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/perceptron-python-implementation.html</guid>
+      <description>1 何为感知机？ 感知机是一个单层人工神经网络，是一个用于二分类的算法，其也是线性分类器的一种。
+其可被抽象为下图所示模型，即一个神经元接收到来自n个其它神经元的输入信号，对这些输入信号，通过带权值的连接进行计算（各个连接线的权值与对应输入值相乘，然后进行累加），然后判断计算出来的累加值是否超过阈值（Threshold），若等于或超过阈值，则输出y为1，表示该神经元激活，否则输出y为-1表示该神经元抑制。
+所以，感知机模型可被描述为：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 105 以先序遍历及中序遍历构造二叉树</title>
+      <link>https://olzhy.github.io/posts/leetcode-construct-binary-tree-from-preorder-and-inorder-traversal.html</link>
+      <pubDate>Tue, 06 Oct 2020 19:07:00 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-construct-binary-tree-from-preorder-and-inorder-traversal.html</guid>
+      <description>1 题目描述 给定一棵二叉树的先序遍历及中序遍历，尝试构建该二叉树。
+说明：
+ 假定树中不存在值重复的情形  例如：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 707 设计链表</title>
+      <link>https://olzhy.github.io/posts/leetcode-design-linked-list.html</link>
+      <pubDate>Mon, 05 Oct 2020 12:09:28 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-design-linked-list.html</guid>
+      <description>1 题目描述 设计链表的实现。您可以选择使用单链表或者双链表来实现。
+单链表中的节点应有val和next两个属性，val为当前节点的值，next为下一个节点的指针或引用。
+若使用双链表实现，则需要一个额外的属性prev来指向当前节点的前一个节点。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 题目Golang实现汇总</title>
+      <link>https://olzhy.github.io/leetcode-golang-implementations/</link>
+      <pubDate>Fri, 19 Jul 2019 00:01:14 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/leetcode-golang-implementations/</guid>
+      <description>GitHub: github.com/olzhy/leetcode
+   题号 题目 难度 实现     2 Add Two Numbers 中 Golang   3 Longest Substring 中 Golang   5 Longest Palindromic Substring 中 Golang   6 ZigZag Conversion 中 Golang   8 String to Integer 中 Golang   12 Integer to Roman 中 Golang   17 Letter Combinations of A&amp;hellip; 中 Golang   19 Remove Nth Node From End of List 中 Golang   24 Swap Nodes In Pairs 中 Golang   33 Search in Rotated Sorted Array 中 Golang   34 Find First and Last Position… 中 Golang   48 Rotate Image 中 Golang   54 Spiral Matrix 中 Golang   55 Jump Game 中 Golang   56 Merge Intervals 中 Golang   59 Spiral Matrix II 中 Golang   60 Permutation Sequence 中 Golang   61 Rotate List 中 Golang   71 Simplify Path 中 Golang   73 Set Matrix Zeroes 中 Golang   74 Search a 2D Matrix 中 Golang   75 Sort Colors 中 Golang   77 Combinations 中 Golang   81 Search in Rotated Sorted Array II 中 Golang   86 Partition List 中 Golang   91 Decode Ways 中 Golang   92 Reverse Linked List II 中 Golang   93 Restore IP Addresses 中 Golang   94 Binary Tree Inorder Traversal 中 Golang   95 Unique Binary Search Trees II 中 Golang   96 Unique Binary Search Trees 中 Golang   98 Validate Binary Search Tree 中 Golang   102 Binary Tree Level Order Traversal 中 Golang   103 Binary Tree Zigzag Level Order Traversal 中 Golang   105 Construct Binary Tree from Preorder&amp;hellip; 中 Golang, Python   106 Construct Binary Tree from Inorder&amp;hellip; 中 Golang   130 Surrounded Regions 中 Golang   143 Reorder List 中 Golang   144 Binary Tree Preorder Traversal 中 Golang   145 Binary Tree Postorder Traversal 难 Golang   151 Reverse Words in a String 中 Golang   165 Compare Version Numbers 中 Golang   198 House Robber 易 Golang   199 Binary Tree Right Side View 中 Golang   206 Reverse Linked List 易 Golang   224 Basic Calculator 难 Golang   338 Couting Bits 中 Golang   355 Design Twitter 中 Golang   393 UTF-8 Validation 中 Golang   413 Arithmetic Slices 中 Golang   451 Sort Characters By Frequency 中 Golang   477 Total Hamming Distance 中 Golang   508 Most Frequent Subtree Sum 中 Golang   513 Find Bottom Left Tree Value 中 Golang   515 Find Largest Value in Each Tree Row 中 Golang   641 Design Circular Deque 中 Golang   701 Insert into a Binary Search Tree 中 Golang   707 Design Linked List 中 Golang, Python   807 Max Increase to Keep City&amp;hellip; 中 Golang   856 Score of Parentheses 中 Golang   885 Spiral Matrix III 中 Golang   889 Construct Binary Tree from&amp;hellip; 中 Golang   911 Online Election 中 Golang   946 Validate Stack Sequences 中 Golang   958 Check Completeness of a Binary Tree 中 Golang   981 Time Based Key-Value Store 中 Golang   1008 Construct Binary Search Tree&amp;hellip; 中 Golang    </description>
+    </item>
+    
+    <item>
+      <title>k-d tree算法原理及实现</title>
+      <link>https://olzhy.github.io/posts/kdtree-algorithm-and-implementation.html</link>
+      <pubDate>Thu, 28 Dec 2017 14:58:11 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/kdtree-algorithm-and-implementation.html</guid>
+      <description>k-d tree即k-dimensional tree，常用来作空间划分及近邻搜索，是二叉空间划分树的一个特例。通常，对于维度为$k$，数据点数为$N$的数据集，k-d tree适用于$N\gg2^k$的情形。
+1）k-d tree算法原理</description>
+    </item>
+    
+    <item>
+      <title>手机品牌搜索走势图</title>
+      <link>https://olzhy.github.io/posts/search-trends-of-mobile-phone-brands.html</link>
+      <pubDate>Tue, 28 Nov 2017 13:42:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/search-trends-of-mobile-phone-brands.html</guid>
+      <description>当前，各应用平台每天都在产生海量的数据。基于海量数据的深度分析报告越来越有价值。该领域涵盖数学、统计学，计算机科学等众多学科，是一个值得深入研究的方向。本文涉及的是一个简单的数据分析场景，旨在梳理使用Python数据分析涉及的常用类库（pandas、matplotlib等）与入门知识。本文对指定的几家手机品牌，按日期区间，从百度指数网站获取其月度搜索数据，然后绘制出它们的搜索走势对比图。
+1）关键点
+a）日期区间（使用pandas的date_range方法）；
+b）对指定日期（年月），获取手机品牌清单中各品牌的搜索量（requests使用）；
+c）构造DataFrame（重点关注data、index和columns参数传值），结合matplotlib绘图。</description>
+    </item>
+    
+  </channel>
+</rss>

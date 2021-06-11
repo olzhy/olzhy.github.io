@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>什么是服务网格？ - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="架构设计, 微服务, 云原生, Service Mesh">
+  <meta name="description"
+    content="什么是服务网格？(What is a Service Mesh?)">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>什么是服务网格？</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年12月07日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <h3 id="1-什么是服务网格">1 什么是服务网格？</h3>
+<p>服务网格是分布式软件系统内部用于管理所有“服务到服务”通信的一个系统。</p>
+<p>聊服务网格为什么会出现之前，可以聊聊服务架构的演进过程。起初，我们使用一个单体应用来提供服务。
+比如我们在做一个电商系统，采用典型的MVC三层架构，在单体架构中，组成这个系统的购物车功能，库存查询功能，订单功能等都是这个服务内部的一个函数或接口。所以这些操作都是进程内的函数调用，不涉及诸如RPC等服务与服务的跨进程通信。但随着时间的增加，我们发现单体架构越来越不能满足我们的需求，比如用户访问暴增，业务逻辑愈加复杂，一个单体的服务已不能满足功能及性能的要求。我们需要将其按业务领域拆分为几个独立的服务来对外提供服务，这就是微服务架构。比如原来的购物车功能，库存查询功能，订单功能被拆分为独立的服务。这时接收到一个购物请求，我们需要分别查询不同的微服务来进行业务处理，这就涉及跨进程通信。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/service-mesh-micro-service.png#center" alt="" /></p>
+<p>而由于服务到服务通信的网络不稳定性，所以如下问题随即出现了：请求失败时如何进行重试？请求超时如何处理？请求太频繁如何限速？服务熔断怎么做？&hellip; 而基于语言或框架的辅助库即是一种解决方案，如Netflix的Eureka，Hystrix等。而在服务里边解决服务与服务通信问题存在多个弊端，如：需要侵入业务代码，受语言或框架限制等。所以，完全解耦的，基于代理模式的服务网格设计理念更符合业界的青睐。</p>
+<p>下图即是一个服务网格部署图，即每个服务的实例旁边都有一个代理，这些代理被形象的称为Sidecar，其来负责对被代理服务的进出流量进行管理。整个系统的所有这些负责服务与服务通信的Sidecar即组成一个服务网格。所以服务只要关注业务逻辑即可，服务与服务通信的逻辑被抽到了服务网格里边，实现了解耦。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/service-mesh-network.png#center" alt="" /></p>
+<p>因服务网格代理了分布式系统内所有服务与服务通信的进出流量，相当于将分布式系统中最关键的一些跨进程连接点串联起来，并将其管理，观察。所以其就像系统的眼睛一样，让开发者不再对庞大的调用网络望而生畏，让分布式系统像单体架构一样可以做到可观察。</p>
+<h3 id="2-服务网格发展历史">2 服务网格发展历史</h3>
+<ul>
+<li>2010年初，Twitter开始开发基于Scala的Finagle，自此Linkerd服务网格诞生。</li>
+<li>2013年末，SmartStack提供一种基于HAProxy的进程外的服务发现机制以满足逐渐兴起的微服务架构。</li>
+<li>2014，Netflix发布包括Prana的一组JVM工具包，允许不同语言开发的服务通过HTTP进行调用。</li>
+<li>2016，NGINX开发Fabric Model，一个基于NGINX Plus的类服务网格产品。</li>
+<li>2017以后，Linkerd，Istio，Maesh，Kuma逐步兴起。</li>
+</ul>
+<h3 id="3-服务网格架构">3 服务网格架构</h3>
+<p>经过上面的介绍，我们对服务网格的衍生及其解决的问题有了一定的了解。本节粗略看一下业内服务网格的通用设计及系统架构，以期对其有一个更好的认识。</p>
+<p>服务网格主要由两部分组成：负责管理服务与服务通信的Sidecar Proxy被称为数据面；以UI，配置及命令等控制数据面行为的被称为控制面。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/service-mesh-generic-topology.png#center" alt="" /></p>
+<h3 id="4-使用服务网格可以做什么">4 使用服务网格可以做什么？</h3>
+<p>因服务网格代理了系统内所有服务与服务通信的流量，所以其可以做很多事情。</p>
+<ul>
+<li>流量管理</li>
+</ul>
+<p>提供灰度发布，按规则流量分发等功能。</p>
+<ul>
+<li>熔断重试</li>
+</ul>
+<p>提供超时处理，熔断，重试等功能。</p>
+<ul>
+<li>鉴权授权</li>
+</ul>
+<p>提供mTLS安全通信，服务与服务的鉴权授权等功能。</p>
+<ul>
+<li>观察及监控</li>
+</ul>
+<p>提供请求量统计，请求延时统计，请求成功率统计，分布式链路追踪等功能。</p>
+<h3 id="5-服务网格的实现">5 服务网格的实现</h3>
+<ul>
+<li><a href="https://linkerd.io/">Linkerd</a></li>
+</ul>
+<p>CNCF孵化项目，100%开源，Rust实现，目标是极简，能用，数据面代理极小(&lt;10mb)，速度极快(&lt;1ms)。</p>
+<ul>
+<li><a href="https://istio.io/">Istio</a></li>
+</ul>
+<p>最流行的服务网格实现，基于Envoy数据面，背靠谷歌及IBM，功能丰富。</p>
+<ul>
+<li><a href="https://www.consul.io/">Consul</a></li>
+</ul>
+<p>HashiCorp出品，基于Envoy数据面，支持的平台多。</p>
+<ul>
+<li><a href="https://kuma.io/">Kuma</a></li>
+</ul>
+<p>基于API Gateway Kong的服务网格。</p>
+<ul>
+<li><a href="https://containo.us/maesh/">Traefik Mesh</a></li>
+</ul>
+<p>基于云原生API Gateway Traefik的服务网格。</p>
+<p>更详细对比，请参考 <a href="https://servicemesh.es/">servicemesh.es</a>。</p>
+<h3 id="6-服务网格的未来">6 服务网格的未来</h3>
+<p>Mecha - 多运行时微服务架构。未来架构的趋势可能是将所有传统的中间件迁移至其它运行时，只在服务中编写业务逻辑。微软Dapr是业界第一个多运行时实践项目。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/service-mesh-future.jpg#center" alt="" /></p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <a href="https://www.redhat.com/en/topics/microservices/what-is-a-service-mesh#">What is a service mesh? - RedHat</a></p>
+<p>[2] <a href="https://www.nginx.com/blog/what-is-a-service-mesh/">What is a service mesh? - NGINX</a></p>
+<p>[3] <a href="https://www.infoq.com/articles/service-mesh-ultimate-guide/">Service Mesh Ultimate Guide: Managing Service-to-Service Communications in the Era of Microservices - InfoQ</a></p>
+<p>[4] <a href="https://buoyant.io/2020/10/12/what-is-a-service-mesh/">What&rsquo;s a service mesh? And why do I need one? - Buoyant</a></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">#架构设计</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

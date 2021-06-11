@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>API Gateway与Service Mesh有什么不同？ - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="架构设计, 云原生, API Gateway, Service Mesh">
+  <meta name="description"
+    content="API Gateway与Service Mesh有什么不同？(What&#39;s the difference between API Gateway and Service Mesh?)">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>API Gateway与Service Mesh有什么不同？</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年12月14日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>一般的认为是：API Gateway用来处理南北向流量，Service Mesh用来处理东西向流量。这样的区分方式并不准确。下面会递进式分析两者的使用场景及异同点，以期通过本文可以明白何时使用API Gateway，何时使用Service Mesh？</p>
+<h3 id="1-api-gateway的使用场景">1 API Gateway的使用场景</h3>
+<p>API Gateway一般是一个业务单元以“产品”的方式对外部客户或对内部其它业务单元进行API暴露的统一入口。其一般在网络模型的7层，使用独立于内部系统的中心化部署方式，作为一个Edge服务对外提供访问能力。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/api-gateway-as-a-product.jpg#center" alt="" /></p>
+<p>（图片引自<a href="https://www.cncf.io/blog/2020/03/06/the-difference-between-api-gateways-and-service-mesh/">The difference between API Gateways and Service Mesh</a>）</p>
+<p>所以从这个场景出发，API Gateway关注的是：</p>
+<ul>
+<li>隐藏内部实现细节，让API保持稳定，对客户友好</li>
+</ul>
+<p>以产品的方式对外提供稳定的统一的API入口，除了作为一个Proxy提供通用的诸如负载均衡等能力外，其可能会涉及一部分业务逻辑，如API聚合，协议转换（如内部使用gRPC，API Gateway使用REST，GraphQL）等。</p>
+<ul>
+<li>保障边界安全</li>
+</ul>
+<p>作为外部客户使用API的统一入口，在API Gateway提供统一的授权鉴权，全局的熔断限速，请求及返回验证等功能。</p>
+<ul>
+<li>全流程API管理</li>
+</ul>
+<p>提供全流程API管理。诸如提供用户注册使用API的入口，提供API文档管理，API测试管理等。</p>
+<h3 id="2-service-mesh的使用场景">2 Service Mesh的使用场景</h3>
+<p>由前文<a href="https://olzhy.github.io/posts/what-is-a-service-mesh.html">“什么是服务网格？”</a>可知，服务网格解决的是系统内部服务与服务通信的问题。其采用分布式的Sidecar方式与服务实例一同部署，更关注的是内部系统的可信连接，安全通信及可观察能力。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/service-mesh-arch.jpg#center" alt="" /></p>
+<p>（图片引自<a href="https://www.cncf.io/blog/2020/03/06/the-difference-between-api-gateways-and-service-mesh/">The difference between API Gateways and Service Mesh</a>）</p>
+<ul>
+<li>与服务解耦，以进程外的方式代理服务进出流量</li>
+</ul>
+<p>与服务解耦，以进程外的方式，统一代理服务的进出流量。</p>
+<ul>
+<li>保障服务与服务通信安全</li>
+</ul>
+<p>采用mTLS等，其可保障端到端的通信安全。</p>
+<ul>
+<li>更细节的可观察性</li>
+</ul>
+<p>使用服务网格，可以监控到系统内部所有服务与服务的调用，可以观察到更多细节的度量指标。</p>
+<h3 id="3-何时使用api-gateway何时使用service-mesh">3 何时使用API Gateway？何时使用Service Mesh？</h3>
+<p>通过如上简述，我们对API Gateway及Service Mesh的不同使用场景有了一个简单的认识。下面，总结一下，何时使用API Gateway？何时使用Service Mesh？</p>
+<p>决定是否使用API Gateway的一个重要决策点是：是否有需求将内部API以中心化的方式作为一个“产品”来对外提供服务？</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/use-api-gateway-or-service-mesh.jpg#center" alt="" /></p>
+<p>（图片引自<a href="https://www.cncf.io/blog/2020/03/06/the-difference-between-api-gateways-and-service-mesh/">The difference between API Gateways and Service Mesh</a>）</p>
+<p>而决定是否使用Service Mesh的一个重要决策点是：是否有需求将所有服务的通信使用分布式的Sidecar来管理，以提供更好的连接，安全，可观察能力？</p>
+<p>一般来说，现代云原生架构下，两者均是需要的，以各自适用的场景及互补的能力来提供系统整体的可用性，可靠性。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <a href="https://www.cncf.io/blog/2020/03/06/the-difference-between-api-gateways-and-service-mesh/">The difference between API Gateways and Service Mesh</a></p>
+<p>[2] <a href="https://blog.christianposta.com/microservices/do-i-need-an-api-gateway-if-i-have-a-service-mesh/">Do I Need an API Gateway if I Use a Service Mesh?</a></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">#架构设计</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

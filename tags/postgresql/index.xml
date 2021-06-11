@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PostgreSQL on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/postgresql/</link>
+    <description>Recent content in PostgreSQL on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 21 May 2021 15:14:46 +0800</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/postgresql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PostgreSQL初探</title>
+      <link>https://olzhy.github.io/posts/postgres-getting-started.html</link>
+      <pubDate>Fri, 21 May 2021 15:14:46 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/postgres-getting-started.html</guid>
+      <description>上一篇已经安装好了PostgreSQL环境，本篇会在其上使用SQL做一些简单的操作。
+1 基础SQL操作 a) 建表</description>
+    </item>
+    
+    <item>
+      <title>在CentOS上以源码安装PostgreSQL</title>
+      <link>https://olzhy.github.io/posts/install-postgres-on-centos-from-source.html</link>
+      <pubDate>Thu, 13 May 2021 17:44:42 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/install-postgres-on-centos-from-source.html</guid>
+      <description>PostgreSQL是一款开源的对象关系型数据库管理系统（Object-Relational Database Management System, ORDBMS），其基于加州大学伯克利分校最初的POSTGRE源码开发，支持绝大部分SQL标准并提供诸多现代化特性。</description>
+    </item>
+    
+  </channel>
+</rss>

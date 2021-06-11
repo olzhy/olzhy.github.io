@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>构建SaaS应用的十二因子指导原则 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>构建SaaS应用的十二因子指导原则</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年03月20日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>现代软件通常以Web服务的方式交付，称为软件即服务（SaaS），十二因子指导原则即是构建SaaS应用的一套方法论。其不仅是构建SaaS应用的指导原则，也是微服务，云原生应用开发须遵循的指导原则。</p>
+<p>十二因子指导原则或者最佳实践以期达到：</p>
+<ul>
+<li>
+<p>使用统一的规范，可以使新进开发人员节省时间成本，按照最佳实践走即可；</p>
+</li>
+<li>
+<p>应用应与底层操作系统解耦，以在各种运行环境之间提供最大的可移植性；</p>
+</li>
+<li>
+<p>应用应适于部署在现代化云平台上，摒弃对服务器和系统管理的依赖；</p>
+</li>
+<li>
+<p>开发环境与生产环境之间不应有很多差异，可以以最大化的敏捷性进行持续部署；</p>
+</li>
+<li>
+<p>可以在不对工具，架构，开发实践进行重大改变的情况下进行自由扩展。</p>
+</li>
+</ul>
+<p>十二因子指导原则对应用的开发语言及后端服务的类型均没有限制，是一套统一的方法论。</p>
+<p><strong>I 代码库</strong></p>
+<p>一个应用使用一个代码库，一个代码库支持多个部署环境。</p>
+<p>十二因子应用总是使用版本控制系统（Git，SVN等）来作代码跟踪的。一个应用应有一个代码库，一个代码库存储一套代码，可以有多个版本。不同的部署环境可以使用一个代码库上的不同版本。</p>
+<p>实践中也是这样做的，如我们使用Git来托管代码，一个应用使用一个仓库，不同的应用不应使用一个仓库，而是将依赖关系拆出来，然后分成不同的仓库。每到一个版本开发完毕，我们在仓库上打Tag或者新建Release分支，然后逐步升级开发，测试，类生产，生产环境。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/03/12-factor-app-codebase.png#center" alt="" /></p>
+<p><strong>II 依赖</strong></p>
+<p>显式的声明并抽出依赖。</p>
+<p>绝大多数工具都提供打包功能，依赖可以全局安装或者安装在应用的指定文件夹，如nodejs的site-packages，Golang的vendoring等。</p>
+<p>十二因子指导原则建议应用绝不要隐式依赖系统的全局包。要将应用的所有依赖通过依赖配置文件显式的，完整的，准确的声明出来。且要使用依赖辅助工具将所有依赖抽出来，使用统一的完整的显式的依赖贯穿开发及生产。</p>
+<p>使用显式的依赖声明也简化了新人开发应用的准备步骤。开发者只需将代码检出，并安装必须的语言运行时及依赖管理软件即可。如我们使用Maven构建Java项目，依赖都声明在工程的pom.xml文件了，开发只要将代码拿下来，mvn package即可打包。</p>
+<p>十二因子指导原则建议不要隐式的依赖任何系统工具。如我们应用需要curl，即便大多数系统都自带这个工具，但也保不齐版本或者兼容性不一致，若应用对这个工具强依赖，就该考虑将其打进应用中，或者使用Docker方式构建。</p>
+<p><strong>III 配置</strong></p>
+<p>将配置存在环境变量中。</p>
+<p>一个应用的配置在不同环境之间是不同的。如：</p>
+<ul>
+<li>
+<p>连接数据库，缓存或其它后端服务的配置信息；</p>
+</li>
+<li>
+<p>连接诸如AWS s3等外部服务的密钥信息；</p>
+</li>
+<li>
+<p>部署时需要的特定配置信息，如域名等。</p>
+</li>
+</ul>
+<p>应用有时将这些配置信息作为常量保存在代码中，这是违背十二因子指导原则的。应将配置与代码严格的分离，配置随不同的部署环境发生变化，而代码却只需一套。</p>
+<p>一个检测应用是否将所有配置信息从代码中抽出来的方法即是你的代码仓库是否可以随时开源，而无需担心有密钥信息暴露出来。</p>
+<p>当然这里配置的定义并不包含应用内部的配置，如Spring的bean配置信息，这类配置并不随部署环境变化，理应放在代码中。</p>
+<p>另一个方法是使用配置文件，但不将其纳入版本控制。这相比在代码中使用常量已有很大进步，但仍有诸多弊端：</p>
+<ul>
+<li>
+<p>易于错将配置文件提到仓库；</p>
+</li>
+<li>
+<p>易将配置文件以不同的格式放置在不同的地方，不便于统一管理；</p>
+</li>
+<li>
+<p>配置文件格式可能与语言或框架相关。</p>
+</li>
+</ul>
+<p>根据十二因子指导原则，应将应用配置存在环境变量中。环境变量在不改变代码的情况下可以根据不同部署环境而改变。也不会误将其提到代码仓库，并且其与常规配置文件不同的是其不受语言或操作系统限制。</p>
+<p>另一个办法是将配置文件分组，如建立开发，测试，生产目录，将不同配置放在不同的环境目录下。这样也不好，随着后续环境的增加，管理起来也挺麻烦。</p>
+<p>综上，环境变量是一个粒度恰当的控制办法，其随每次部署独立管理。当环境增多时，可以做到平滑的扩展。</p>
+<p><strong>IV 后端服务</strong></p>
+<p>将后端服务看作附加资源。</p>
+<p>后端服务可以是被应用通过网络来消费的任意服务，这是其常规操作的一部分。诸如MySQL数据库，RabbitMQ队列，Memcached缓存等都是后端服务。</p>
+<p>诸如数据库等的后端服务通常同样由部署应用运行时的系统管理员所管理。除了本地管理的服务以外，也可能有三方组织所提供及管理的服务。诸如指标信息收集服务New Relic，二进制资产服务AWS s3，甚至通过API访问的服务Twitter等。</p>
+<p>十二因子指导原则有一条准则是应用对本地或者三方服务不应有任何区别，都应看作是可以通过URL或者密钥访问的附加资源。应用能够将本地MySQL数据库换成诸如AWS RDS等三方数据库而无需任何代码变更，而仅需改一下配置即可。</p>
+<p>每一个后端服务即是一个资源。两个MySQL实例即是两个资源，其与部署环境是解耦的。资源是可以随部署意愿进行附加或移除的。如生产环境应用使用的一个数据库实例坏掉了，那管理员可以基于其最近一次备份新建一个新的实例顶上去，而无需变更代码。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/03/12-factor-app-backing-service.png" alt="" /></p>
+<p><strong>V 构建，发布及运行</strong></p>
+<p>严格将构建与运行阶段分离。</p>
+<p>代码库通过如下三步来进行部署：</p>
+<ul>
+<li>构建阶段是将代码仓库转换为一个可执行包</li>
+</ul>
+<p>部署过程从代码的某次提交点拉一个版本出来，构建即是获取该版本的依赖并且将其编译为二进制资产。</p>
+<ul>
+<li>发布阶段是将构建出来的包与当前部署配置相结合</li>
+</ul>
+<p>发布阶段组合可以在运行环境立即执行的包与配置。</p>
+<ul>
+<li>运行阶段即是将应用在运行环境运行起来</li>
+</ul>
+<p>运行应用对应版本的进程。</p>
+<p>十二因子指导原则严格将构建，发布，运行阶段分离。诸如，我们无法在运行阶段修改代码，因我们无法将这些变更传回到构建阶段。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/03/12-factor-app-build-run.png" alt="" /></p>
+<p>一些典型的提供发布管理的工具，最显著的能力即是支持回滚到上一个版本。如，Capistrano部署工具将发布版本存储在releases子目录下，当前版本是当前发布文件夹的一个链接，其回滚命令即很容易使其回到上一个版本。</p>
+<p>每次发布应有一个唯一的发布ID，诸如一个发布时间戳（<code>2020-03-20-20:32:17</code>）或一个增长的数值（v100）。发布版本只可叠加且一旦创建即不可修改，任何变更必须新建一个发布版本。</p>
+<p><strong>VI 进程</strong></p>
+<p>以一个或多个无状态进程运行应用。</p>
+<p>先说一个简单的运行场景：代码为一个独立的脚本，运行环境是开发者本机且已安装对应语言的运行时，这样我们即可通过一条命令（如：<code>python start.py</code>）来启动应用进程。其它极端情况下，一个复杂应用的生产部署可能会使用多种进程类型：实例化为0个或多个进程。</p>
+<p>十二因子建议应用为无状态的且不要共享任何资源。任何需要持久化的数据存到有状态的后端服务（通常为数据库）就好了。</p>
+<p>十二因子不会假想任何在内存或硬盘上的缓存数据在后续的请求被使用。因应用运行为多个进程，后续的请求不一定打到哪个进程上，即便只有一个运行进程，也保不齐一次重启即会丢掉所有数据。</p>
+<p>在运行环境使用文件系统的缓存来加速编译也是不建议的。十二因子建议将打包放在构建阶段，这样诸如<code>maven package</code>等工具即可在该阶段将包打好，运行阶段用就好了。</p>
+<p>此外，一些Web系统依赖“粘性Session”，即将用户Session数据缓存到应用进程的内存中。这个与上面一样，多应用进程无法保证下一次请求就正好打到这个节点上。还是建议将Session状态数据存到诸如支持时间过期的Memcached，Redis等数据存储服务上。</p>
+<p><strong>VII 端口绑定</strong></p>
+<p>通过端口绑定暴露服务。</p>
+<p>Web应用有时在Web容器内运行，诸如Java应用在Tomcat中运行等。</p>
+<p>十二因子建议应用完全自包含。不要依赖运行时注入以创建Web接口服务。即Web应用通过绑定端口来暴露为HTTP服务，以监听打到该端口的请求。</p>
+<p>如在本地环境，开发通过访问<code>http://localhost:5000/</code>来访问应用服务。在生产，通过公共域名来访问端口绑定的Web服务进程。</p>
+<p>当然，不仅HTTP服务可以通过端口绑定来暴露服务以被访问。其它4层服务也可以通过端口绑定来接收请求（如：Redis等）。</p>
+<p>此外，一个应用还可以通过端口绑定成为另一个应用的后端服务，如通过提供URL被其它应用作为资源服务使用。</p>
+<p><strong>VIII 并发</strong></p>
+<p>通过进程模型进行横向扩展。</p>
+<p>任何计算机程序，运行都是以一个或多个进程来表示的。Web应用有多种进程运行方式。如，PHP进程以Apache的子进程方式运行，随请求容量按需启动。而Java进程则相反，JVM启动时保留一块大的系统资源（CPU和内存）以提供一个大的进程，而内部使用线程来进行并发。此两种情况，应用开发者所见的最小单位都仅是进程。</p>
+<p>在十二因子应用中，进程是一等公民。吸纳了Unix守护进程模型的思想。采用该模型，开发者通过对不同类型的工作分配不同的进程类型即可以使应用处理不同的工作载荷。如，Web进程处理HTTP请求，后台进程处理长任务。</p>
+<p>这并不与独立进程进行内部多路复用（运行时虚拟机内部进行线程方式并发，或诸如Node.js的异步事件模型等）相悖，但虚拟机仅能纵向扩展，所以，应用必须同样能够横向扩展，以支持将多个进程运行在多个物理机上。</p>
+<p>进程模型会在横向扩展时大放异彩。对于不共享任何资源还支持水平分区的十二因子应用来说，支持并发是简单可靠的操作。</p>
+<p>十二因子应用不应作为守护进程也不要写PID文件。相反，应该交给操作系统进程管理器（诸如分布式进程管理器systemd）来管理输出流，以处理进程崩溃以及用户发起的重启与停机。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/03/12-factor-app-concurrency.png" alt="" /></p>
+<p><strong>IX 可便性</strong></p>
+<p>使用快速启动及优雅停止来最大化健壮性。</p>
+<p>十二因子应用的进程是非常可便的，其可在某时按需启停。这样即可支持快速弹性扩展，代码及配置变更后快速部署。</p>
+<p>进程应做到尽量缩短启动时间。理想情况下，从执行命令到进程可用以便接收请求或处理任务只需花费几秒种。这样即可对进程部署及扩容提供更好的敏捷性，而必要时将进程快速移至新的物理机即提供了更强的健壮性。</p>
+<p>当遇到终止信号时进程应优雅的终止。对于Web应用来说，优雅的终止是在接收到终止命令时，当将当前请求处理完毕再退出，然后停止监听服务端口的流量。一般来说HTTP请求极短，一般不超过几秒，而对于长轮询场景，当连接断开后，客户端当尝试重连以实现对用户无感知。</p>
+<p>对于工作进程来说，优雅的停止是通过将当前任务返回到工作队列来实现的。如在Beanstalkd，当一个工作进程断开时，将任务自动返回到队列中。</p>
+<p>进程还当对突然死掉的情形（如硬件故障）作应对以达到更好的健壮性。如使用Beanstalkd后端队列，其可在客户端断开或超时后将任务返回到队列。</p>
+<p><strong>X 开发环境与生产环境的相似性</strong></p>
+<p>开发环境，测试环境及生产环境越相似越好。</p>
+<p>由于历史原因，开发环境与测试环境是有鸿沟的。诸如：</p>
+<ul>
+<li>
+<p>时间鸿沟，开发的代码可能很久才上线生产；</p>
+</li>
+<li>
+<p>个人鸿沟，开发写代码，运维部署代码；</p>
+</li>
+<li>
+<p>工具鸿沟，开发环境与生产环境使用的技术栈有差别（开发环境使用Nginx，MySQL，OS X；生产环境使用Apache，SQLite，Linux）。</p>
+</li>
+</ul>
+<p>十二因子应用建议设计时当考虑持续部署，将开发与生产的差别保持的越小越好。再看上面的3个鸿沟：</p>
+<ul>
+<li>
+<p>解决时间鸿沟，开发者开发了代码，几分钟即部署到生产；</p>
+</li>
+<li>
+<p>解决个人鸿沟，DevOps打通，写代码的人要关注部署；</p>
+</li>
+<li>
+<p>解决工具鸿沟，开发环境与生产环境越接近越好。</p>
+</li>
+</ul>
+<p>同时，十二因子应避免开发在开发环境及生产环境使用不同的后端服务。</p>
+<p><strong>XI 日志</strong></p>
+<p>将日志看作事件流。</p>
+<p>日志提供了对一个运行中应用行为的可见性。在基于服务器的环境中日志通常会写到诸如logfile的磁盘文件，但这仅是一种输出方式。</p>
+<p>收集所有运行进程及后端服务的输出流，然后将其按时间序组合起来即为日志流。日志原始即是一行一个事件的文本格式（出现异常堆栈时可能会有多行），其没有固定开头及结尾，但只要应用有操作就会有连续的日志。</p>
+<p>十二因子应用建议不要自己路由或存储输出流。即不要尝试自己写日志文件，而应让每个运行进程将日志写到stdout。在本地开发中，开发者可以在自己的终端来查看日志以观察应用的行为。</p>
+<p>在测试及开发环境，每个进程的输出会被运行环境捕获，然后存档到某些位置以备查看。存档位置不应由应用来配置，而应交给运行环境。开源的日志路由（诸如Fluent）即是做这些事情的。</p>
+<p>将日志发到诸如Splunk的检索分析系统有如下好处：</p>
+<ul>
+<li>
+<p>检索之前的特定事件；</p>
+</li>
+<li>
+<p>绘制流量趋势图；</p>
+</li>
+<li>
+<p>按用户定义规则来进行告警（如每分钟错误数超过某阈值即告警）。</p>
+</li>
+</ul>
+<p><strong>XII 管理类进程</strong></p>
+<p>将管理类任务作为一次性进程运行。</p>
+<p>除了运行常规任务（处理Web请求）的进程之外，开发者经常有对应用运行管理及维护的意愿，诸如：</p>
+<ul>
+<li>
+<p>运行数据库迁移任务；</p>
+</li>
+<li>
+<p>运行控制台任务以执行代码或对线上数据库作检查；</p>
+</li>
+<li>
+<p>运行一次性脚本（如<code>php scripts/fix_bad_records.php</code>）。</p>
+</li>
+</ul>
+<p>一次性管理进程当与常规常驻进程使用一样的环境。即管理进程与其它进程使用相同的代码和配置，且管理代码随应用程序一起发布，从而规避不同步问题。</p>
+<p>所有进程类型应使用相同的依赖隔离技术。如，使用<code>bundle exec thin start</code>运行Ruby Web进程，使用<code>bundle exec rake db:migrate</code>执行数据迁移。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <a href="https://en.wikipedia.org/wiki/Twelve-Factor_App_methodology">https://en.wikipedia.org/wiki/Twelve-Factor_App_methodology</a></p>
+<p>[2] <a href="https://12factor.net/">https://12factor.net/</a></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">#架构设计</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

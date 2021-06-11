@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>LeetCode 48 旋转图像 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>LeetCode 48 旋转图像</h2>
+        <div class="mb-3 post-meta">
+          
+          2018年11月05日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><strong>1 题目描述</strong></p>
+<p>给定一个 n x n 的二维矩阵表征一幅图像，求顺时针旋转90度后的图像。</p>
+<p>注：须使用现有内存空间原地旋转该图像，勿分配额外的二维矩阵空间来做旋转。</p>
+<p>例子1：</p>
+<p>输入矩阵：</p>
+<p>[</p>
+<p>[1,2,3],</p>
+<p>[4,5,6],</p>
+<p>[7,8,9]</p>
+<p>]</p>
+<p>输出：</p>
+<p>[</p>
+<p>[7,4,1],</p>
+<p>[8,5,2],</p>
+<p>[9,6,3]</p>
+<p>]</p>
+<p>例子2：</p>
+<p>输入矩阵：</p>
+<p>[</p>
+<p>[ 5, 1, 9,11],</p>
+<p>[ 2, 4, 8,10],</p>
+<p>[13, 3, 6, 7],</p>
+<p>[15,14,12,16]</p>
+<p>],</p>
+<p>输出：</p>
+<p>[</p>
+<p>[15,13, 2, 5],</p>
+<p>[14, 3, 4, 1],</p>
+<p>[12, 6, 8, 9],</p>
+<p>[16, 7,10,11]</p>
+<p>]</p>
+<p>题目出处：</p>
+<p><!-- raw HTML omitted --><a href="https://leetcode.com/problems/rotate-image/">https://leetcode.com/problems/rotate-image/</a><!-- raw HTML omitted --></p>
+<p><strong>2 解决思路</strong></p>
+<p>1）如图所示，原始图如下图所示，要不分配额外空间，以最小的空间来作旋转，我们设定每次仅移动一位。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2018/11/rotate-image-raw.png" alt="" /></p>
+<p>2）一圈元素顺时针旋转90度的移动过程如下图左图所示，仅申请一个元素的存储单元tmp，作顺时针旋转时，我们每次仅移动一位。步骤如下。</p>
+<p>2.1）左上角元素移入tmp；</p>
+<p>2.1）最左边一列元素均向上移动一位；</p>
+<p>2.2）最底部一行元素均向左移动一位；</p>
+<p>2.3）最右边一列元素均向下移动一位；</p>
+<p>2.4）最顶部一行元素均向右移动一位；</p>
+<p>2.5）tmp元素置入顶部行的最左边第二列；</p>
+<p>2.6）循环移动n-1次，直至下图右图所示，整个最外围一圈的元素即顺时针90度旋转完成。</p>
+<p>3）最外围边界递进一层，开始次外围一圈元素的旋转，移动方式同2-3相同。</p>
+<p>4）直至最里边一圈的元素均旋转完成，即得到整个图像的旋转。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2018/11/rotate-image-processing.png" alt="" /></p>
+<p><strong>3 golang实现代码</strong></p>
+<p><!-- raw HTML omitted --><a href="https://github.com/olzhy/leetcode/blob/master/48_Rotate_Image/test.go">https://github.com/olzhy/leetcode/blob/master/48_Rotate_Image/test.go</a><!-- raw HTML omitted --></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">rotate</span>(<span style="color:#a6e22e">matrix</span> [][]<span style="color:#66d9ef">int</span>) {  
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">level</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">level</span> &lt; len(<span style="color:#a6e22e">matrix</span>)<span style="color:#f92672">/</span><span style="color:#ae81ff">2</span>; <span style="color:#a6e22e">level</span><span style="color:#f92672">++</span> {  
+        <span style="color:#a6e22e">topBoundary</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">level</span>  
+        <span style="color:#a6e22e">leftBoundary</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">level</span>  
+        <span style="color:#a6e22e">bottomBoundary</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">matrix</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">level</span>  
+        <span style="color:#a6e22e">rightBoundary</span> <span style="color:#f92672">:=</span> len(<span style="color:#a6e22e">matrix</span>) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">level</span>  
+        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">times</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">times</span> &lt; <span style="color:#a6e22e">bottomBoundary</span><span style="color:#f92672">-</span><span style="color:#a6e22e">topBoundary</span>; <span style="color:#a6e22e">times</span><span style="color:#f92672">++</span> {  
+            <span style="color:#75715e">// left  
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">mostLeftTop</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">topBoundary</span>][<span style="color:#a6e22e">leftBoundary</span>]  
+            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">row</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">topBoundary</span>; <span style="color:#a6e22e">row</span> &lt; <span style="color:#a6e22e">bottomBoundary</span>; <span style="color:#a6e22e">row</span><span style="color:#f92672">++</span> {  
+                <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">row</span>][<span style="color:#a6e22e">leftBoundary</span>] = <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">row</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>][<span style="color:#a6e22e">leftBoundary</span>]  
+            }  
+  
+            <span style="color:#75715e">// bottom  
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">col</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">leftBoundary</span>; <span style="color:#a6e22e">col</span> &lt; <span style="color:#a6e22e">rightBoundary</span>; <span style="color:#a6e22e">col</span><span style="color:#f92672">++</span> {  
+                <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">bottomBoundary</span>][<span style="color:#a6e22e">col</span>] = <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">bottomBoundary</span>][<span style="color:#a6e22e">col</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>]  
+            }  
+  
+            <span style="color:#75715e">// right  
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">row</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bottomBoundary</span>; <span style="color:#a6e22e">row</span> &gt; <span style="color:#a6e22e">topBoundary</span>; <span style="color:#a6e22e">row</span><span style="color:#f92672">--</span> {  
+                <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">row</span>][<span style="color:#a6e22e">rightBoundary</span>] = <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">row</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>][<span style="color:#a6e22e">rightBoundary</span>]  
+            }  
+  
+            <span style="color:#75715e">// top  
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">col</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rightBoundary</span>; <span style="color:#a6e22e">col</span> &gt; <span style="color:#a6e22e">leftBoundary</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>; <span style="color:#a6e22e">col</span><span style="color:#f92672">--</span> {  
+                <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">topBoundary</span>][<span style="color:#a6e22e">col</span>] = <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">topBoundary</span>][<span style="color:#a6e22e">col</span><span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]  
+            }  
+            <span style="color:#a6e22e">matrix</span>[<span style="color:#a6e22e">topBoundary</span>][<span style="color:#a6e22e">leftBoundary</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>] = <span style="color:#a6e22e">mostLeftTop</span>  
+        }  
+    }  
+}
+</code></pre></div><p><strong>4 基准测试</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>  
+  
+<span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;testing&#34;</span>  
+  
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">BenchmarkRotate</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">B</span>) {  
+    <span style="color:#a6e22e">matrix</span> <span style="color:#f92672">:=</span> [][]<span style="color:#66d9ef">int</span>{  
+        {<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">9</span>, <span style="color:#ae81ff">11</span>},  
+        {<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">10</span>},  
+        {<span style="color:#ae81ff">13</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>},  
+        {<span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">14</span>, <span style="color:#ae81ff">12</span>, <span style="color:#ae81ff">16</span>},  
+    }  
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">N</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {  
+        <span style="color:#a6e22e">rotate</span>(<span style="color:#a6e22e">matrix</span>)  
+    }  
+}
+</code></pre></div><pre><code>goos: darwin  
+goarch: amd64  
+pkg: github.com/olzhy/test  
+BenchmarkRotate-4     20000000                65.2 ns/op             0 B/op          0 allocs/op  
+PASS  
+ok      github.com/olzhy/test   1.383s
+</code></pre>
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

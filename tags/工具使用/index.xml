@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>工具使用 on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</link>
+    <description>Recent content in 工具使用 on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 10 Jan 2021 18:27:31 +0800</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Istio证书管理之植入CA证书</title>
+      <link>https://olzhy.github.io/posts/istio-plug-in-ca-certificates.html</link>
+      <pubDate>Sun, 10 Jan 2021 18:27:31 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-plug-in-ca-certificates.html</guid>
+      <description>本文介绍管理员如何使用根证书、签发证书及秘钥为Istio配置CA（证书颁发机构）。Istio CA使用由中间CA签发的私钥及证书，而中间CA由根CA签发。这样，Istio CA即可为工作负载签发根证书及私钥。CA层次结构图如下。
+图片引自(Plug in CA Certificates)</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之安全Gateway</title>
+      <link>https://olzhy.github.io/posts/istio-secure-gateways.html</link>
+      <pubDate>Sat, 02 Jan 2021 08:29:44 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-secure-gateways.html</guid>
+      <description>上文“Istio流量管理之Ingress Gateway”介绍了如何使用Gateway将一个7层HTTP服务暴露给外部使用。本文将介绍如何为Gateway配置单向或双向TLS从而暴露一个安全的HTTPS服务给外部访问。关于Istio安装等环境准备，请参阅“Istio安装使用”。
+1 部署httpbin 使用Istio安装目录自带的配置文件将httpbin部署至istio-demo namespace。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之Ingress Gateway</title>
+      <link>https://olzhy.github.io/posts/istio-ingress-gateways.html</link>
+      <pubDate>Fri, 01 Jan 2021 08:07:25 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-ingress-gateways.html</guid>
+      <description>Istio Ingress Gateway是允许外部流量进入Istio服务网格的边缘服务。其比Kubernetes Ingress更具扩展性。且使用Istio Ingress Gateway，使得Istio对于入口流量同样具有策略控制能力及可观察性。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之流量镜像</title>
+      <link>https://olzhy.github.io/posts/istio-mirroring.html</link>
+      <pubDate>Tue, 29 Dec 2020 14:06:34 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-mirroring.html</guid>
+      <description>本文介绍一下Istio的流量镜像功能，即使用Istio可以将某一服务的实时流量拷贝一份并镜像到另一个服务。该特性对线上调试特别有用。
+本文使用httpbin样例来做测试，首先部署两个版本的httpbin服务，然后将请求流量都打到v1，最后使用流量镜像功能将打到v1的流量同时拷贝一份到v2。
+关于Istio安装等环境准备，请参阅“Istio安装使用”。
+1 httpbin样例部署 部署httpbin-v1，且已开启访问日志。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之熔断</title>
+      <link>https://olzhy.github.io/posts/istio-circuit-breaking.html</link>
+      <pubDate>Mon, 28 Dec 2020 08:23:19 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-circuit-breaking.html</guid>
+      <description>熔断是创建弹性微服务应用的重要特性，使用熔断可以对并发连接太多，请求过频等做出主动防御，避免服务链条因单一故障问题而出现雪崩效应。
+因熔断设置针对的是具体的目标主机，所以Istio使用Destination Rule来进行配置。
+本文使用Istio自带的httpbin样例来设定熔断配置，然后使用fortio客户端模拟并发请求来触发熔断。关于Istio安装等环境准备，请参阅“Istio安装使用”。
+1 httpbin样例部署 httpbin是一个专门用来做HTTP请求测试的服务。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之请求超时</title>
+      <link>https://olzhy.github.io/posts/istio-request-timeouts.html</link>
+      <pubDate>Sun, 27 Dec 2020 16:41:03 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-request-timeouts.html</guid>
+      <description>可以使用Istio在路由中设置请求超时时间。下面使用Bookinfo样例测试一下。
+关于环境准备，请参阅“Istio安装使用”。
+本文，我们将使用v2版本的reviews，然后为ratings注入响应延迟，最后修改reviews的超时时间来查看productpage的变化。
+开始前，先配置默认的Destination Rule。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之TCP流量转移</title>
+      <link>https://olzhy.github.io/posts/istio-tcp-traffic-shifting.html</link>
+      <pubDate>Sat, 26 Dec 2020 08:48:52 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-tcp-traffic-shifting.html</guid>
+      <description>在上文“Istio流量管理之流量转移”中，我们使用Istio为7层HTTP应用作了流量按比例分配测试。本文使用Istio自带的tcp-echo样例对4层TCP应用作一下测试。
+关于Istio安装等环境准备，请参阅“Istio安装使用”。
+1 tcp-echo源码解析 tcp-echo是一个4层应用。其启动后会一直监听所暴露的端口，并等待TCP连接，连接成功后提供ping/pong请求响应。从源码可以看到，其接收到一串字符后会拼上一个前缀并返回给客户端。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之流量转移</title>
+      <link>https://olzhy.github.io/posts/istio-traffic-shifting.html</link>
+      <pubDate>Fri, 25 Dec 2020 07:16:55 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-traffic-shifting.html</guid>
+      <description>在日常的持续部署中，我们一般使用滚动升级的方式来进行微服务升级。若使用Kubernetes容器编排平台进行微服务滚动升级，其一般通过控制实例数的方式来实现。将旧版本下线，将新版本启动，新实例健康检查通过后，统一将流量打到新版本。
+而使用Istio，不用控制实例数，且可以更细粒度的控制流量打到各个版本的百分比，从而实现按比例将流量逐渐迁移到新版本来实现升级。
+下面使用Bookinfo样例看一下Istio的流量转移如何使用。我们知道reviews有三个版本，假定我们想从v1版本升级到v3版本。（关于Istio的安装及Bookinfo样例的部署，请参看上文“Istio安装使用”）
+首先，配置默认的Destination Rule。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之故障注入</title>
+      <link>https://olzhy.github.io/posts/istio-fault-injection.html</link>
+      <pubDate>Wed, 23 Dec 2020 10:04:19 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-fault-injection.html</guid>
+      <description>在微服务架构中，若一个服务不可用，会不会导致调用其API的上游服务也不可用，上游服务有没有针对该种情形做容错处理，这对应用的整体可用性来说是很关键的。Istio可以在对微服务无侵入的情况下来模拟其发生故障，以帮助我们测试应用整体的容错能力。
+Istio主要使用Virtual Service提供两种故障注入能力：响应延迟与服务中止。
+ 响应延迟  用来模拟被调用服务在高负载情况下造成响应延迟。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之请求路由</title>
+      <link>https://olzhy.github.io/posts/istio-request-routing.html</link>
+      <pubDate>Mon, 21 Dec 2020 08:37:43 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-request-routing.html</guid>
+      <description>在上文“Istio安装使用”中，我们对Istio进行了安装，并对Bookinfo样例进行了部署测试。本文接着上文，对Istio流量管理中的请求路由进行概念学习及样例测试。
+我们知道，Istio通过Envoy数据面拦截了所有服务实例的进出流量。这样基于Istio服务网格即可以实现诸多常规方式难以实现的流量管理策略，诸如灰度发布，A/B测试，按比率分流等。
+Istio主要提供两个通过YAML配置的自定义资源来实现流量管理：Virtual Service及Destination Rule。这样即做到流量管理与上游请求服务及下游被请求服务解耦。Virtual Service主要用来配置流量如何流动（即定义符合哪些规则的流量打到哪些服务子集上），而Destination Rule则主要用来定义具体的服务子集。</description>
+    </item>
+    
+    <item>
+      <title>Istio安装使用</title>
+      <link>https://olzhy.github.io/posts/istio-get-started.html</link>
+      <pubDate>Wed, 16 Dec 2020 07:48:56 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-get-started.html</guid>
+      <description>本文所使用的操作系统为macOS 11.1，使用Docker Desktop 3.0.1自带的Kubernetes(v1.19.3) 作为部署环境。</description>
+    </item>
+    
+    <item>
+      <title>Golang text/template 使用样例</title>
+      <link>https://olzhy.github.io/posts/golang-text-template.html</link>
+      <pubDate>Sat, 03 Oct 2020 09:05:41 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-text-template.html</guid>
+      <description>Golang text/template 包是一个数据驱动的模版渲染工具。提供条件判断，数组或map遍历；参数赋值，函数或方法调用；自定义函数扩展，模板嵌套及重用等功能。基于该工具，可以轻松实现复杂场景的文本渲染。如Helm Template基于此实现了功能强大的Kubernetes配置文件渲染工作。
+本文使用一个样例来演示text/template的使用，代码已托管至GitHub。</description>
+    </item>
+    
+    <item>
+      <title>Golang使用Selenium实现自动化测试初探</title>
+      <link>https://olzhy.github.io/posts/golang-selenium.html</link>
+      <pubDate>Sat, 14 Mar 2020 00:00:16 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-selenium.html</guid>
+      <description>Selenium整合了一揽子工具与依赖库，支持Web浏览器自动化，提供一组扩展来模拟人与浏览器交互。我们基于其满足W3C标准的WebDriver来编写的自动化代码可在各种主流浏览器复用。
+所以这里关键的一个组件即是WebDriver，其负责与浏览器厂商提供的API来与浏览器交互。
+使用其即可做出模拟终端用户的操作，如：文本框输入，下拉框选择，链接点击等。此外还提供鼠标移动，JavaScript脚本执行等能力。
+1 环境准备</description>
+    </item>
+    
+    <item>
+      <title>使用delve调试Golang程序</title>
+      <link>https://olzhy.github.io/posts/debugging-golang-programs-with-delve.html</link>
+      <pubDate>Tue, 09 Jul 2019 10:30:31 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/debugging-golang-programs-with-delve.html</guid>
+      <description>delve是一款专门针对Golang程序调试而开发的命令行调试器，该工具功能强大，简单易用。
+本文从安装开始，使用一个实际的Golang程序调试例子，学习一下delve的主要调试方式及常用调试命令。
+本文所使用的是Windows环境。
+1 安装</description>
+    </item>
+    
+    <item>
+      <title>VS Code Golang环境搭建</title>
+      <link>https://olzhy.github.io/posts/vs-code-golang-environment-configuration.html</link>
+      <pubDate>Sat, 27 Oct 2018 12:53:55 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/vs-code-golang-environment-configuration.html</guid>
+      <description>1 vscode安装
+从[1]下载安装vscode，然后安装[2]插件。
+2 插件安装</description>
+    </item>
+    
+    <item>
+      <title>WordPress站点Ansible Playbook自动化部署脚本</title>
+      <link>https://olzhy.github.io/posts/wordpress-ansible-playbook-script.html</link>
+      <pubDate>Thu, 01 Feb 2018 14:59:28 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/wordpress-ansible-playbook-script.html</guid>
+      <description>今日新购了服务器，为方便博客搬家，特编写了ansible playbook部署脚本。
+本站采用Nginx+PHP+Maridb+Wordpress搭建。需要备份的数据有nginx配置文件（nginx.conf），nginx html（html.zip），数据库脚本（wordpress.sql）。部署的目标机操作系统为CentOS7.2。
+1）该playbook目录结构</description>
+    </item>
+    
+  </channel>
+</rss>

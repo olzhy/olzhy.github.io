@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Go 1.13 数字表示、移位及分割 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Go 1.13 数字表示、移位及分割</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年09月27日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><strong>1 二进制整数表示</strong></p>
+<p>使用前缀0b或0B来表示二进制数，如0b0010。</p>
+<p>示例代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">num</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span><span style="color:#a6e22e">b0010</span>
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;binary: %#b, decimal: %d\n&#34;</span>, <span style="color:#a6e22e">num</span>, <span style="color:#a6e22e">num</span>)
+</code></pre></div><p>Go 1.13 fmt使用&rdquo;%#b&quot;将整数格式化为二进制格式，原有的&rdquo;%b&quot;用来将整数格式化为不带进制前缀的二进制格式。</p>
+<p><strong>2 八进制整数表示</strong></p>
+<p>使用前缀0o或0O来表示八进制数，如0o70，现有的八进制数表示法（首位为0，后面跟八进制数）仍然保留。</p>
+<p>示例代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">num</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span><span style="color:#a6e22e">o70</span>
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;octal: 0o%o, decimal: %d\n&#34;</span>, <span style="color:#a6e22e">num</span>, <span style="color:#a6e22e">num</span>)
+</code></pre></div><p>注意，Go 1.13 fmt使用&quot;0o%o&quot;将整数格式化为八进制格式，原有的&rdquo;%#o&quot;用来将整数格式化为不带进制前缀的八进制格式。</p>
+<p><strong>3 十六进制浮点数表示</strong></p>
+<p>我们知道，使用前缀0x或0X来表示十六进制数，如0x0a01。Go 1.13引入了使用十六进制表示浮点数的方式，如0x10.a1p+2。</p>
+<p>表示规则：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">hex_float_lit</span>     = <span style="color:#e6db74">&#34;0&#34;</span> ( <span style="color:#e6db74">&#34;x&#34;</span> | <span style="color:#e6db74">&#34;X&#34;</span> ) <span style="color:#a6e22e">hex_mantissa</span> <span style="color:#a6e22e">hex_exponent</span> .
+<span style="color:#a6e22e">hex_mantissa</span>      = [ <span style="color:#e6db74">&#34;_&#34;</span> ] <span style="color:#a6e22e">hex_digits</span> <span style="color:#e6db74">&#34;.&#34;</span> [ <span style="color:#a6e22e">hex_digits</span> ] |
+                    [ <span style="color:#e6db74">&#34;_&#34;</span> ] <span style="color:#a6e22e">hex_digits</span> |
+                    <span style="color:#e6db74">&#34;.&#34;</span> <span style="color:#a6e22e">hex_digits</span> .
+<span style="color:#a6e22e">hex_exponent</span>      = ( <span style="color:#e6db74">&#34;p&#34;</span> | <span style="color:#e6db74">&#34;P&#34;</span> ) [ <span style="color:#e6db74">&#34;+&#34;</span> | <span style="color:#e6db74">&#34;-&#34;</span> ] <span style="color:#a6e22e">decimal_digits</span> .
+</code></pre></div><p>即前面是一个十六进制数，然后是小数点，然后是p或P，最后面跟十进制表示的指数（表示2^exp）。</p>
+<p>如上例子0x10.a1p+2，表示(0x10 + 0xa1/0x100) * 2^2。</p>
+<p>示例代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">num</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0.1234</span>
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;floating point: %x, decimal: %f\n&#34;</span>, <span style="color:#a6e22e">num</span>, <span style="color:#a6e22e">num</span>)
+</code></pre></div><p>输出为：</p>
+<pre><code>floating point: 0x1.f972474538ef3p-04, decimal: 0.123400
+</code></pre><p>注意，Go 1.13 fmt使用&rdquo;%x&quot;将浮点数格式化为十六进制浮点数格式。</p>
+<p><strong>4 虚数表示</strong></p>
+<p>Go 1.13，末位为i的虚数可以用在任意进制数中。如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#ae81ff">0</span><span style="color:#a6e22e">o123i</span>        <span style="color:#75715e">// == 0o123 * 1i == 83i
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">0xabc</span><span style="color:#a6e22e">i</span>        <span style="color:#75715e">// == 0xabc * 1i == 2748i
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">0.i</span>
+<span style="color:#ae81ff">2.71828i</span>
+<span style="color:#ae81ff">1.e+0i</span>
+<span style="color:#ae81ff">6.67428e-11i</span>
+<span style="color:#ae81ff">1E6</span><span style="color:#a6e22e">i</span>
+<span style="color:#ae81ff">.25i</span>
+<span style="color:#ae81ff">.12345E+5i</span>
+<span style="color:#ae81ff">0x1</span><span style="color:#a6e22e">p</span><span style="color:#f92672">-</span><span style="color:#ae81ff">2i</span>       <span style="color:#75715e">// == 0x1p-2 * 1i == 0.25i
+</span></code></pre></div><p><strong>5 数字分割</strong></p>
+<p>Go 1.13，可以使用下划线分割数字。如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#ae81ff">1000</span><span style="color:#a6e22e">_000_000</span>
+<span style="color:#ae81ff">3.1415</span><span style="color:#a6e22e">_926</span>
+<span style="color:#ae81ff">0x0000</span><span style="color:#a6e22e">_0001</span>
+</code></pre></div><p>注意，两组数字间最多使用一个分割符，且勿将分割符用于数字开头或结尾。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">_42</span>         <span style="color:#75715e">// an identifier, not an integer literal
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">42</span><span style="color:#a6e22e">_</span>         <span style="color:#75715e">// invalid: _ must separate successive digits
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">4</span><span style="color:#a6e22e">__2</span>        <span style="color:#75715e">// invalid: only one _ at a time
+</span><span style="color:#75715e"></span><span style="color:#ae81ff">0</span><span style="color:#a6e22e">_xBadFace</span>  <span style="color:#75715e">// invalid: _ must separate successive digits
+</span></code></pre></div><p><strong>6 移位</strong></p>
+<p>之前限定移动位数必须是无符号类型，Go 1.13取消该限制，即有符号类型无须额外类型转换亦可作为移动位数，但该数必须非负。</p>
+<p>如下代码示例之前操作数在用作移动位数时需要转换为无符号类型。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> uint(<span style="color:#a6e22e">bitSize</span>)    <span style="color:#75715e">// uint cast
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> (<span style="color:#a6e22e">r</span> <span style="color:#f92672">&lt;&lt;</span> (<span style="color:#ae81ff">64</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">n</span>)) <span style="color:#f92672">&gt;&gt;</span> (<span style="color:#ae81ff">64</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">n</span>)
+</code></pre></div><p>现在无须转换。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">bitSize</span> <span style="color:#66d9ef">int</span> = <span style="color:#ae81ff">2</span>
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#a6e22e">bitSize</span>) <span style="color:#75715e">// 4
+</span></code></pre></div><p>但仍须操作数非负，如上代码将bitSize写作-2即会报错。</p>
+<pre><code>panic: runtime error: negative shift amount
+
+goroutine 1 [running]:
+main.main()
+        /Users/larry/Documents/WORKSPACE/go/test.go:7 +0x11
+exit status 2
+</code></pre><blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/ref/spec#Integer_literals">https://golang.org/ref/spec#Integer_literals</a><!-- raw HTML omitted --></p>
+<p>[2] <!-- raw HTML omitted --><a href="https://golang.org/ref/spec#Floating-point_literals">https://golang.org/ref/spec#Floating-point_literals</a><!-- raw HTML omitted --></p>
+<p>[3] <!-- raw HTML omitted --><a href="https://golang.org/ref/spec#Imaginary_literals">https://golang.org/ref/spec#Imaginary_literals</a><!-- raw HTML omitted --></p>
+<p>[4] <!-- raw HTML omitted --><a href="https://github.com/golang/proposal/blob/master/design/19113-signed-shift-counts.md">https://github.com/golang/proposal/blob/master/design/19113-signed-shift-counts.md</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

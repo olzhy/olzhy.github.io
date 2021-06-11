@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>容器化 on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/</link>
+    <description>Recent content in 容器化 on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 01 Mar 2020 00:51:33 +0000</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kubernetes 概览</title>
+      <link>https://olzhy.github.io/posts/kubernetes-introduction.html</link>
+      <pubDate>Sun, 01 Mar 2020 00:51:33 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/kubernetes-introduction.html</guid>
+      <description>Kubernetes是一个开源的容器编排系统。支持将应用的部署、扩展及管理自动化。其设计思路深受谷歌Borg系统的影响。
+Kubernetes定义了一组构建块，提供了基于CPU，内存及自定义指标来部署，维护及扩展应用的机制。Kubernetes是松耦合的且可对不同的工作载荷进行扩展。其扩展性绝大部分是通过Kubernetes API来实现的。
+1 概览</description>
+    </item>
+    
+  </channel>
+</rss>

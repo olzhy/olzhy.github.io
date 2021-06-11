@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Go 1.4 Release Notes 研读 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Go 1.4 Release Notes 研读</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年02月11日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><strong>1 Go 1.4简介</strong></p>
+<p>Go 1.4在Go 1.3发布6个月后如期而至。</p>
+<p>语言级仅有一个向后兼容的小变化，即for-range循环。还有一个可能会破坏编译器规则的变化，即指针的指针的方法调用。</p>
+<p>本版本重点在实现工作上，如改进垃圾收集器性能，为构建一个完全并发的垃圾收集器（将在后续版本推出）做准备工作。本版本的栈在必要时是邻接的、可再分配的，而非链接到一个新的“段”上，因此规避了“hot stack split”问题。本版本有一组新的工具可用，包括在go命令支持构建时源码生成。同时，本版本增加了对ARM处理器在Android、NaCl上的支持，及对AMD64在Plan 9上的支持。</p>
+<p>一如既往，Go 1.4秉承兼容性承诺，一切不作任何变动即可在Go 1.4上编译运行。</p>
+<p><strong>2 语言级变化</strong></p>
+<ul>
+<li>For-range loops
+截至Go 1.3，for-range循环有两种方式：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">x</span> {
+    <span style="color:#f92672">...</span>
+}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">x</span> {
+    <span style="color:#f92672">...</span>
+}
+</code></pre></div><p>若仅想使用循环，并不关注循环变量值，range前的变量仍不可省（该种情况可能使用下划线，如<code>for _ = range x</code>），因如下方式语法上不允许：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">for</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">x</span> {
+    <span style="color:#f92672">...</span>
+}
+</code></pre></div><p>针对该种场景，之前的处理方式有点笨拙。所以在Go 1.4，“自由变量式”For-range循环的写法是合法的。</p>
+<p>如下为一个定时任务的样例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">for</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Tick</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>) {
+    <span style="color:#f92672">...</span>
+}
+</code></pre></div><ul>
+<li>Method calls on **T
+给定如下声明：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">T</span> <span style="color:#66d9ef">int</span>
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">T</span>) <span style="color:#a6e22e">M</span>() {}
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">**</span><span style="color:#a6e22e">T</span>
+</code></pre></div><p>之前，gc与gccgo接受如下方式的调用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">x</span>.<span style="color:#a6e22e">M</span>()
+</code></pre></div><p>其是对指针的指针变量x的两次解引用，Go说明书允许一次解引用，非两次，所以根据语言定义，该调用是错误的。因此，该调用在Go 1.4是不允许的。尽管非常少的程序会受影响，该项变化是一个不兼容的变化。</p>
+<p><strong>3 支持的操作系统与体系结构上的变化</strong></p>
+<ul>
+<li>
+<p>Android
+Go 1.4能够为运行Android操作系统的ARM处理器构建二进制文件。Go 1.4也能够构建能被Android应用加载的.so库文件（使用mobile子仓库中支持的包）。详细请参看：<a href="https://golang.org/s/go14android">https://golang.org/s/go14android</a>。</p>
+</li>
+<li>
+<p>NaCl on ARM
+之前版本引入对NaCl在32位x86（<code>GOARCH=386</code>）及在使用32位指针的64位x86（<code>GOARCH=amd64p32</code>）上的支持。Go 1.4增加了对NaCl在ARM（<code>GOARCH=arm</code>）上的支持。</p>
+</li>
+<li>
+<p>Plan9 on AMD64
+本版本增加了对Plan 9操作系统在AMD64处理器上的支持。提供kernel支持nsec系统调用，并且使用4K页。</p>
+</li>
+</ul>
+<p><strong>4 兼容性准则变化</strong></p>
+<p>unsafe包允许人们利用内部实现细节或机器数据表达从而超越Go类型系统所限来做一些事情。<a href="https://golang.org/doc/go1compat">Go兼容性准则</a>从未显示指明unsafe包的何种使用是遵从兼容性准则的。当然我们对作非安全事情的代码不作兼容性承诺。我们已在发布版本包含的文档中阐明该情况。<a href="https://golang.org/doc/go1compat">Go兼容性准则</a>及unsafe包文档目前已明确非安全代码不受兼容性保障。</p>
+<p><strong>5 实现及工具级变化</strong></p>
+<ul>
+<li>Changes to the runtime
+Go 1.4之前，运行时（垃圾收集器，并发支持，接口管理，map，slices，string等）绝大部分是由C写的，结合了一些汇编器支持。在Go 1.4，大部分代码已翻译为Go，便于垃圾收集器可以扫描到运行时程序栈及获取关于哪些变量是活跃的的准确信息。该变动虽很大，但不会有程序语法上的影响。</li>
+</ul>
+<p>该项重写让垃圾搜集器更精确，意味着可以观测到程序中所有活跃指针的位置。因不会再有保持空指针存活的误报，这意味着堆会更小。其他相关变化也减少了堆大小，堆相对之前版本小了10%-30%。</p>
+<p>一个结果是栈不再是分段了，避免了“hot split”问题。当达到栈大小，新的更大的栈将会被分配，所有goroutine的活跃帧被拷贝过去，且所有栈上的指针已被更新。某些场景性能会有显著提升且更可具预测性。详细请参阅：<a href="https://golang.org/s/contigstacks">https://golang.org/s/contigstacks</a>。</p>
+<p>邻接栈的使用意味着栈可以更小启动且不会触发性能问题，所以在Go 1.4，一个goroutine栈的默认启动大小已从8192个字节减到2048个字节。</p>
+<p>为并发垃圾收集器作准备，计划在1.5版本，在堆上写指针值当前是通过函数调用实现的（陈作写屏障），而不是直接来自函数更新值。在Go 1.5，当堆处于运行中，该项技术允许垃圾收集器在堆上间接写。该变化对1.4程序没有语法影响，但发布版本包含该变化，便于测试编译器及结果性能。</p>
+<p>接口值实现已被修改。在之前的版本，取决于实际对象存储类型，接口包含一个指针或一个单字游标值。该实现对垃圾收集器是有问题的，所以截至1.4，接口值总是持有一个指针。在运行时程序，多数接口值总是指针类型，所以影响较小，但诸如在接口存储整型的程序将会有更多次的内存分配。</p>
+<p>截至Go 1.3，若发现本应包含有效指针的内存字包含的是无效指针（如整型数3），运行时会崩溃。在指针值存储整型值的程序若撞到该检测则会崩溃。在Go 1.4，可以将GODEBUG变量设置invalidptr=0来作为工作区以避免崩溃，但我们无法保证后续版本可以避免崩溃。正确的修复办法是不要将整型作为指针型的别名。</p>
+<ul>
+<li>Assembly
+编译器cmd/5a、cmd/6a及cmd/8a接受的语言有几项变化，主要是使得将类型信息传递至运行时更容易。</li>
+</ul>
+<p>首先，定义TEXT指令标记文件textflag.h已从链接器源文件夹拷贝至标准位置，以便用更简洁的指令引用。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;textflag.h&#34;</span><span style="color:#75715e">
+</span></code></pre></div><p>更重要的变化是，汇编器源码如何定义必要的类型信息。更多程序能够将数据定义从汇编移至Go文件，以对每个汇编函数写一个Go定义。</p>
+<p>详情请参考<a href="https://golang.org/doc/asm">汇编文档</a>。</p>
+<p>更新：包含textflag.h旧路径的文件虽仍能工作，但建议更新。对于类型信息，多数汇编routine无需改动，但需要检查。定义数据的汇编源文件、使用非空栈帧的函数及返回指针的函数需要特别注意。</p>
+<ul>
+<li>
+<p>Status of gccgo
+GCC的发布日程与Go项目不一定一致。GCC 4.9版本包含Go 1.2的gccgo，可能在GCC 5会有Go 1.4版本的gccgo。</p>
+</li>
+<li>
+<p>Internal packages
+Go的包系统易于将程序组织为边界清晰的组件，但仅有两种访问方式：本地（未导出型）与全局（导出型）。有时，人们想有非导出的组件，如避免获取接口的客户端编码，该代码虽属于公共仓库的一部分，但不想被其所属的程序外使用。</p>
+</li>
+</ul>
+<p>Go还没有该项能力，但截至Go 1.4，Go命令引入了一种定义“内部”包的机制，其不可被源码树所在位置的其他包引用。</p>
+<p>想创建一个这样的包，可以将其置于internal文件夹或internal子文件夹下。当Go命令遇到某被引用的包的路径中有internal，即会校验引用包的位置是否位于internal文件夹的父文件件（如包<code>.../a/b/c/internal/d/e/f</code>仅可被位于<code>.../a/b/c</code>文件夹的包引用，不可被<code>.../a/b/g</code>文件夹或其他位置的代码引用）。</p>
+<p>Go 1.4，内部包机制已对主要Go仓库实施。自1.5起，其会对所有仓库实施。</p>
+<ul>
+<li>Canonical import paths
+代码常由诸如github.com的开放服务托管，意味着包引用路径常包含服务前缀，如github.com/rsc/pdf。人们可以根据“<a href="https://golang.org/cmd/go/#hdr-Remote_import_paths">现有机制</a>”自定义包路径，但会给包创建两个有效引用路径。这样，同一个程序可能会引用一个包的两个不同路径，或将包移至一个不同的托管服务会影响到客户端代码。</li>
+</ul>
+<p>Go 1.4引入了在源码指定包权威路径的方式。若某包引用使用非权威路径，go命令将拒绝编译。</p>
+<p>语法很简单：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">pdf</span> <span style="color:#75715e">// import &#34;rsc.io/pdf&#34;
+</span></code></pre></div><p>若有如上指定，go命令将拒绝诸如 github.com/rsc/pdf的引用。</p>
+<p>因检查在构建期，非下载期，所以若go get失败，说明错误引用的包已下载至本地，需手动移除。</p>
+<ul>
+<li>
+<p>Import paths for the subrepositories
+Go项目子仓库（<code>code.google.com/p/go.tools</code>等）现采用自定义引用路径<code>golang.org/x/</code>（如<code>golang.org/x/tools</code>）取代<code>code.google.com/p/go</code>。我们将在2015.06.01左右对代码加入权威引用注解，届时，Go 1.4及后续版本将不接受旧的路径（<code>code.google.com</code>）引用。</p>
+</li>
+<li>
+<p>The go generate subcommand
+go命令有了一个新的子命令<a href="https://golang.org/cmd/go/#hdr-Generate_Go_files_by_processing_source">go generate</a>，以在编译前自动运行工具来生成源码。如，其可用来运行yacc（基于实现语法的.y文件）compiler-compiler生成Go源码。或使用<a href="https://godoc.org/golang.org/x/tools/cmd/stringer">stringer</a>工具（位于<code>golang.org/x/tools</code>子仓库），对类型常量自动生成String方法。详情请参阅：<a href="https://golang.org/s/go1.4-generate">https://golang.org/s/go1.4-generate</a>。</p>
+</li>
+<li>
+<p>Change to file name handling
+构建约束，也叫构建tag，通过引入或移除文件来控制编译（参看<a href="https://golang.org/pkg/go/build/">/go/build</a>文档）。也可使用文件名本身来控制编译（在.go或.s后缀前加下划线与体系结构或操作系统名称）。如gopher_arm.go文件仅当目标处理器是ARM才会编译。</p>
+</li>
+</ul>
+<p>Go 1.4之前，叫作arm.go的文件会被简单打了tag，但当新的体系结构加入时，该行为会破坏源码（将文件突然打了tag）。因此，在1.4，只有下划线的形式才会打tag（tag包括体系结构及操作系统名称）。</p>
+<ul>
+<li>Other changes to the go command
+<a href="https://golang.org/cmd/go/">cmd/go</a>命令有几项小变化：</li>
+</ul>
+<p>a）除非使用<a href="https://golang.org/cmd/cgo/">cgo</a>来构建包，因相关的c编译器（如6c）会在未来版本的安装包移除，go命令不再支持编译c源文件（目前仅用来构建部分运行时）。因其很难在各种情况下正确使用，所以我们将其关闭。</p>
+<p>b）与其它子命令的标记一致，<a href="https://golang.org/cmd/go/#hdr-Test_packages">go test</a>引入了-o标记，以设置结果二进制的名称。无用的-file标记已移除。</p>
+<p>c）即使包里没有Test函数，<a href="https://golang.org/cmd/go/#hdr-Test_packages">go test</a>也会编译链接包中的所有<code>*_test.go</code>文件（之前会忽略这些没有Test函数的文件）。</p>
+<p>d）对非开发类安装，go build子命令的-a标记的行为已发生改变。对于一个运行已发布版本的安装，-a标记将不再重新构建标准库及命令，以避免重写安装文件。</p>
+<ul>
+<li>
+<p>Changes to package source layout
+在Go源码仓库中，包源码放在src/pkg，这样说得通，但不同于包括Go子仓库的其他仓库。在Go 1.4，pkg级的源码树不复存在，所以之前放在src/pkg/fmt的fmt包的源码，现在提高一级，放在src/fmt。</p>
+</li>
+<li>
+<p>SWIG
+因该版本的运行时变化，Go 1.4需SWIG 3.0.3。</p>
+</li>
+<li>
+<p>Miscellany
+标准仓库的顶级misc文件夹用于包含对编辑器及IDE的Go支持：有插件、初始化脚本等。因列出的编辑器中的许多已不再被核心团队中的成员所使用，维护这些变得耗时并需要额外的帮助。而且需要我们决策一个给定编辑器（甚至我们未使用的编辑器）的哪个插件好用。</p>
+</li>
+</ul>
+<p>Go社区更合适维护这些信息。因此，在Go 1.4，该项支持已从仓库移除。代之，维护在该<a href="http://golang.org/wiki/IDEsAndTextEditorPlugins">wiki页</a>。</p>
+<p><strong>6 性能相关</strong></p>
+<p>多数程序在1.4运行速度与在1.3相同，或比在1.3稍快一点，也有一些可能会稍慢一点。因有多想改动，所以难以确切预测预期。</p>
+<p>如上已提及，大量运行时已从C转换为Go，会在堆大小上有缩减。因Go编译器优化更佳，所以会提升一点性能（由于诸如内联函数等情形，会比使用C编译器构建运行时快一点）。</p>
+<p>垃圾收集器也加速了，对重度垃圾程序会有可测量的改进。然而，新的写屏障又将事情减速，典型情况是总量一定时，某些程序取决于其行为，可能会变得快一点或慢一点。</p>
+<p>影响性能的库变化会列在下面。</p>
+<p><strong>7 标准库变化</strong></p>
+<ul>
+<li>
+<p>New packages
+该版本无新包。</p>
+</li>
+<li>
+<p>Major changes to the library
+a）bufio.Scanner</p>
+</li>
+</ul>
+<p><a href="https://golang.org/pkg/bufio/buffo">buffo</a>包的Scanner类型有一个bug已被修复，其可能需要改动自定义<a href="https://golang.org/pkg/bufio/#SplitFuncsplit">split</a>函数。该bug使其不能在EOF生成空token，该修复改变了split函数的结束条件。之前，若没有更多数据，扫描停止在EOF。鉴于文档说明，截至1.4，在输入耗尽时，split函数将在EOF调用一次，所以split函数会生成一个最终的空token。</p>
+<p>更新：可能需要修改自定义split函数以处理在EOF的空token。</p>
+<p>b）syscall</p>
+<p>syscall包已被冻结（除了需要维护核心仓库的改动）。特别是，其不再用来扩展支持未被核心库使用的新的或不同的系统调用。原因详细描述在<a href="https://golang.org/s/go1.4-syscall">另一个文档</a>。</p>
+<p>一个新的golang.org/x/sys子仓库为用来支持各种内核的系统调用的开发提供位置。其有更好的结构，采用3个包（Unix，Windows与Plan 9），每个包都有系统调用的实现。这些包将会辅助的更通用一些，接受在这些操作系统的所有反映内核接口的有效改动。</p>
+<ul>
+<li>Minor changes to the library
+请看<a href="https://golang.org/doc/go1.4#minor_library_changes">链接</a>。</li>
+</ul>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/doc/go1.4">https://golang.org/doc/go1.4</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

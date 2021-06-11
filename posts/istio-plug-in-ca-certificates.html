@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Istio证书管理之植入CA证书 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="工具使用, 服务网格, Service Mesh, Istio">
+  <meta name="description"
+    content="Istio证书管理之植入CA证书 (Plug in CA Certificates of Istio Certificate Management)">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Istio证书管理之植入CA证书</h2>
+        <div class="mb-3 post-meta">
+          
+          2021年01月10日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>本文介绍管理员如何使用根证书、签发证书及秘钥为Istio配置CA（证书颁发机构）。Istio CA使用由中间CA签发的私钥及证书，而中间CA由根CA签发。这样，Istio CA即可为工作负载签发根证书及私钥。CA层次结构图如下。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2021/01/ca-hierarchy.svg#center" alt="" /></p>
+<p>图片引自(<a href="https://istio.io/latest/docs/tasks/security/cert-management/plugin-ca-cert/">Plug in CA Certificates</a>)</p>
+<p>接下来即介绍如何为Istio生成及植入CA。</p>
+<h3 id="1-为集群植入证书及私钥">1 为集群植入证书及私钥</h3>
+<p>首先，进入Istio安装目录<code>/usr/local/istio-1.8.1</code>，创建证书目录<code>certs</code>后进入该目录。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ mkdir certs
+$ cd certs
+</code></pre></div><p>然后，使用如下命令生成根证书及私钥。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ make -f ../tools/certs/Makefile.selfsigned.mk root-ca
+</code></pre></div><p>其会生成4个文件。</p>
+<table>
+<thead>
+<tr>
+<th>FILE</th>
+<th>DESCRIPTION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>root-cert.pem</td>
+<td>根证书</td>
+</tr>
+<tr>
+<td>root-key.pem</td>
+<td>根秘钥</td>
+</tr>
+<tr>
+<td>root-ca.conf</td>
+<td>生成根证书的<code>openssl</code>配置</td>
+</tr>
+<tr>
+<td>root-cert.csr</td>
+<td>根证书的<code>CSR</code></td>
+</tr>
+</tbody>
+</table>
+<p>接下来，使用如下命令生成中间证书及私钥。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ make -f ../tools/certs/Makefile.selfsigned.mk cluster1-cacerts
+</code></pre></div><p>其会在<code>cluster1</code>文件夹下生成4个文件。</p>
+<table>
+<thead>
+<tr>
+<th>FILE</th>
+<th>DESCRIPTION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ca-cert.pem</td>
+<td>中间证书</td>
+</tr>
+<tr>
+<td>ca-key.pem</td>
+<td>中间秘钥</td>
+</tr>
+<tr>
+<td>cert-chain.pem</td>
+<td><code>istiod</code>所使用的证书链</td>
+</tr>
+<tr>
+<td>root-cert.pem</td>
+<td>根证书</td>
+</tr>
+</tbody>
+</table>
+<p>最后，创建namespace <code>istio-system</code>，接着基于<code>cluster1</code>文件夹下生成的文件创建Secret <code>cacerts</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create ns istio-system
+$ kubectl create secret generic cacerts -n istio-system <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>      --from-file<span style="color:#f92672">=</span>cluster1/ca-cert.pem <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>      --from-file<span style="color:#f92672">=</span>cluster1/ca-key.pem <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>      --from-file<span style="color:#f92672">=</span>cluster1/root-cert.pem <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>      --from-file<span style="color:#f92672">=</span>cluster1/cert-chain.pem
+</code></pre></div><h3 id="2-部署istio及样例服务">2 部署Istio及样例服务</h3>
+<p>指定模式为<code>demo</code>，安装Istio，Istio CA将从<code>cacerts</code>读取证书及私钥。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ istioctl install --set profile<span style="color:#f92672">=</span>demo
+</code></pre></div><p>接着，进入Istio安装根目录，创建namespace <code>istio-demo</code>，然后在该namespace下部署样例服务<code>httpbin</code>及用于测试的服务<code>sleep</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ kubectl create ns istio-demo
+$ kubectl apply -f &lt;<span style="color:#f92672">(</span>istioctl kube-inject -f samples/httpbin/httpbin.yaml<span style="color:#f92672">)</span> -n istio-demo
+$ kubectl apply -f &lt;<span style="color:#f92672">(</span>istioctl kube-inject -f samples/sleep/sleep.yaml<span style="color:#f92672">)</span> -n istio-demo
+</code></pre></div><p>然后，使用如下命令指定<code>istio-demo</code>下的工作负载只接受双向TLS的流量。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl apply -n istio-demo -f - <span style="color:#e6db74">&lt;&lt;EOF
+</span><span style="color:#e6db74">heredoc&gt; apiVersion: &#34;security.istio.io/v1beta1&#34;
+</span><span style="color:#e6db74">kind: &#34;PeerAuthentication&#34;
+</span><span style="color:#e6db74">metadata:
+</span><span style="color:#e6db74">  name: &#34;default&#34;
+</span><span style="color:#e6db74">spec:
+</span><span style="color:#e6db74">  mtls:
+</span><span style="color:#e6db74">    mode: STRICT
+</span><span style="color:#e6db74">heredoc&gt; EOF</span>
+</code></pre></div><h3 id="3-校验证书">3 校验证书</h3>
+<p>下面，我们将验证工作负载是否使用了我们所植入的CA所签发的证书。</p>
+<p>首先，等待<code>20s</code>，让所配置的mTLS规则生效。然后使用如下命令进入<code>sleep</code>的<code>istio-proxy</code> Sidecar来尝试获取<code>httpbin</code>的证书链。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl exec <span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>kubectl get pod -l app<span style="color:#f92672">=</span>sleep -n istio-demo -o jsonpath<span style="color:#f92672">={</span>.items..metadata.name<span style="color:#f92672">}</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span> -c istio-proxy -n istio-demo -- openssl s_client -showcerts -connect httpbin.istio-demo:8000 &gt; httpbin-proxy-cert.txt
+</code></pre></div><p>然后，得到错误“<code>verify error:num=19:self signed certificate in certificate chain</code>”，符合预期。</p>
+<p>查看文件<code>httpbin-proxy-cert.txt</code>，发现里边有4套证书，将其拷贝出来，分别以<code>proxy-cert-i.pem (i=1,2,3,4)</code>命名。</p>
+<p>然后，使用如下命令校验根证书是否与管理员所签发的一致。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -in certs/cluster1/root-cert.pem -text -noout &gt; /tmp/root-cert.crt.txt
+$ openssl x509 -in ./proxy-cert-3.pem -text -noout &gt; /tmp/pod-root-cert.crt.txt
+$ diff -s /tmp/root-cert.crt.txt /tmp/pod-root-cert.crt.txt
+Files /tmp/root-cert.crt.txt and /tmp/pod-root-cert.crt.txt are identical
+</code></pre></div><p>接着，使用如下命令校验CA证书是否与管理员所签发的一致。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl x509 -in certs/cluster1/ca-cert.pem -text -noout &gt; /tmp/ca-cert.crt.txt
+$ openssl x509 -in ./proxy-cert-2.pem -text -noout &gt; /tmp/pod-cert-chain-ca.crt.txt
+$ diff -s /tmp/ca-cert.crt.txt /tmp/pod-cert-chain-ca.crt.txt
+Files /tmp/ca-cert.crt.txt and /tmp/pod-cert-chain-ca.crt.txt are identical
+</code></pre></div><p>最后，使用如下命令校验根证书的证书链与工作负载的证书链是否一致。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ openssl verify -CAfile &lt;<span style="color:#f92672">(</span>cat certs/cluster1/ca-cert.pem certs/cluster1/root-cert.pem<span style="color:#f92672">)</span> ./proxy-cert-1.pem
+./proxy-cert-1.pem: OK
+</code></pre></div><h3 id="4-环境清理">4 环境清理</h3>
+<p>使用如下命令移除证书。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ rm proxy-cert-*.pem
+$ rm httpbin-proxy-cert.txt
+$ rm -rf certs
+</code></pre></div><p>使用如下命令移除Secret <code>cacerts</code>，删除namespace <code>istio-demo</code>，<code>istio-system</code>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl delete secret cacerts -n istio-system
+$ kubectl delete ns istio-demo istio-system
+</code></pre></div><p>总结本文，介绍了Istio的CA如何签发，然后使用httpbin样例作了测试。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <a href="https://istio.io/latest/docs/tasks/security/cert-management/plugin-ca-cert/">Istio Plug in CA Certificates</a></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">#工具使用</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>根据遍历结果反向构建树 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>根据遍历结果反向构建树</h2>
+        <div class="mb-3 post-meta">
+          
+          2017年10月22日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>业务中也许会遇到反向构建树的情形，如从外部工具获取到依赖关系、行政区划，组织架构等文本数据时，如何去反向构建树。我们以“获取到了树的深度遍历结果，然后将树结构构建出来，最后用JSON格式输出”，来模拟此类树的反向构建过程。本文采用Ruby作为描述语言。</p>
+<p><strong>1） 已获取的树的遍历结果文本</strong></p>
+<pre><code>company   
++- org-1   
++- org-2  
+|  \- org-2.1   
++- org-3   
++- org-4  
++- org-5  
++- org-6   
++- org-7  
+|  +- org-7.1   
+|  |  \- org-7.1.1  
+|  +- org-7.2  
+|  \- org-7.3  
++- org-8  
+|  +- org-8.1  
+|  \- org-8.2  
++- org-9  
++- org-10  
+|  +- org-10.1  
+|  \- org-10.2  
++- org-11   
++- org-12  
+|  \- org-12.1  
++- org-13   
++- org-14  
+|  +- org-14.1   
+|  \- org-14.2   
++- org-15   
++- org-16   
+|  +- org-16.1  
+|  |  +- org-16.1.1  
+|  |  |  \- org-16.1.1.1   
+|  |  +- org-16.1.2   
+|  |  +- org-16.1.3  
+|  |  \- org-16.1.4  
+|  +- org-16.2  
+|  |  \- org-16.2.1  
+|  \- org-16.3  
++- org-17  
++- org-18  
+|  \- org-18.1  
++- org-19   
++- org-20   
++- org-21   
+|  +- org-21.1   
+|  \- org-21.2  
++- org-22  
++- org-23  
++- org-24  
+|  \- org-24.1  
++- org-25  
++- org-26  
++- org-27  
++- org-28  
+|  \- org-28.1  
++- org-29   
+|  +- org-29.1   
+|  \- org-29.2  
+\- org-30
+</code></pre><p><strong>2）Ruby反向构建树代码</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ruby" data-lang="ruby"><span style="color:#75715e">#!/usr/bin/ruby    </span>
+<span style="color:#75715e">#-*- coding: UTF-8 -*-    </span>
+require <span style="color:#e6db74">&#39;json&#39;</span>    
+  
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Node</span>    
+  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">initialize</span>(name, parent)    
+    @name <span style="color:#f92672">=</span> name    
+    @parent <span style="color:#f92672">=</span> parent    
+    @children <span style="color:#f92672">=</span> <span style="color:#f92672">[]</span>    
+  <span style="color:#66d9ef">end</span>    
+  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">add_child</span>(child)    
+    @children<span style="color:#f92672">.</span>push(child)    
+  <span style="color:#66d9ef">end</span>    
+  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">name</span>(name)    
+    @name <span style="color:#f92672">=</span> name    
+  <span style="color:#66d9ef">end</span>    
+  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">parent</span>()    
+    <span style="color:#66d9ef">return</span> @parent    
+  <span style="color:#66d9ef">end</span>    
+  <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">to_json</span>(<span style="color:#f92672">*</span>options)    
+    <span style="color:#66d9ef">if</span> @children<span style="color:#f92672">.</span>length <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>    
+      <span style="color:#66d9ef">return</span> {name: @name, <span style="color:#e6db74">children</span>: @children}<span style="color:#f92672">.</span>to_json(<span style="color:#f92672">*</span>options)    
+    <span style="color:#66d9ef">end</span>    
+    <span style="color:#66d9ef">return</span> {name: @name}<span style="color:#f92672">.</span>to_json(<span style="color:#f92672">*</span>options)    
+  <span style="color:#66d9ef">end</span>    
+<span style="color:#66d9ef">end</span>    
+    
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">process</span>(line, last_line)    
+  m <span style="color:#f92672">=</span> $pattern<span style="color:#f92672">.</span>match(line)    
+  <span style="color:#66d9ef">if</span> m    
+    sign <span style="color:#f92672">=</span> m<span style="color:#f92672">[</span><span style="color:#ae81ff">3</span><span style="color:#f92672">]</span>    
+    depth <span style="color:#f92672">=</span> m<span style="color:#f92672">[</span><span style="color:#ae81ff">2</span><span style="color:#f92672">].</span>gsub(<span style="color:#e6db74">/\s/</span>, <span style="color:#e6db74">&#39;&#39;</span>)<span style="color:#f92672">.</span>length <span style="color:#f92672">+</span> sign<span style="color:#f92672">.</span>sub(<span style="color:#e6db74">/[+\\]/</span>, <span style="color:#e6db74">&#39;&#39;</span>)<span style="color:#f92672">.</span>length    
+    name <span style="color:#f92672">=</span> m<span style="color:#f92672">[</span><span style="color:#ae81ff">4</span><span style="color:#f92672">].</span>strip    
+    <span style="color:#66d9ef">if</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">==</span> m<span style="color:#f92672">[</span><span style="color:#ae81ff">1</span><span style="color:#f92672">].</span>length    
+      $root<span style="color:#f92672">.</span>name(name)    
+      $depth_last <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>    
+    <span style="color:#66d9ef">else</span>    
+      <span style="color:#66d9ef">if</span> depth <span style="color:#f92672">&lt;</span> $depth_last    
+        ($depth_last <span style="color:#f92672">-</span> depth)<span style="color:#f92672">.</span>times { $parent <span style="color:#f92672">=</span> $parent<span style="color:#f92672">.</span>parent(); $depth_last <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span> }    
+      <span style="color:#66d9ef">end</span>    
+      node <span style="color:#f92672">=</span> <span style="color:#66d9ef">Node</span><span style="color:#f92672">.</span>new(name, $parent)    
+      $parent<span style="color:#f92672">.</span>add_child(node)    
+      $parent <span style="color:#f92672">=</span> node    
+      $depth_last <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>    
+    <span style="color:#66d9ef">end</span>    
+  <span style="color:#66d9ef">end</span>    
+<span style="color:#66d9ef">end</span>    
+  
+$root <span style="color:#f92672">=</span> $parent <span style="color:#f92672">=</span> <span style="color:#66d9ef">Node</span><span style="color:#f92672">.</span>new(<span style="color:#e6db74">&#39;&#39;</span>, <span style="color:#66d9ef">nil</span>)    
+$pattern <span style="color:#f92672">=</span> <span style="color:#e6db74">/(([\|\s]*)([+\\]?-?).*?)(\w.*)/</span>    
+$depth_last <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>    
+    
+last_line <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>    
+<span style="color:#66d9ef">IO</span><span style="color:#f92672">.</span>foreach(<span style="color:#e6db74">&#39;depart_tree.txt&#39;</span>) <span style="color:#66d9ef">do</span> <span style="color:#f92672">|</span>line<span style="color:#f92672">|</span>    
+  process(line, last_line)    
+  last_line <span style="color:#f92672">=</span> line    
+<span style="color:#66d9ef">end</span>    
+puts <span style="color:#66d9ef">JSON</span><span style="color:#f92672">.</span>pretty_generate($root)
+</code></pre></div><p><strong>3）构建成功后，树的JSON输出</strong></p>
+<pre><code>{  
+  &quot;name&quot;: &quot;company&quot;,  
+  &quot;children&quot;: [  
+    {  
+      &quot;name&quot;: &quot;org-1&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-2&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-2.1&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-3&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-4&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-5&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-6&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-7&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-7.1&quot;,  
+          &quot;children&quot;: [  
+            {  
+              &quot;name&quot;: &quot;org-7.1.1&quot;  
+            }  
+          ]  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-7.2&quot;  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-7.3&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-8&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-8.1&quot;  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-8.2&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-9&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-10&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-10.1&quot;  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-10.2&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-11&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-12&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-12.1&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-13&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-14&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-14.1&quot;  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-14.2&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-15&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-16&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-16.1&quot;,  
+          &quot;children&quot;: [  
+            {  
+              &quot;name&quot;: &quot;org-16.1.1&quot;,  
+              &quot;children&quot;: [  
+                {  
+                  &quot;name&quot;: &quot;org-16.1.1.1&quot;  
+                }  
+              ]  
+            },  
+            {  
+              &quot;name&quot;: &quot;org-16.1.2&quot;  
+            },  
+            {  
+              &quot;name&quot;: &quot;org-16.1.3&quot;  
+            },  
+            {  
+              &quot;name&quot;: &quot;org-16.1.4&quot;  
+            }  
+          ]  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-16.2&quot;,  
+          &quot;children&quot;: [  
+            {  
+              &quot;name&quot;: &quot;org-16.2.1&quot;  
+            }  
+          ]  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-16.3&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-17&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-18&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-18.1&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-19&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-20&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-21&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-21.1&quot;  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-21.2&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-22&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-23&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-24&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-24.1&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-25&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-26&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-27&quot;  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-28&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-28.1&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-29&quot;,  
+      &quot;children&quot;: [  
+        {  
+          &quot;name&quot;: &quot;org-29.1&quot;  
+        },  
+        {  
+          &quot;name&quot;: &quot;org-29.2&quot;  
+        }  
+      ]  
+    },  
+    {  
+      &quot;name&quot;: &quot;org-30&quot;  
+    }  
+  ]  
+}
+</code></pre><p>大连</p>
+<p>2017.10.22</p>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/ruby/">#Ruby</a>
+            <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

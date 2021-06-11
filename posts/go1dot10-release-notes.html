@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Go 1.10 Release Notes 要点整理 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Go 1.10 Release Notes 要点整理</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年09月15日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>Go 1.10，在Go 1.9发布半年后如期而至。其主要变化在工具链实现、运行时及库上面。一如既往，该版本秉承Go 1兼容性准则。以期所有的Go程序如之前一样编译及运行。</p>
+<p>该版本改进了包构建缓存，增加了成功测试结果缓存，在测试时自动进行校验，且准许使用cgo在Go及C程序间直接传递string类型的值。</p>
+<p><strong>1 语言方面</strong></p>
+<p>语言基准未有大的变化。</p>
+<p>阐明了未指定类型的常量移位，编译器已允许诸如x[1.0 &laquo; s]（s是一个无符号整型变量）的索引表达式。</p>
+<p>method expression语法已放宽到允许任何类型表达式作为接收器；如struct{io.Reader}.Read是有效的。</p>
+<p><strong>2 工具方面</strong></p>
+<ul>
+<li>默认GOROOT及GOTMPDIR
+若未设置$GOROOT，之前go tool会在工具链编译时使用默认的GOROOT设置。现在，在使用默认设置之前，go tool会从其自己的执行路径推断GOROOT。这样，即允许二进制文件解压到文件系统的任意位置，且可在未显式设置GOROOT的情况下使用。</li>
+</ul>
+<p>默认情况下，go tool会在系统临时文件夹下创建文件夹及文件（如Unix的$TMPDIR），若设置了新的变量$GOTMPDIR，即会改为在该文件夹下创建。</p>
+<ul>
+<li>Build &amp; Install
+go build命令目前可以基于源文件内容与构建标记及存储在编译包上的元数据来检测出过期的包。修改时间不再会考量。当修改时间产生误导的时候，之前增加-a标记以强制构建的建议已没有必要：构建目前总会检查包何时需要重新构建。</li>
+</ul>
+<p><code>go build的-asmflags、-gcflags、-gccgoflags、及-ldflags</code>选项目前默认仅应用于命令行直接列出的包。例如，<code>go build -gcflags=-m mypkg</code>会在对mypkg包而非其依赖构建时给编译器传入-m标记。新的更通用的方式<code>-asmflags=pattern=flags</code>仅会将标记应用到匹配了模式的包。例如：<code>go install -ldflags=cmd/gofmt=-X=main.version=1.2.3 cmd/...</code>会对满足<code>cmd/...</code>的包安装所有命令，但仅会对cmd/gofmt应用-X选项。更多详情请参阅<code>go help build</code>。</p>
+<p>go build命令目前维护了一块最近构建包的缓存（不同于包安装路径$GOROOT/pkg或$GOPATH/pkg）。缓存应会对未显式安装包或当在源码的不同副本中切换时（如在同一版本控制系统的不同分支上前后切换）起到加速构建的作用。之前添加-i标记以加速（诸如<code>go build -i</code>或<code>go test -i</code>）的建议已没有必要：有没有-i都会一样快，更多详情请参阅<code>go help cache</code>。</p>
+<p>go install命令目前仅安装直接在命令行列出的包与命令。例如<code>go install cmd/gofmt</code>安装了gofmt程序，但没有安装其任何依赖。新的构建缓存使得未来的命令仍可运行的好似安装了依赖一样快。使用新的<code>go install -i</code>标记可以强制安装依赖。</p>
+<p>go build的诸多实现细节已对这些改进作了支持。一个新的改变是纯二进制包的引用必须在其被引用源码中声明准确的引用块。这样，当使用纯二进制包链接一个程序的时候以让这些引用是可用的。更多详情请查阅<code>go help filetype</code>。</p>
+<ul>
+<li>Test
+go test目前缓存了测试结果：若test可执行且命令行匹配了之前的一次执行，且检测到文件及环境变量未发生改变，那么go test将会打印之前的测试结果（时间耗费字段将会被替换为字符串“(cached)”）。Test缓存仅应用于成功的测试结果；仅应用在显式列出包的go test命令；仅应用在使用-cpu、-list、-parallel、-run、-short及-v的测试标记子集的命令行。理想的略过测试缓存的方式是使用-count=1。</li>
+</ul>
+<p>go test命令目前会对将要测试的包自动运行go vet，以在运行测试前识别重要问题。此类问题会造成构建错误及阻止测试执行。使用go test -vet=off可以关闭该检测。</p>
+<p>go test -coverpkg标记目前将其参数解释为一个按冒号分割的模式列表以匹配每个测试的依赖，并非作为一个包列表以重新加载。如go test -coverpkg=all目前是一个对测试包及其所有依赖开启覆盖率测试的有趣方式。同样，go test -coverprofile选项目前也支持运行多组测试。</p>
+<p>对于超时的错误情形，测试更可能在退出前写入画像。</p>
+<p>go test目前会从给定的二进制执行中将标准错误并入标准输出然后写到go test的标准输出中。而之前go test仅会在多数时间应用该合并。</p>
+<p>目前，当并行测试停顿或继续的时候，<code>go test -v</code>输出会包括PAUSE及CONT状态标记行。</p>
+<p>新的<code>go test -failfast标</code>记在测试失败时将不会运行剩余的测试。（注：以并行方式运行的测试在测试运行失败时允许测试执行完成）</p>
+<p>最后，新的<code>go test -json</code>标记通过新的<code>go tool test2json</code>命令过滤测试输出以生成机器可读的JSON格式的测试执行描述。这样会允许在IDE及其它工具中创建更多丰富的说明信息。</p>
+<p>更多详情请参阅<code>go help test</code>及<a href="https://golang.org/cmd/test2json/">test2json文档</a>。</p>
+<ul>
+<li>Doc
+go doc工具目前增加了对于类型T的[]T或[]<em>T等slice结果返回函数的显示（类似于现有的对单个T或</em>T返回函数的显示机制）。例如：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> go doc mail.Address
+
+type Address struct {
+	Name    string <span style="color:#f92672">//</span> Proper name; may be empty.
+	Address string <span style="color:#f92672">//</span> user<span style="color:#f92672">@</span>domain
+}
+    Address represents a single mail address. An address such as <span style="color:#e6db74">&#34;Barry Gibbs
+</span><span style="color:#e6db74">    &#34;</span> is represented as Address{Name<span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Barry Gibbs&#34;</span>, Address<span style="color:#f92672">:</span>
+    <span style="color:#e6db74">&#34;bg@example.com&#34;</span>}.
+
+func <span style="color:#a6e22e">ParseAddress</span>(address string) (<span style="color:#f92672">*</span>Address, error)
+func <span style="color:#a6e22e">ParseAddressList</span>(list string) ([]<span style="color:#f92672">*</span>Address, error)
+<span style="color:#a6e22e">func </span>(a <span style="color:#f92672">*</span>Address) <span style="color:#a6e22e">String</span>() string
+</code></pre></div><p>之前ParseAddressList函数仅会在包预览时显示（go doc mail）。</p>
+<ul>
+<li>Pprof
+通过runtime/pprof包生成的阻塞及互斥的画像目前包含了符号信息，这些符号信息可以在没有产生画像的二进制中使用go tool pprof查看。（所有其它画像类型已在Go 1.9更新为包含符号信息）</li>
+</ul>
+<p>go tool pprof画像可视化工具已更新至git版本9e20b5b（<code>github.com/google/pprof</code>），该版本包含一个更新了的web接口。</p>
+<ul>
+<li>
+<p>Vet
+go vet命令目前在检查包（甚至对使用cgo或vendored方式引入的包）的时候总是使用完整的最新的类型信息。结果报告应该会更准确一些。注意仅go vet有权访问这些信息，应避免使用go tool vet。（截至Go 1.9，go vet已提供类似go tool vet所有标记的访问）</p>
+</li>
+<li>
+<p>Gofmt
+Go源码的默认格式化有两处小的细节上的改动。第一个，对于三索引slice表达式之前会被格式化为x[i+1 : j:k]，而目前会被使用定长空格格式化为x[i+1 : j : k]。第二个，写作单行的单个方法接口（有时会在类型断言时使用）将不再格式化为多行。</p>
+</li>
+</ul>
+<p>注意这类针对gfmt的小的更新将会不定期进行。一般讲，检查源码的构建系统应匹配指定版本的gofmt的输出。</p>
+<ul>
+<li>编译器工具链
+编译器对代码生成的性能上作了诸多改进（在所支持的体系结构上广泛着手）。</li>
+</ul>
+<p>记录于二进制的DWARF调试信息有几项改进：常量值目前会被记录；行号信息会更精确，使得源码级调试更好一些；并且目前每个包会呈现其自己的DWARF编译单元。</p>
+<p>各种构建模式已移植到更多的系统。特别是c-shared目前工作在linux/ppc64le、windows/386，及windows/amd64上；pie目前工作在darwin/amd64，且同样在所有系统上强制使用外部链接；plugin目前工作在linux/ppc64le及darwin/amd64上。</p>
+<p>linux/ppc64le端目前需要对使用cgo的任何程序（甚至被标准库使用时）使用外部链接。</p>
+<p><strong>3 运行时</strong></p>
+<p>嵌套调用LockOSThread及UnlockOSThread的行为已发生改变。这些函数用来控制是否一个goroutine被锁定在一个操作系统线程上，以让该goroutine仅在那个线程上运行，且那个线程仅运行该goroutine。之前在一行调用LockOSThread多次相当于调用一次，而仅调用一次UnlockOSThread即可解锁线程。现在调用是嵌套的：调用LockOSThread多次，须调用UnlockOSThread同样次数才能解锁。没有嵌套调用的现有代码仍可正确运行。多数使用这些函数的公开Go源码被分入了第二类。</p>
+<p>因通常使用LockOSThread与UnlockOSThread来允许Go源码可靠的修改本地线程状态（如Linux或Plan 9命名空间）。运行时目前认为被锁的线程不适于重用或用来创建新线程。
+除非包装器自己出现了错误，堆栈信息不再包含隐式的包装函数（之前被标记为<!-- raw HTML omitted -->）。
+结果，传给诸如Caller函数的跳过次数目前应匹配所写代码的结构，而非依赖优化决策及实现细节。
+垃圾收集器已减少对分配延迟的影响。当运行时，其目前使用更少部分的总体CPU，但可能会运行更长的时间。被垃圾收集器使用的总体CPU没有发生显著改变。</p>
+<p>GOROOT函数目前实际上是在调用程序编译后，默认使用GOROOT或GOROOT_FINAL。而之前，是在编译调用程序的工具链编译后，使用GOROOT或GOROOT_FINAL。</p>
+<p>GOMAXPROCS设置目前已无上限。（在Go 1.9，上限为1024）</p>
+<p><strong>4 性能</strong></p>
+<p>一如既往，该版本变化较广，较难对性能作精确陈述。因垃圾收集器加速、更好的代码生成及核心库的优化，多数程序应会运行的快一些。</p>
+<p><strong>5 垃圾收集器</strong></p>
+<p>当垃圾收集器活跃时，多数程序应会感受到更低的分配延迟及总体的性能提升。</p>
+<p><strong>6 核心库</strong></p>
+<p>标准库的所有改动都比较小，bytes包及net/url包的变化可能需要更新现有的程序。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/doc/go1.10">https://golang.org/doc/go1.10</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

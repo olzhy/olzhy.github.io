@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Go 1.6 Release Notes 要点整理 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Go 1.6 Release Notes 要点整理</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年04月26日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>Go 1.6在1.5发布半年后如约而至，该版本主要变化在语言、运行时及库上面，语言规范未有变化。同理，其保持Go 1兼容性准则。</p>
+<p><strong>1 工具方面</strong></p>
+<ul>
+<li>Cgo
+一个大点：定义了程序与C代码共享Go指针的规则，以确保C代码与Go垃圾收集器可以共存。简言之，使用cgo调用时，可能会将一块内存传给C，这样，Go代码和C代码可能会共享由Go分配的内存（规则规定内存自身不包含指向Go分配内存的指针，规定C在调用完成后不会仍持有指针）。该规则会在运行时作检查，若运行时检查到违规情况，会打印堆栈并结束程序。</li>
+</ul>
+<p>一个小点：区别于Go的<code>complex64</code>与<code>complex128</code>，增加了<code>C.complexfloat</code>与<code>C.complexdouble</code>类型。</p>
+<ul>
+<li>Go命令
+我们知道，Go在1.5引入了对vendoring的试验性支持，1.5要使用该功能，需将<code>GO15VENDOREXPERIMENT</code>环境变量置为1。而Go在1.6会默认开启该功能，但仍可手动将<code>GO15VENDOREXPERIMENT</code>置为0来关闭该功能。从Go 1.7起，会关闭该变量，成为默认开启的稳定功能。在Go引入vendoring前，包含vendor文件夹的工程需手动修改。</li>
+</ul>
+<p><strong>2 性能方面</strong></p>
+<p>一如既往，Go 1.6改动较广，性能方面，有的程序可能会快一点，有的可能会慢一点。总体讲，基于Go 1基准套件测试，Go 1.6的运行速度会比Go1.5快一些。特别对于使用大量内存的程序，Go 1.6的垃圾收集器停顿时间会较1.5缩短很多。</p>
+<p><strong>3 核心库方面</strong></p>
+<ul>
+<li>
+<p>HTTP/2
+Go 1.6对新的HTTP/2协议在net/http包增加了透明化支持。当使用HTTPS时，Go客户端及服务端将会适时自动使用HTTP/2。</p>
+</li>
+<li>
+<p>运行时
+运行时增加了轻量的、尽力的map并发误用检测。若一个goroutine正在对map作写操作，其它任何goroutine不应对该map进行并发读写。若运行时检测到该误用情况，会打印错误信息并退出程序。便于找出问题的最好方式是使用race探测器，会取得很多有用的详细信息。</p>
+</li>
+</ul>
+<p>下面看一段代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;sync&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#66d9ef">int</span>)
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">wg</span> <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">WaitGroup</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">10</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#ae81ff">1</span>)
+        <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">i</span> <span style="color:#66d9ef">int</span>) {
+            <span style="color:#a6e22e">m</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#a6e22e">i</span>
+            <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Done</span>()
+        }(<span style="color:#a6e22e">i</span>)
+    }
+    <span style="color:#a6e22e">wg</span>.<span style="color:#a6e22e">Wait</span>()
+}
+</code></pre></div><p>该代码启动10个goroutine对map进行并发写操作。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ go run -race test.go
+</code></pre></div><p>go run时使用race检测，可以打印出并发读写map以致程序退出的具体原因。</p>
+<pre><code>==================
+WARNING: DATA RACE
+Write at 0x00c000080000 by goroutine 6:
+  runtime.mapassign_fast64()
+      /usr/local/go/src/runtime/map_fast64.go:92 +0x0
+  main.main.func1()
+      /Users/larry/Documents/workspace/go/project/src/github.com/olzhy/test/test.go:13 +0x52
+
+Previous write at 0x00c000080000 by goroutine 5:
+  runtime.mapassign_fast64()
+      /usr/local/go/src/runtime/map_fast64.go:92 +0x0
+  main.main.func1()
+      /Users/larry/Documents/workspace/go/project/src/github.com/olzhy/test/test.go:13 +0x52
+
+Goroutine 6 (running) created at:
+  main.main()
+      /Users/larry/Documents/workspace/go/project/src/github.com/olzhy/test/test.go:12 +0xcd
+
+Goroutine 5 (finished) created at:
+  main.main()
+      /Users/larry/Documents/workspace/go/project/src/github.com/olzhy/test/test.go:12 +0xcd
+==================
+Found 1 data race(s)
+exit status 66
+</code></pre><p>此外，对结束程序的panic异常，运行时目前默认仅打印运行中goroutine而非所有存在的goroutine的堆栈。</p>
+<p>因为，通常仅当前goroutine与panic相关，略去其它goroutine的堆栈信息可以减少大量不相关信息的打印。想看程序退出时所有goroutine的堆栈信息，可以设置GOTRACEBACK环境变量为all，或者在程序退出前调用<code>debug.SetTraceback</code>。</p>
+<ul>
+<li>模板
+<code>text/template</code>包可以使用&rsquo;-&lsquo;号来移除模板动作前边或后边的的空格，将&rsquo;-&lsquo;号置于动作前边可以移除动作前边的空格，将&rsquo;-&lsquo;号置于动作后边可以移除动作后边的空格。</li>
+</ul>
+<p>参看如下代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;html/template&#34;</span>
+    <span style="color:#e6db74">&#34;os&#34;</span>
+)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Person</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">Age</span>  <span style="color:#66d9ef">int</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">tpl</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">New</span>(<span style="color:#e6db74">&#34;test&#34;</span>).<span style="color:#a6e22e">Parse</span>(<span style="color:#e6db74">&#34;my name is {{.Name -}}   , age is {{.Age -}}  .&#34;</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">err</span> {
+        panic(<span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Person</span>{<span style="color:#e6db74">&#34;Larry&#34;</span>, <span style="color:#ae81ff">28</span>}
+    <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">tpl</span>.<span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdout</span>, <span style="color:#a6e22e">p</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">err</span> {
+        panic(<span style="color:#a6e22e">err</span>)
+    }
+}
+</code></pre></div><p>运行结果trim掉了&rsquo;,&lsquo;号之前，以及&rsquo;.&lsquo;之前的空格。</p>
+<pre><code>my name is Larry, age is 28.
+</code></pre><blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/doc/go1.6">https://golang.org/doc/go1.6</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

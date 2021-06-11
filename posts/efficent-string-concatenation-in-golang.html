@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Golang 高效的字符串拼接方法 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang, 字符串拼接, String, Concat">
+  <meta name="description"
+    content="Golang 高效的字符串拼接方法 (Go 字符串拼接哪种方法效率高)">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Golang 高效的字符串拼接方法</h2>
+        <div class="mb-3 post-meta">
+          
+          2021年04月03日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>日常编码中离不开字符串拼接，最常用的当属原生的拼接方式（<code>+=</code>）。但其在少量次数拼接中性能还可以，若进行大量的字符串拼接则应使用其它更高效的方式。</p>
+<p>本文首先列出Golang中常用的几种字符串拼接方式，然后会对它们进行基准测试，以期阅读完本文，我们能对各种拼接方法的适用场景有一个基本了解。</p>
+<h3 id="1-字符串拼接有几种方法">1 字符串拼接有几种方法？</h3>
+<p>孔乙己问：“回字有几种写法？”。我们在Golang使用中也难免会被问到：“字符串拼接有几种方法？”。下面就一一道来。</p>
+<p><em><strong>a) 原生拼接方式（+=）</strong></em></p>
+<p>原生拼接方式即使用<code>+</code>操作符直接对两个字符串进行拼接。</p>
+<p>如下代码即使用<code>+=</code>来进行字符串拼接及重新赋值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>
+<span style="color:#a6e22e">s</span> <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;hello&#34;</span>
+</code></pre></div><p>该种方式为什么不高效呢？因在Golang中string是不可变的，其拼接时先得将s的值取下来（从头遍历复制），然后与一个字符串进行拼接，计算好后再将新值（一个全新的字符串）重新赋给s，而s的旧值会等待垃圾回收器回收。因其每次拼接都会从头遍历复制，会涉及较多的计算与内存分配。</p>
+<p>该方式的时间复杂度为O(N^2)。</p>
+<p><em><strong>b) bytes.Buffer</strong></em></p>
+<p>bytes.Buffer是一个变长的字节缓存区。其内部使用slice来存储字节（<code>buf []byte</code>）。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">buf</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">NewBufferString</span>(<span style="color:#e6db74">&#34;hello&#34;</span>)
+<span style="color:#a6e22e">buf</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#e6db74">&#34; world&#34;</span>) <span style="color:#75715e">// fmt.Fprint(buf, &#34; world&#34;)
+</span></code></pre></div><p>使用WriteString进行字符串拼接时，其会根据情况动态扩展slice长度，并使用内置slice内存拷贝函数将待拼接字符串拷贝到缓冲区中。因其是变长的slice，每次拼接时，无须重新拷贝旧有的部分，仅将待拼接的部分追加到尾部即可，所以较原生拼接方式性能高。</p>
+<p>该方式的时间复杂度为O(N)。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// WriteString appends the contents of s to the buffer, growing the buffer as
+</span><span style="color:#75715e">// needed. The return value n is the length of s; err is always nil. If the
+</span><span style="color:#75715e">// buffer becomes too large, WriteString will panic with ErrTooLarge.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Buffer</span>) <span style="color:#a6e22e">WriteString</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">lastRead</span> = <span style="color:#a6e22e">opInvalid</span>
+	<span style="color:#a6e22e">m</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">tryGrowByReslice</span>(len(<span style="color:#a6e22e">s</span>))
+	<span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">ok</span> {
+		<span style="color:#a6e22e">m</span> = <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">grow</span>(len(<span style="color:#a6e22e">s</span>))
+	}
+	<span style="color:#66d9ef">return</span> copy(<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">buf</span>[<span style="color:#a6e22e">m</span>:], <span style="color:#a6e22e">s</span>), <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p><em><strong>c) strings.Builder</strong></em></p>
+<p>strings.Builder内部也是使用字节slice来作存储。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">builder</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Builder</span>
+<span style="color:#a6e22e">builder</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#e6db74">&#34;hello&#34;</span>) <span style="color:#75715e">// fmt.Fprint(&amp;builder, &#34;hello&#34;)
+</span></code></pre></div><p>使用WriteString进行字符串拼接时，其会调用内置append函数仅将待拼接字符串并入缓存区。其效率亦很高。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// WriteString appends the contents of s to b&#39;s buffer.
+</span><span style="color:#75715e">// It returns the length of s and a nil error.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Builder</span>) <span style="color:#a6e22e">WriteString</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>) (<span style="color:#66d9ef">int</span>, <span style="color:#66d9ef">error</span>) {
+	<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">copyCheck</span>()
+	<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">buf</span> = append(<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">buf</span>, <span style="color:#a6e22e">s</span><span style="color:#f92672">...</span>)
+	<span style="color:#66d9ef">return</span> len(<span style="color:#a6e22e">s</span>), <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p><em><strong>d) 内置copy函数</strong></em></p>
+<p>内置copy函数支持将一个源slice拷贝到一个目标slice，因字符串的底层表示就是<code>[]byte</code>，所以也可以使用该函数进行字符串拼接。不过限制是需要预先知道字节slice的长度。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">bytes</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, <span style="color:#ae81ff">11</span>)
+<span style="color:#a6e22e">size</span> <span style="color:#f92672">:=</span> copy(<span style="color:#a6e22e">bytes</span>[<span style="color:#ae81ff">0</span>:], <span style="color:#e6db74">&#34;hello&#34;</span>)
+copy(<span style="color:#a6e22e">bytes</span>[<span style="color:#a6e22e">size</span>:], <span style="color:#e6db74">&#34; world&#34;</span>)
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(string(<span style="color:#a6e22e">bytes</span>))
+</code></pre></div><p>内置copy函数支持将一个slice拷贝到另一个slice（其支持将一个字符串拷贝到<code>[]byte</code>），其返回值为所拷贝元素的长度。</p>
+<p>每次拼接时，其亦只需将待拼接字符串追加到slice尾部，效率亦很高。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// The copy built-in function copies elements from a source slice into a
+</span><span style="color:#75715e">// destination slice. (As a special case, it also will copy bytes from a
+</span><span style="color:#75715e">// string to a slice of bytes.) The source and destination may overlap. Copy
+</span><span style="color:#75715e">// returns the number of elements copied, which will be the minimum of
+</span><span style="color:#75715e">// len(src) and len(dst).
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> copy(<span style="color:#a6e22e">dst</span>, <span style="color:#a6e22e">src</span> []<span style="color:#a6e22e">Type</span>) <span style="color:#66d9ef">int</span>
+</code></pre></div><p><em><strong>e) strings.Join</strong></em></p>
+<p>若想将一个string slice（<code>[]string</code>）的各部分拼成一个字符串，可以使用<code>strings.Join</code>进行操作。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Join</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;hello world&#34;</span>}, <span style="color:#e6db74">&#34;&#34;</span>)
+</code></pre></div><p>其内部也是使用bytes.Builder进行实现的。所以也是非常高效的。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// Join concatenates the elements of its first argument to create a single string. The separator
+</span><span style="color:#75715e">// string sep is placed between elements in the resulting string.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">elems</span> []<span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">sep</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">string</span> {
+	<span style="color:#f92672">...</span>
+	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">b</span> <span style="color:#a6e22e">Builder</span>
+	<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Grow</span>(<span style="color:#a6e22e">n</span>)
+	<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#a6e22e">elems</span>[<span style="color:#ae81ff">0</span>])
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">elems</span>[<span style="color:#ae81ff">1</span>:] {
+		<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#a6e22e">sep</span>)
+		<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#a6e22e">s</span>)
+	}
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">String</span>()
+}
+</code></pre></div><h3 id="2-基准测试">2 基准测试</h3>
+<p>下面将如上介绍的几种字符串拼接方法组装为一个测试文件<code>string_test.go</code>进行基准测试。（因<code>strings.Join</code>需要预先生成一个<code>[]string</code>，与其它方法的使用场景不太一样，所以该方法不参与本次测试）</p>
+<p>该基准测试将使用每种方法将一个字符串“s”，拼接1000次。</p>
+<p><a href="https://github.com/olzhy/go-excercises/blob/master/string_concatenation/string_test.go">string_test.go</a> 源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">string_test</span>
+
+<span style="color:#f92672">import</span> (
+	<span style="color:#e6db74">&#34;bytes&#34;</span>
+	<span style="color:#e6db74">&#34;strings&#34;</span>
+	<span style="color:#e6db74">&#34;testing&#34;</span>
+)
+
+<span style="color:#66d9ef">var</span> (
+	<span style="color:#a6e22e">concatSteps</span> = <span style="color:#ae81ff">1000</span>
+	<span style="color:#a6e22e">subStr</span>      = <span style="color:#e6db74">&#34;s&#34;</span>
+	<span style="color:#a6e22e">expectedStr</span> = <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Repeat</span>(<span style="color:#a6e22e">subStr</span>, <span style="color:#a6e22e">concatSteps</span>)
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">BenchmarkConcat</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">B</span>) {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">n</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">N</span>; <span style="color:#a6e22e">n</span><span style="color:#f92672">++</span> {
+		<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">concatSteps</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">s</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">subStr</span>
+		}
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">s</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">expectedStr</span> {
+			<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;unexpected result, got: %s, want: %s&#34;</span>, <span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">expectedStr</span>)
+		}
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">BenchmarkBuffer</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">B</span>) {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">n</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">N</span>; <span style="color:#a6e22e">n</span><span style="color:#f92672">++</span> {
+		<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">buffer</span> <span style="color:#a6e22e">bytes</span>.<span style="color:#a6e22e">Buffer</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">concatSteps</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">buffer</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#a6e22e">subStr</span>)
+		}
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">buffer</span>.<span style="color:#a6e22e">String</span>() <span style="color:#f92672">!=</span> <span style="color:#a6e22e">expectedStr</span> {
+			<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;unexpected result, got: %s, want: %s&#34;</span>, <span style="color:#a6e22e">buffer</span>.<span style="color:#a6e22e">String</span>(), <span style="color:#a6e22e">expectedStr</span>)
+		}
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">BenchmarkBuilder</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">B</span>) {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">n</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">N</span>; <span style="color:#a6e22e">n</span><span style="color:#f92672">++</span> {
+		<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">builder</span> <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">Builder</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">concatSteps</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">builder</span>.<span style="color:#a6e22e">WriteString</span>(<span style="color:#a6e22e">subStr</span>)
+		}
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">builder</span>.<span style="color:#a6e22e">String</span>() <span style="color:#f92672">!=</span> <span style="color:#a6e22e">expectedStr</span> {
+			<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;unexcepted result, got: %s, want: %s&#34;</span>, <span style="color:#a6e22e">builder</span>.<span style="color:#a6e22e">String</span>(), <span style="color:#a6e22e">expectedStr</span>)
+		}
+	}
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">BenchmarkCopy</span>(<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">testing</span>.<span style="color:#a6e22e">B</span>) {
+	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">n</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">n</span> &lt; <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">N</span>; <span style="color:#a6e22e">n</span><span style="color:#f92672">++</span> {
+		<span style="color:#a6e22e">bytes</span> <span style="color:#f92672">:=</span> make([]<span style="color:#66d9ef">byte</span>, len(<span style="color:#a6e22e">subStr</span>)<span style="color:#f92672">*</span><span style="color:#a6e22e">concatSteps</span>)
+		<span style="color:#a6e22e">c</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#a6e22e">concatSteps</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+			<span style="color:#a6e22e">c</span> <span style="color:#f92672">+=</span> copy(<span style="color:#a6e22e">bytes</span>[<span style="color:#a6e22e">c</span>:], <span style="color:#a6e22e">subStr</span>)
+		}
+		<span style="color:#66d9ef">if</span> string(<span style="color:#a6e22e">bytes</span>) <span style="color:#f92672">!=</span> <span style="color:#a6e22e">expectedStr</span> {
+			<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;unexpected result, got: %s, want: %s&#34;</span>, string(<span style="color:#a6e22e">bytes</span>), <span style="color:#a6e22e">expectedStr</span>)
+		}
+	}
+}
+</code></pre></div><p>执行Benchmark测试命令：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ go test -benchmem -bench .
+
+goos: darwin
+goarch: amd64
+pkg: github.com/olzhy/test
+cpu: Intel<span style="color:#f92672">(</span>R<span style="color:#f92672">)</span> Core<span style="color:#f92672">(</span>TM<span style="color:#f92672">)</span> i5-7360U CPU @ 2.30GHz
+BenchmarkConcat-4           <span style="color:#ae81ff">7750</span>            <span style="color:#ae81ff">148143</span> ns/op          <span style="color:#ae81ff">530274</span> B/op        <span style="color:#ae81ff">999</span> allocs/op
+BenchmarkBuffer-4         <span style="color:#ae81ff">161848</span>              <span style="color:#ae81ff">7151</span> ns/op            <span style="color:#ae81ff">3248</span> B/op          <span style="color:#ae81ff">6</span> allocs/op
+BenchmarkBuilder-4        <span style="color:#ae81ff">212043</span>              <span style="color:#ae81ff">5406</span> ns/op            <span style="color:#ae81ff">2040</span> B/op          <span style="color:#ae81ff">8</span> allocs/op
+BenchmarkCopy-4           <span style="color:#ae81ff">281827</span>              <span style="color:#ae81ff">4208</span> ns/op            <span style="color:#ae81ff">1024</span> B/op          <span style="color:#ae81ff">1</span> allocs/op
+PASS
+ok      github.com/olzhy/test   5.773s
+</code></pre></div><p>可以看到内置copy函数与strings.Builder的方式是最高效的，bytes.Buffer次之，原生拼接方式最低效。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <a href="https://stackoverflow.com/questions/1760757/how-to-efficiently-concatenate-strings-in-go">How to efficiently concatenate strings in Go - Stack Overflow</a></p>
+<p>[2] <a href="https://pkg.go.dev/bytes#example-Buffer">Documentation for bytes.Buffer</a></p>
+<p>[3] <a href="https://pkg.go.dev/strings#example-Builder">Documentation for strings.Builder</a></p>
+<p>[4] <a href="https://pkg.go.dev/strings#example-Builder">Documentation for builtin.copy</a></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

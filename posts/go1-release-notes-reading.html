@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Go 1 Release Notes 研读 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Go 1 Release Notes 研读</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年01月15日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><strong>1 Go 1简介</strong></p>
+<p>Go 1对语言及核心库作了标准化定义。并声明之后发布的版本需遵守向后兼容的原则。</p>
+<p><strong>2 语言级变化</strong></p>
+<ul>
+<li>Append
+用来对slice进行append操作，如下代码中，string无需转换，可以直接append到[]byte。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">bytes</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">byte</span>{}
+<span style="color:#a6e22e">bytes</span> = append(<span style="color:#a6e22e">bytes</span>, []byte(<span style="color:#e6db74">&#34;hello&#34;</span>)<span style="color:#f92672">...</span>)
+<span style="color:#a6e22e">bytes</span> = append(<span style="color:#a6e22e">bytes</span>, <span style="color:#e6db74">&#34; world&#34;</span><span style="color:#f92672">...</span>)
+</code></pre></div><ul>
+<li>Close
+close是channel的发送者告知消息已发送完毕的一种机制。为避免竞争条件发生，仅允许消息发送方goroutine调用close，不允许消息接收方调用close，Go 1为保障使用正确，增加了编译期检查。如下代码，对只用来接消息的通道进行close会报编译器错误。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">c</span> <span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">csend</span> <span style="color:#66d9ef">chan</span><span style="color:#f92672">&lt;-</span> <span style="color:#66d9ef">int</span> = <span style="color:#a6e22e">c</span>
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">crecv</span> <span style="color:#f92672">&lt;-</span><span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span> = <span style="color:#a6e22e">c</span>
+close(<span style="color:#a6e22e">c</span>) <span style="color:#75715e">// legal
+</span><span style="color:#75715e"></span>close(<span style="color:#a6e22e">csend</span>) <span style="color:#75715e">// legal
+</span><span style="color:#75715e"></span>close(<span style="color:#a6e22e">crecv</span>) <span style="color:#75715e">// illegal
+</span></code></pre></div><ul>
+<li>Composite literals
+Go 1中，组合类型如array, slice, map可以对struct类型元素省略构造器。如下代码中，四种初始化方式均是合法的。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Date</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">month</span> <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">day</span>   <span style="color:#66d9ef">int</span>
+}
+<span style="color:#75715e">// Struct values, fully qualified; always legal.
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">holiday1</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Date</span>{
+    <span style="color:#a6e22e">Date</span>{<span style="color:#e6db74">&#34;Feb&#34;</span>, <span style="color:#ae81ff">14</span>},
+    <span style="color:#a6e22e">Date</span>{<span style="color:#e6db74">&#34;Nov&#34;</span>, <span style="color:#ae81ff">11</span>},
+    <span style="color:#a6e22e">Date</span>{<span style="color:#e6db74">&#34;Dec&#34;</span>, <span style="color:#ae81ff">25</span>},
+}
+<span style="color:#75715e">// Struct values, type name elided; always legal.
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">holiday2</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Date</span>{
+    {<span style="color:#e6db74">&#34;Feb&#34;</span>, <span style="color:#ae81ff">14</span>},
+    {<span style="color:#e6db74">&#34;Nov&#34;</span>, <span style="color:#ae81ff">11</span>},
+    {<span style="color:#e6db74">&#34;Dec&#34;</span>, <span style="color:#ae81ff">25</span>},
+}
+<span style="color:#75715e">// Pointers, fully qualified, always legal.
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">holiday3</span> <span style="color:#f92672">:=</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Date</span>{
+    <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Date</span>{<span style="color:#e6db74">&#34;Feb&#34;</span>, <span style="color:#ae81ff">14</span>},
+    <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Date</span>{<span style="color:#e6db74">&#34;Nov&#34;</span>, <span style="color:#ae81ff">11</span>},
+    <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Date</span>{<span style="color:#e6db74">&#34;Dec&#34;</span>, <span style="color:#ae81ff">25</span>},
+}
+<span style="color:#75715e">// Pointers, type name elided; legal in Go 1.
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">holiday4</span> <span style="color:#f92672">:=</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Date</span>{
+    {<span style="color:#e6db74">&#34;Feb&#34;</span>, <span style="color:#ae81ff">14</span>},
+    {<span style="color:#e6db74">&#34;Nov&#34;</span>, <span style="color:#ae81ff">11</span>},
+    {<span style="color:#e6db74">&#34;Dec&#34;</span>, <span style="color:#ae81ff">25</span>},
+}
+</code></pre></div><p>使用如下命令可以简化构造代码<code>gofmt -s x.go</code></p>
+<ul>
+<li>Goroutines during init
+在Go 1之前，若在init函数中使用go语句，虽会创建goroutine，但会一直等待，直至init函数中所有程序执行完成，其逻辑才会开始执行。Go 1取消了这个限制，init函数可以正常启动goroutine，还可对全局变量赋值，而不会有死锁发生。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">PackageGlobal</span> <span style="color:#66d9ef">int</span>
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">init</span>() {
+    <span style="color:#a6e22e">c</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">int</span>)
+    <span style="color:#66d9ef">go</span> <span style="color:#66d9ef">func</span>() {
+        <span style="color:#a6e22e">c</span> <span style="color:#f92672">&lt;-</span> <span style="color:#ae81ff">1</span>
+    }()
+    <span style="color:#a6e22e">PackageGlobal</span> = <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">c</span>
+}
+</code></pre></div><ul>
+<li>
+<p>The rune type
+在Go 1之前，代码点是使用int类型来表示的。而因int类型在32位系统为32位位宽，在64位系统为64位位宽，这样，若int从32位变为64位，每个代码点会浪费32位的存储。为使转换至64位int更节省空间，Go 1引入一个新的基础类型rune来表示Unicode字符，与byte是uint8的别名相同，rune是int32的别名。如&rsquo;a&rsquo;, &lsquo;中&rsquo;, &lsquo;\u0345'此类字符目前默认类型为rune。</p>
+</li>
+<li>
+<p>The error type
+Go 1引入了一个新的内置类型，error，定义如下。</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">error</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#a6e22e">Error</span>() <span style="color:#66d9ef">string</span>
+}
+</code></pre></div><ul>
+<li>Deleting from maps
+在Go 1中，采用内置delete函数删除map中的元素。无返回值，删除不存在的key，不会报错。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">delete(<span style="color:#a6e22e">m</span>, <span style="color:#a6e22e">k</span>)
+</code></pre></div><ul>
+<li>Iterating in maps
+在Go 1中，采用for range语句遍历map时，元素的访问顺序是不确定的。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>{<span style="color:#e6db74">&#34;Sunday&#34;</span>: <span style="color:#ae81ff">0</span>, <span style="color:#e6db74">&#34;Monday&#34;</span>: <span style="color:#ae81ff">1</span>}
+<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">m</span> {
+    <span style="color:#75715e">// This loop should not assume Sunday will be print first
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">k</span>, <span style="color:#a6e22e">v</span>)
+}
+</code></pre></div><ul>
+<li>Multiple assignment</li>
+</ul>
+<p>Go 1采用从左至右对表达式或变量先估值，再从左至右进行赋值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">sa</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
+<span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">sa</span>[<span style="color:#a6e22e">i</span>] = <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span> <span style="color:#75715e">// sets i = 1, sa[0] = 2
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">sb</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
+<span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+<span style="color:#a6e22e">sb</span>[<span style="color:#a6e22e">j</span>], <span style="color:#a6e22e">j</span> = <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">1</span> <span style="color:#75715e">// sets sb[0] = 2, j = 1
+</span><span style="color:#75715e"></span>
+<span style="color:#a6e22e">sc</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}
+<span style="color:#a6e22e">sc</span>[<span style="color:#ae81ff">0</span>], <span style="color:#a6e22e">sc</span>[<span style="color:#ae81ff">0</span>] = <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span> <span style="color:#75715e">// sets sc[0] = 1, then sc[0] = 2 (so sc[0] = 2 at end)
+</span></code></pre></div><ul>
+<li>Returns and shadowed variables
+在named return中，一个常犯的错误是将头声明的返回变量再次声明为一个新变量并赋值，Go 1编译期检查不允许诸类情况，如下例子即会引起编译期错误。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">Bug</span>() (<span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">j</span>, <span style="color:#a6e22e">k</span> <span style="color:#66d9ef">int</span>) {
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> = <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">5</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">j</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">j</span> &lt; <span style="color:#ae81ff">5</span>; <span style="color:#a6e22e">j</span><span style="color:#f92672">++</span> { <span style="color:#75715e">// Redeclares j.
+</span><span style="color:#75715e"></span>            <span style="color:#a6e22e">k</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">j</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">k</span> &gt; <span style="color:#ae81ff">100</span> {
+                <span style="color:#66d9ef">return</span> <span style="color:#75715e">// Rejected: j is shadowed here.
+</span><span style="color:#75715e"></span>            }
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#75715e">// OK: j is not shadowed here.
+</span><span style="color:#75715e"></span>}
+</code></pre></div><ul>
+<li>Copying structs with unexported fields
+Go 1允许一个包中未有未导出字段的struct值被另一包进行拷贝。如下例子中，p包中定义了Struct。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Struct</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Public</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">secret</span> <span style="color:#66d9ef">int</span>
+}
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewStruct</span>(<span style="color:#a6e22e">a</span> <span style="color:#66d9ef">int</span>) <span style="color:#a6e22e">Struct</span> {  <span style="color:#75715e">// Note: not a pointer.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Struct</span>{<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">a</span>)}
+}
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">Struct</span>) <span style="color:#a6e22e">String</span>() <span style="color:#66d9ef">string</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;{%d (secret %d)}&#34;</span>, <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Public</span>, <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">secret</span>)
+}
+</code></pre></div><p>在另一包对p.Struct进行赋值并拷贝，可以看到未导出的字段也会被赋值并拷贝。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;p&#34;</span>
+
+<span style="color:#a6e22e">myStruct</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">NewStruct</span>(<span style="color:#ae81ff">23</span>)
+<span style="color:#a6e22e">copyOfMyStruct</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">myStruct</span>
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">myStruct</span>, <span style="color:#a6e22e">copyOfMyStruct</span>)
+</code></pre></div><ul>
+<li>Equality
+Go 1中，struct与array可以分别比较相等或不相等（不包括&gt;=, &lt;=, &gt;, &lt;），因此可以用作map的key，如下代码是可行的。Go 1中不允许函数、map、slice分别比较，其仅可以判断是否等于nil。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Day</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">long</span>  <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">short</span> <span style="color:#66d9ef">string</span>
+}
+<span style="color:#a6e22e">Christmas</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Day</span>{<span style="color:#e6db74">&#34;Christmas&#34;</span>, <span style="color:#e6db74">&#34;XMas&#34;</span>}
+<span style="color:#a6e22e">Thanksgiving</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Day</span>{<span style="color:#e6db74">&#34;Thanksgiving&#34;</span>, <span style="color:#e6db74">&#34;Turkey&#34;</span>}
+<span style="color:#a6e22e">holiday</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">Day</span>]<span style="color:#66d9ef">bool</span>{
+    <span style="color:#a6e22e">Christmas</span>:    <span style="color:#66d9ef">true</span>,
+    <span style="color:#a6e22e">Thanksgiving</span>: <span style="color:#66d9ef">true</span>,
+}
+<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Christmas is a holiday: %t\n&#34;</span>, <span style="color:#a6e22e">holiday</span>[<span style="color:#a6e22e">Christmas</span>])
+</code></pre></div><p><strong>3 包层次结构</strong></p>
+<p>Go 1对包作了梳理，删减与重命名，使其变得更紧凑简洁。</p>
+<ul>
+<li>The package hierarchy
+Go 1对包作了整理与重新编排，有些包作了删减，还有些不常用的包移到了子仓库code.google.com/p/go中，如下为包路径变更表。</li>
+</ul>
+<pre><code>旧路径	新路径
+asn1	encoding/asn1
+csv	encoding/csv
+gob	encoding/gob
+json	encoding/json
+xml	encoding/xml
+exp/template/html  	html/template
+big	math/big
+cmath	math/cmplx
+rand	math/rand
+http	net/http
+http/cgi	net/http/cgi
+http/fcgi	net/http/fcgi
+http/httptest	net/http/httptest
+http/pprof	net/http/pprof
+mail	net/mail
+rpc	net/rpc
+rpc/jsonrpc	net/rpc/jsonrpc
+smtp	net/smtp
+url	net/url
+exec	os/exec
+scanner	text/scanner
+tabwriter	text/tabwriter
+template	text/template
+template/parse	text/template/parse
+utf8	unicode/utf8
+utf16	unicode/utf16
+</code></pre><ul>
+<li>
+<p>The package tree exp
+包ebnf、html†（除EscapeString与UnescapeString仍在html包内），go/types已移到exp/下。</p>
+</li>
+<li>
+<p>The package tree old
+old文件夹下的包不随Go 1发布版本发布，使用该包内容可从源码中找到。</p>
+</li>
+<li>
+<p>Deleted packages
+Go 1已将如下包彻底删除，gotry命令也已删除。</p>
+</li>
+</ul>
+<pre><code>container/vector
+exp/datafmt
+go/typechecker
+old/regexp
+old/template
+try
+</code></pre><ul>
+<li>Packages moving to subrepositories
+移到了子仓库的包，<!-- raw HTML omitted --><a href="https://golang.org/doc/go1#subrepo">https://golang.org/doc/go1#subrepo</a><!-- raw HTML omitted --></li>
+</ul>
+<p><strong>4 核心库的几处大改动</strong></p>
+<ul>
+<li>The error type and errors package
+之前因写os时最先用到了error，那时以为error会是系统级别的，所以就将os.Error放到了os包中。后来越来越清楚error是通用的，并不是系统相关的。Go 1解决了这个问题，内置了接口类型的error，附加一个error的工具类errors（与bytes和strings工具类类似）。error定义如下。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#66d9ef">error</span> <span style="color:#66d9ef">interface</span> {
+    <span style="color:#a6e22e">Error</span>() <span style="color:#66d9ef">string</span>
+}
+</code></pre></div><p>errors工具类包含一个创建error的函数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">New</span>(<span style="color:#a6e22e">text</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span>
+</code></pre></div><ul>
+<li>
+<p>System call errors
+Go 1中，对系统调用错误会返回error。</p>
+</li>
+<li>
+<p>Time
+之前Go time包未对绝对时间与时间段作区分。Go 1重新设计了time，用time.Time表示时刻，用time.Duration表示时间段，都含有最高纳秒级的精度。Time可以表示一个从远古至未来的任意一刻，而Duration的跨度仅为加上或减去290年。如下代码示例了使用方式。</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// sleepUntil sleeps until the specified time. It returns immediately if it&#39;s too late.
+</span><span style="color:#75715e">// sleepUntil sleeps until the specified time. It returns immediately if it&#39;s too late.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">sleepUntil</span>(<span style="color:#a6e22e">wakeup</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>) {
+    <span style="color:#a6e22e">now</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>() <span style="color:#75715e">// A Time.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">wakeup</span>.<span style="color:#a6e22e">After</span>(<span style="color:#a6e22e">now</span>) {
+        <span style="color:#66d9ef">return</span>
+    }
+    <span style="color:#a6e22e">delta</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">wakeup</span>.<span style="color:#a6e22e">Sub</span>(<span style="color:#a6e22e">now</span>) <span style="color:#75715e">// A Duration.
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Sleeping for %.3fs\n&#34;</span>, <span style="color:#a6e22e">delta</span>.<span style="color:#a6e22e">Seconds</span>())
+    <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">delta</span>)
+}
+</code></pre></div><p><strong>5 核心库的几处小改动</strong></p>
+<p><!-- raw HTML omitted --><a href="https://golang.org/doc/go1#minor">https://golang.org/doc/go1#minor</a><!-- raw HTML omitted --></p>
+<p><strong>6 go命令</strong></p>
+<p>Go 1引入了一组支持拉取、构建，包安装等的go命令，从此无需再用makefile来构建go应用了。</p>
+<p><strong>7 cgo命令</strong></p>
+<p>Go 1中，cgo命令对使用//export注释的包生成了不同的文件_cgo_export.h。会对前序语言编译多次，所以使用//export语句的包，切勿将函数定义与变量初始化放在C前序语言中。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/doc/go1">https://golang.org/doc/go1</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

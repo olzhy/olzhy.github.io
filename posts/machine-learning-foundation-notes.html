@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>《机器学习基石》课程学习笔记 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>《机器学习基石》课程学习笔记</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年06月23日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>台大林轩田老师《机器学习基石》课程学习笔记（笔记中所有图片均引自林老师的课件）。</p>
+<h3 id="1-关于学习">1 关于学习</h3>
+<h4 id="11-课程介绍">1.1 课程介绍</h4>
+<p>该课程将理论与实践相结合，从基础开始切入。</p>
+<p>以讲故事的方式展开如下几个问题：</p>
+<ul>
+<li>机器何时可以进行学习？</li>
+<li>机器为什么可以进行学习？</li>
+<li>机器如何进行学习？</li>
+<li>机器如何学习的更好？</li>
+</ul>
+<h4 id="12-何为机器学习">1.2 何为机器学习</h4>
+<p>首先我们需要思考何为学习？人或动物通过观察得到技能即为学习。</p>
+<p>何为机器学习？机器通过观察数据学习到技能。</p>
+<p>何为技能？某一种表现的增进。如学习了英语这项技能，则使用其交流则更流畅。</p>
+<p>样例应用场景：通过学习过往股票数据增加投资收益。</p>
+<p>另一个应用场景：自动辨识一棵树。</p>
+<ul>
+<li>常规程序化实现方式为：列出诸多规则定义何为一棵树，然后进行匹配，但效果不佳。</li>
+<li>机器学习的实现方式为：通过观察数据自己进行学习进而进行识别。</li>
+</ul>
+<p>所以总结适合使用机器学习的应用场景有：</p>
+<ul>
+<li>当无法使用人工程序化实现的时候（不容易定义解决方案）；</li>
+<li>针对不同用户群体进行个性化服务；</li>
+<li>&hellip;</li>
+</ul>
+<p>可进行机器学习的三要素：</p>
+<ul>
+<li>存在潜藏的模式；</li>
+<li>不易进行程序化实现；</li>
+<li>有相关模式对应的数据。</li>
+</ul>
+<h4 id="13-机器学习的应用">1.3 机器学习的应用</h4>
+<p>机器学习的应用贯穿我们生活中的诸多方面：</p>
+<ul>
+<li>衣：推荐系统，为客户推荐时尚穿搭；</li>
+<li>食：文本分析，根据推特数据分析餐馆卫生情况；</li>
+<li>住：能源消耗，基于现有建筑数据预测建筑耗能；</li>
+<li>行：路标识别，识别交通标示牌及交通信号；</li>
+<li>育：答题系统，根据历史答题记录推测题目难度与学生能力；</li>
+<li>乐：推荐系统，电影推荐，音乐推荐。</li>
+</ul>
+<p>电影推荐系统的一个可能的实现方案：</p>
+<ul>
+<li>电影具有哪些特征：喜剧片，动作片，大片，汤姆·克鲁斯主演…</li>
+<li>我喜欢的电影具有哪些特征：有多喜欢喜剧片？有多喜欢动作片？有多喜欢大片？有多喜欢汤姆·克鲁斯？…</li>
+</ul>
+<p>根据如上特征值进行匹配度计算。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/1-machine-learning-foundation-a-possible-ml-solution-for-recommender-system.png#center" alt="" /></p>
+<h4 id="14-学习的组成部分">1.4 学习的组成部分</h4>
+<p>样例：是否批准一个申请人的信用卡发放请求。</p>
+<p>申请人信息如下：</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/1-machine-learning-foundation-applicant-information.png#center" alt="" /></p>
+<p>如何描述学习问题：</p>
+<ul>
+<li>x为输入：申请人信息；</li>
+<li>y为输出：是否发放信用卡；</li>
+<li>f为未知的目标函数：即潜藏的模式，一个理想的信用卡审批公式<code>$f:x \rightarrow y$</code>；</li>
+<li>D为数据：训练样本，历史收集的数据；</li>
+<li>g为假设函数：越接近f越好，即使用<code>$g:x \rightarrow y$</code>来衡量是否要发放信用卡。</li>
+</ul>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/1-machine-learning-foundation-basic-notations-for-learning-problem.png#center" alt="" /></p>
+<p>信用卡是否发放场景的学习过程：</p>
+<ul>
+<li>未知的目标函数产生了诸多历史数据；</li>
+<li>机器学习通过某种学习算法得到最终的假设函数g，我们期待g与f越接近越好。</li>
+</ul>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/1-machine-learning-foundation-learning-flow-for-credit-approve.png#center" alt="" /></p>
+<p>g为所有假设函数集合的一部分，机器学习算法即是从中找出最优的。
+机器学习模型即是基于数据将算法A与允许选择的假设H相结合，得出一个尽可能接近理想目标函数f的假设函数g。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/1-machine-learning-foundation-the-learning-model.png#center" alt="" /></p>
+<p>下面例子是找出歌曲推荐系统中的输入x，输出y，数据D，假设集合H，假设函数g：</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/1-machine-learning-foundation-song-recommendation.png#center" alt="" /></p>
+<h4 id="15-机器学习及相关领域">1.5 机器学习及相关领域</h4>
+<p>从上述可知，机器学习是使用数据来计算一个接近目标函数f的假设g。下面看一下机器学习与相关领域的关系。</p>
+<p>机器学习 vs 数据挖掘：</p>
+<ul>
+<li>数据挖掘是使用大数据找出一些有趣的事情；</li>
+<li>传统的数据挖掘偏重海量数据计算，现两者有诸多相似的部分，可以互相助力。</li>
+</ul>
+<p>机器学习 vs 人工智能：</p>
+<ul>
+<li>人工智能是让机器有一些智能的表现；</li>
+<li>机器学习是实现人工智能的一种方法。</li>
+</ul>
+<p>机器学习 vs 统计学：</p>
+<ul>
+<li>统计学是使用数据对未知过程做推论；</li>
+<li>传统统计学注重数学推论，现使用统计学相关方法来实现机器学习。</li>
+</ul>
+<h3 id="2-学习回答是与非">2 学习回答是与非</h3>
+<h4 id="21-感知器假设集合">2.1 感知器假设集合</h4>
+<p>重温1.4提到的信用卡发放问题。</p>
+<p>申请人信息可用多维向量表示，每个维度有一个对应的权值，假设函数<code>$\operatorname{h}(x)$</code>为所有维度的权值与对应维度值乘积之和，超过某阈值则同意发放，否则拒绝发放。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-a-simple-hypothesis-set.png#center" alt="" /></p>
+<p>如下推算说明可将阈值看作是第0维的部分。这样<code>$\operatorname{h}(x)$</code>可看作是第0维到第d维的权重与维度值的乘积之和。也可看作是<code>$\pmb w$</code>与<code>$\pmb x$</code>两个向量的乘积。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-vector-form-of-perceptron-hypothesis.png#center" alt="" /></p>
+<p>在二维空间<code>$\operatorname{h}(x)$</code>是一条直线，在多维空间<code>$\operatorname{h}(x)$</code>是一个超平面。感知器即是一个线性分类器。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-perceptrons-in-r2.png#center" alt="" /></p>
+<h4 id="22-感知器学习算法">2.2 感知器学习算法</h4>
+<p>感知器学习算法是一个针对数据不断改进的算法，可能需要多轮演算及调整才可能找到一条满足条件的分割线。对于第t轮演算，若在该轮的第n个点发现错判（该轮的某个点的<code>$y$</code>值本来应为+1但算成了-1，说明<code>$\pmb w$</code>向量与<code>$\pmb x$</code>向量的夹角太大，造成内积太小；反之，若该轮某个点的<code>$y$</code>值本应为-1但算成了+1，说明<code>$\pmb w$</code>向量与<code>$\pmb x$</code>向量的夹角太小，造成内积太大），则将下一轮的<code>$\pmb w$</code>向量置为<code>$\pmb w + y\pmb x$</code>来进行改进（若<code>$y$</code>为+1，则为<code>$\pmb w + \pmb x$</code>，表示将<code>$\pmb w$</code>向量与<code>$\pmb x$</code>向量的夹角调整的小一点；若<code>$y$</code>为-1，则为<code>$\pmb w - \pmb x$</code>，表示将<code>$\pmb w$</code>向量与<code>$\pmb x$</code>向量的夹角调整的大一点）。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-perceptron-learning-algorithm.png#center" alt="" /></p>
+<p>该算法的实际运用中，可能需要多轮循环直至所有的点都满足条件。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-practical-implementation-of-pla.png#center" alt="" /></p>
+<p>下面演示一下该算法的演进过程：</p>
+<ul>
+<li>原始数据</li>
+</ul>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-seeing-is-believing-0.png#center" alt="" /></p>
+<ul>
+<li>第1轮：原点到<code>$x_1$</code>构成初始向量</li>
+</ul>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-seeing-is-believing-1.png#center" alt="" /></p>
+<ul>
+<li>第2轮：根据第1轮找到的法向量对应的直线对数据进行划分，发现<code>$x_9$</code>被错判（本是圈，被错判为叉），则对下一轮<code>$\pmb w$</code>进行调整（与<code>$x_9$</code>夹角小一点）</li>
+</ul>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-seeing-is-believing-2.png#center" alt="" /></p>
+<ul>
+<li>第3轮：根据第2轮找到的法向量对应的直线对数据进行划分，发现<code>$x_{14}$</code>被错判（本是叉，被错判为圈），则对下一轮<code>$\pmb w$</code>进行调整（与<code>$x_{14}$</code>夹角大一点）</li>
+</ul>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-seeing-is-believing-3.png#center" alt="" /></p>
+<ul>
+<li>以此类推，直至某一轮幸运的找到一条分割线。</li>
+</ul>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/06/2-machine-learning-foundation-seeing-is-believing-finally.png#center" alt="" /></p>
+<p>但感知器学习算法的问题是并不一定会找到演算停止的情形。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://www.csie.ntu.edu.tw/~htlin/mooc/">https://www.csie.ntu.edu.tw/~htlin/mooc/</a><!-- raw HTML omitted -->
+[2] <!-- raw HTML omitted --><a href="https://www.bilibili.com/video/BV1Cx411i7op?p=2">https://www.bilibili.com/video/BV1Cx411i7op?p=2</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>机器学习 on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+    <description>Recent content in 机器学习 on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 10 Oct 2020 11:29:15 +0800</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>感知机算法及Python实现</title>
+      <link>https://olzhy.github.io/posts/perceptron-python-implementation.html</link>
+      <pubDate>Sat, 10 Oct 2020 11:29:15 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/perceptron-python-implementation.html</guid>
+      <description>1 何为感知机？ 感知机是一个单层人工神经网络，是一个用于二分类的算法，其也是线性分类器的一种。
+其可被抽象为下图所示模型，即一个神经元接收到来自n个其它神经元的输入信号，对这些输入信号，通过带权值的连接进行计算（各个连接线的权值与对应输入值相乘，然后进行累加），然后判断计算出来的累加值是否超过阈值（Threshold），若等于或超过阈值，则输出y为1，表示该神经元激活，否则输出y为-1表示该神经元抑制。
+所以，感知机模型可被描述为：</description>
+    </item>
+    
+    <item>
+      <title>《机器学习基石》课程学习笔记</title>
+      <link>https://olzhy.github.io/posts/machine-learning-foundation-notes.html</link>
+      <pubDate>Tue, 23 Jun 2020 05:25:30 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/machine-learning-foundation-notes.html</guid>
+      <description>台大林轩田老师《机器学习基石》课程学习笔记（笔记中所有图片均引自林老师的课件）。
+1 关于学习 1.1 课程介绍 该课程将理论与实践相结合，从基础开始切入。</description>
+    </item>
+    
+    <item>
+      <title>k-d tree算法原理及实现</title>
+      <link>https://olzhy.github.io/posts/kdtree-algorithm-and-implementation.html</link>
+      <pubDate>Thu, 28 Dec 2017 14:58:11 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/kdtree-algorithm-and-implementation.html</guid>
+      <description>k-d tree即k-dimensional tree，常用来作空间划分及近邻搜索，是二叉空间划分树的一个特例。通常，对于维度为$k$，数据点数为$N$的数据集，k-d tree适用于$N\gg2^k$的情形。
+1）k-d tree算法原理</description>
+    </item>
+    
+  </channel>
+</rss>

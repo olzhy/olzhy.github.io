@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>数据分析 on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</link>
+    <description>Recent content in 数据分析 on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 28 Nov 2017 13:42:49 +0000</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>手机品牌搜索走势图</title>
+      <link>https://olzhy.github.io/posts/search-trends-of-mobile-phone-brands.html</link>
+      <pubDate>Tue, 28 Nov 2017 13:42:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/search-trends-of-mobile-phone-brands.html</guid>
+      <description>当前，各应用平台每天都在产生海量的数据。基于海量数据的深度分析报告越来越有价值。该领域涵盖数学、统计学，计算机科学等众多学科，是一个值得深入研究的方向。本文涉及的是一个简单的数据分析场景，旨在梳理使用Python数据分析涉及的常用类库（pandas、matplotlib等）与入门知识。本文对指定的几家手机品牌，按日期区间，从百度指数网站获取其月度搜索数据，然后绘制出它们的搜索走势对比图。
+1）关键点
+a）日期区间（使用pandas的date_range方法）；
+b）对指定日期（年月），获取手机品牌清单中各品牌的搜索量（requests使用）；
+c）构造DataFrame（重点关注data、index和columns参数传值），结合matplotlib绘图。</description>
+    </item>
+    
+  </channel>
+</rss>

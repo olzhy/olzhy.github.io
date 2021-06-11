@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Go 2 错误处理设计草案预览 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Go 2 错误处理设计草案预览</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年05月06日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>Go 2的总体目标是在辅助工程扩展为大的代码基线时做到游刃有余。</p>
+<p>通常，我们的Go程序有很多错误检查，但缺少错误处理。我们通常使用如下代码所示的赋值判断语句进行错误检查。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">r</span>); <span style="color:#66d9ef">nil</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">err</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+}
+</code></pre></div><p>这样写起来较繁琐，设计草案旨在引入一种轻量的语法来进行错误检查以解决当前的这些问题。</p>
+<p><strong>1 当前问题</strong></p>
+<p>Go 使用的是对显式错误结果的显式错误检查，而其他异常处理型语言（诸如C++，C#，Java等）使用的是对隐式结果进行隐式检查。对于异常处理型语言的处理方式，因我们全然看不到隐式检查，所以难以验证程序是否正确恢复到检查失败时的状态。</p>
+<p>下面是一个错误检查较完整的文件拷贝代码，其错误处理的重点在于当<code>io.Copy</code>或<code>w.Close</code>失败时，应移除写了一半的dst文件。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">CopyFile</span>(<span style="color:#a6e22e">src</span>, <span style="color:#a6e22e">dst</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
+    <span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">src</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;copy %s %s: %v&#34;</span>, <span style="color:#a6e22e">src</span>, <span style="color:#a6e22e">dst</span>, <span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Close</span>()
+
+    <span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#a6e22e">dst</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;copy %s %s: %v&#34;</span>, <span style="color:#a6e22e">src</span>, <span style="color:#a6e22e">dst</span>, <span style="color:#a6e22e">err</span>)
+    }
+
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">r</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Close</span>()
+        <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Remove</span>(<span style="color:#a6e22e">dst</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;copy %s %s: %v&#34;</span>, <span style="color:#a6e22e">src</span>, <span style="color:#a6e22e">dst</span>, <span style="color:#a6e22e">err</span>)
+    }
+
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Close</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Remove</span>(<span style="color:#a6e22e">dst</span>)
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;copy %s %s: %v&#34;</span>, <span style="color:#a6e22e">src</span>, <span style="color:#a6e22e">dst</span>, <span style="color:#a6e22e">err</span>)
+    }
+}
+</code></pre></div><p>该代码较健壮，但不够整洁，也不够优雅。</p>
+<p><strong>2 目标</strong></p>
+<p>减少大量错误检查代码，使错误检查更轻量，使错误处理更便捷。</p>
+<p>不重蹈异常处理的覆辙，错误检查及错误处理应继续保持显式的方式。</p>
+<p>兼容现有代码。</p>
+<p><strong>3 草案概览</strong></p>
+<p>设计草案引入了两个新的关键字，check与handle，分别进行错误检查与错误处理。使用<code>check f(x, y, z)</code>或<code>check err</code>进行显式错误检查。使用hande语句进行错误处理器的定义。当错误检查失败时，其转向到最里边的<code>Handler</code>，最里边的<code>Handler</code>又转向到其上的下一个<code>Handler</code>，直至某一个<code>Handler</code>执行了<code>return</code>语句。</p>
+<p>例如，依照设计草案，如上代码可以改进为更简短的方式：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">CopyFile</span>(<span style="color:#a6e22e">src</span>, <span style="color:#a6e22e">dst</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
+    <span style="color:#a6e22e">handle</span> <span style="color:#a6e22e">err</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;copy %s %s: %v&#34;</span>, <span style="color:#a6e22e">src</span>, <span style="color:#a6e22e">dst</span>, <span style="color:#a6e22e">err</span>)
+    }
+
+    <span style="color:#a6e22e">r</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">src</span>)
+    <span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Close</span>()
+
+    <span style="color:#a6e22e">w</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#a6e22e">dst</span>)
+    <span style="color:#a6e22e">handle</span> <span style="color:#a6e22e">err</span> {
+        <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Close</span>()
+        <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Remove</span>(<span style="color:#a6e22e">dst</span>) <span style="color:#75715e">// (only if a check fails)
+</span><span style="color:#75715e"></span>    }
+
+    <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Copy</span>(<span style="color:#a6e22e">w</span>, <span style="color:#a6e22e">r</span>)
+    <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Close</span>()
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p><strong>4 草案详情</strong></p>
+<ul>
+<li>check
+check可用于error类型的表达式或者返回一组值且最后一个值为error类型的函数调用。</li>
+</ul>
+<p>给定变量v1, v2, …, vN, vErr，</p>
+<pre><code>v1, ..., vN := check /expr/
+</code></pre><p>其等价于：</p>
+<pre><code>v1, ..., vN, vErr := /expr/
+if vErr != nil {
+    /error result/ = handlerChain(vn)
+    return
+}
+</code></pre><p>vErr必须为error类型。</p>
+<p>类似，</p>
+<pre><code>foo(check /expr/)
+</code></pre><p>等价于：</p>
+<pre><code>v1, ..., vN, vErr := /expr/
+if vErr != nil {
+    /error result/ = handlerChain(vn)
+    return
+}
+foo(v1, ..., vN)
+</code></pre><p>如下是一段常规的错误处理代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printSum</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
+    <span style="color:#a6e22e">x</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">a</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+    }
+    <span style="color:#a6e22e">y</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">b</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;result:&#34;</span>, <span style="color:#a6e22e">x</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">y</span>)
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>其可被改写为：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printSum</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
+    <span style="color:#a6e22e">handle</span> <span style="color:#a6e22e">err</span> { <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span> }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;result:&#34;</span>, <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">x</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">y</span>))
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><p>通常需要包装下错误信息的上下文，代码可以写作：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printSum</span>(<span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">error</span> {
+    <span style="color:#a6e22e">handle</span> <span style="color:#a6e22e">err</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;printSum(%q + %q): %v&#34;</span>, <span style="color:#a6e22e">a</span>, <span style="color:#a6e22e">b</span>, <span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;result:&#34;</span>, <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">x</span>) <span style="color:#f92672">+</span> <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">y</span>))
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+}
+</code></pre></div><ul>
+<li>Handler
+Handler用来处理check所发现的错误，Handler使用return语句可以使对应函数即刻退出。不带返回值的return仅可用于无返回值函数或变量声明式函数，对变量声明式函数，其返回这些变量的当前值。Handler链函数带一个error类型的参数且与对应函数的返回值定义相同。每个check对应哪个Handler链函数取决于check所定义的范围。</li>
+</ul>
+<p>拿如下代码举例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">process</span>(<span style="color:#a6e22e">user</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">files</span> <span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">string</span>) (<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+    <span style="color:#a6e22e">handle</span> <span style="color:#a6e22e">err</span> { <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;process: %v&#34;</span>, <span style="color:#a6e22e">err</span>)  }      <span style="color:#75715e">// handler A
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">3</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
+        <span style="color:#a6e22e">handle</span> <span style="color:#a6e22e">err</span> { <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Errorf</span>(<span style="color:#e6db74">&#34;attempt %d: %v&#34;</span>, <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">err</span>) } <span style="color:#75715e">// handler B
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">handle</span> <span style="color:#a6e22e">err</span> { <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">moreWrapping</span>(<span style="color:#a6e22e">err</span>) }                    <span style="color:#75715e">// handler C
+</span><span style="color:#75715e"></span>
+        <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">do</span>(<span style="color:#a6e22e">something</span>())  <span style="color:#75715e">// check 1: handler chain C, B, A
+</span><span style="color:#75715e"></span>    }
+    <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">do</span>(<span style="color:#a6e22e">somethingElse</span>())  <span style="color:#75715e">// check 2: handler chain A
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>Check 1：在循环内，依序运行Handler C、B及A。<strong><em>不同于defer，定义在循环内的Handler不会因每次新的迭代而累积</em></strong>。</p>
+<p>Check 2：在函数末尾，仅运行Handler A。</p>
+<p>几个重要点：</p>
+<p><strong><em>check到错误，即会落入Handler，无法再回到对应函数的控制；</em></strong></p>
+<p><strong><em>Handler执行总是在defer语句之前；</em></strong></p>
+<p><strong><em>若对应函数需要有返回值，但check的Handler链函数没有return语句会引起编译错误。</em></strong></p>
+<ul>
+<li>默认Handler
+默认Handler隐式定义在最后一个参数是error类型的函数的头部。</li>
+</ul>
+<p>依赖默认Handler，printSum函数可以写作：</p>
+<pre><code>func printSum(a, b string) error {
+    x := check strconv.Atoi(a)
+    y := check strconv.Atoi(b)
+    fmt.Println(&quot;result:&quot;, x + y)
+    return nil
+}
+</code></pre><ul>
+<li>总结</li>
+</ul>
+<ul>
+<li>
+<p>1）Handler</p>
+<ul>
+<li>
+<p>a）仅需一个error类型的参数；</p>
+</li>
+<li>
+<p>b）与对应函数的返回参数相同。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>2）handle语句</p>
+<ul>
+<li>
+<p>a）Handler使用return会将对应函数返回；</p>
+</li>
+<li>
+<p>b）对应函数使用参数声明式返回，一个空的return语句会返回这些参数的当前值。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>3）check表达式</p>
+<ul>
+<li>
+<p>a）若check用在仅返回一个error值的函数前面，check会消费该值，且不会生产任何结果；</p>
+</li>
+<li>
+<p>b）一个check的Handler链会依Handler在当前作用的域的定义序的反序执行，直至某个Handler return；</p>
+</li>
+<li>
+<p>c）check表达式不可用于Handler。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>4）默认Handler</p>
+<ul>
+<li>
+<p>a）对应函数非参数声明式返回，默认Handler会返回排头参数的0值及最后参数的error值；</p>
+</li>
+<li>
+<p>b）对应函数为参数声明式返回，默认Handler会返回排头参数的当前值及最后参数的error值；</p>
+</li>
+<li>
+<p>c）因默认Handler定义在函数头部，其是Handler链的最后一环。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>重点：</p>
+<p>Handler链调用类似于函数调用，check到错误的位置被保存为Handler的调用者栈帧。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://github.com/golang/proposal/blob/master/design/go2draft-error-handling-overview.md">https://github.com/golang/proposal/blob/master/design/go2draft-error-handling-overview.md</a><!-- raw HTML omitted --></p>
+<p>[2] <!-- raw HTML omitted --><a href="https://github.com/golang/proposal/blob/master/design/go2draft-error-handling.md">https://github.com/golang/proposal/blob/master/design/go2draft-error-handling.md</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

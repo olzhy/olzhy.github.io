@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>架构设计 on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</link>
+    <description>Recent content in 架构设计 on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 14 Dec 2020 14:57:52 +0800</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>API Gateway与Service Mesh有什么不同？</title>
+      <link>https://olzhy.github.io/posts/api-gateway-and-service-mesh.html</link>
+      <pubDate>Mon, 14 Dec 2020 14:57:52 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/api-gateway-and-service-mesh.html</guid>
+      <description>一般的认为是：API Gateway用来处理南北向流量，Service Mesh用来处理东西向流量。这样的区分方式并不准确。下面会递进式分析两者的使用场景及异同点，以期通过本文可以明白何时使用API Gateway，何时使用Service Mesh？</description>
+    </item>
+    
+    <item>
+      <title>为什么Istio重回单体架构？</title>
+      <link>https://olzhy.github.io/posts/why-istio-back-to-monolithic-architecture.html</link>
+      <pubDate>Wed, 09 Dec 2020 17:52:16 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/why-istio-back-to-monolithic-architecture.html</guid>
+      <description>随着应用规模的不断扩大，单体架构已不能承载企业越来越多的业务需求，微服务架构随之兴起。微服务给我们带来诸多益处的同时也带来诸多挑战，其根源即是复杂性的提升。为了解决微服务带来的诸多问题，其中便催生了服务网格的流行。但2020年初，业内最知名的服务网格实现Istio却反其道而行之，由微服务架构重回单体架构，其原因是什么呢？可能是一个契机，让我们重新审思微服务架构带来的好处及问题。
+1 微服务架构有什么优势？ 将一个复杂的单体应用切分为按领域细分的微服务后，可以让团队聚焦所关注的领域，做到相互独立，彼此不受影响。其带来的优势主要有：
+ 彼此独立交付，快速迭代  各自解耦的微服务，可以让彼此间有明确的边界，各自可以采用不同的语言或技术栈，基于轻量协议（HTTP，RPC等）进行交互。每个微服务可以拥有自己的生命周期，无须相互协调或等待，做到彼此独立交付，相互不受影响。因粒度小，迭代快，从总体看，可以做到并行开发，流水线式产出。</description>
+    </item>
+    
+    <item>
+      <title>什么是服务网格？</title>
+      <link>https://olzhy.github.io/posts/what-is-a-service-mesh.html</link>
+      <pubDate>Mon, 07 Dec 2020 15:37:44 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/what-is-a-service-mesh.html</guid>
+      <description>1 什么是服务网格？ 服务网格是分布式软件系统内部用于管理所有“服务到服务”通信的一个系统。
+聊服务网格为什么会出现之前，可以聊聊服务架构的演进过程。起初，我们使用一个单体应用来提供服务。 比如我们在做一个电商系统，采用典型的MVC三层架构，在单体架构中，组成这个系统的购物车功能，库存查询功能，订单功能等都是这个服务内部的一个函数或接口。所以这些操作都是进程内的函数调用，不涉及诸如RPC等服务与服务的跨进程通信。但随着时间的增加，我们发现单体架构越来越不能满足我们的需求，比如用户访问暴增，业务逻辑愈加复杂，一个单体的服务已不能满足功能及性能的要求。我们需要将其按业务领域拆分为几个独立的服务来对外提供服务，这就是微服务架构。比如原来的购物车功能，库存查询功能，订单功能被拆分为独立的服务。这时接收到一个购物请求，我们需要分别查询不同的微服务来进行业务处理，这就涉及跨进程通信。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理初探</title>
+      <link>https://olzhy.github.io/posts/istio-traffic-management.html</link>
+      <pubDate>Tue, 21 Apr 2020 08:43:50 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-traffic-management.html</guid>
+      <description>Istio使用Envoy来代理网格服务的所有进出流量，可在不改变服务代码的情况下自由进行流量控制。 使用Istio，诸如熔断处理，服务超时，重试等服务级特性，通过简单的几行配置即可实现；同时，诸如A/B测试，灰度发布，按比例滚动升级等重要任务亦可以很容易实现。
+所有上述高级特性均可通过使用Istio流量管理API来实现，该API使用Kubernetes CRDs（custom resource definitions，自定义资源描述）来进行配置。 流量管理API的几个重要的资源有：Virtual Service，Destination Rule，Gateway，Service Entry，Sidecar。下面分别进行介绍。</description>
+    </item>
+    
+    <item>
+      <title>威胁建模</title>
+      <link>https://olzhy.github.io/posts/threat-modeling.html</link>
+      <pubDate>Sun, 19 Apr 2020 17:57:50 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/threat-modeling.html</guid>
+      <description>威胁建模是一个识别潜在威胁的过程。通过威胁建模以期找出攻击者的画像及其最可能的攻击路线，以及最易遭受攻击的资产。所以威胁建模做的即是找到最易攻击的地方并制定出应对方案。
+概念上讲，威胁建模就在我们的日常生活中，只是我们未察觉而已。上班早高峰规避危险的操作及地方等以防可能出现的事故。在操场玩耍的孩子们找出最佳路径直奔目的地以规避校霸围追堵截。在更正式的场景，威胁建模从远古起即已用于军事防卫等备战规划上了。
+威胁建模的演进 主要有如下几个。
+1999，微软提出STRIDE模型识别攻击。</description>
+    </item>
+    
+    <item>
+      <title>构建SaaS应用的十二因子指导原则</title>
+      <link>https://olzhy.github.io/posts/12-factor-app.html</link>
+      <pubDate>Fri, 20 Mar 2020 23:43:02 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/12-factor-app.html</guid>
+      <description>现代软件通常以Web服务的方式交付，称为软件即服务（SaaS），十二因子指导原则即是构建SaaS应用的一套方法论。其不仅是构建SaaS应用的指导原则，也是微服务，云原生应用开发须遵循的指导原则。
+十二因子指导原则或者最佳实践以期达到：
+  使用统一的规范，可以使新进开发人员节省时间成本，按照最佳实践走即可；</description>
+    </item>
+    
+    <item>
+      <title>Istio是什么？</title>
+      <link>https://olzhy.github.io/posts/what-is-istio.html</link>
+      <pubDate>Sun, 08 Mar 2020 07:53:30 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/what-is-istio.html</guid>
+      <description>云平台给我们带来大量好处的同时也给DevOps团队带来很多负担。开发使用微服务来架构，与此同时，运维需要管理超多环境及超复杂的部署。
+Istio即是为解放微服务带来的复杂性而生，其是一个开源的服务网格，可以与现有分布式应用无缝集成。以便为您的分布式微服务架构提供一个统一的方式来连接、管理，保护及监控微服务。
+服务网格是什么？
+组成应用的微服务网络及服务间的交互统称为服务网格。服务网格会愈加庞大也愈加复杂，会变得难以理解且难以管理。其需求通常包括：服务发现，负载均衡，故障恢复，度量监控等。更复杂点的需求可能会有：A/B测试，灰度发布，速率限制，访问控制，端到端鉴权等。
+Istio即是将服务网格看作一个整体来管理，提供完整解决方案以满足微服务应用各类需求。</description>
+    </item>
+    
+    <item>
+      <title>OpenID Connect 1.0 协议要点梳理</title>
+      <link>https://olzhy.github.io/posts/openid-connect-core-1-0.html</link>
+      <pubDate>Wed, 26 Feb 2020 01:29:09 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/openid-connect-core-1-0.html</guid>
+      <description>OpenID Connect 1.0协议是基于OAuth 2.0授权框架之上的一个身份鉴别层。其使得客户端可以基于授权服务的鉴权能力来验证及识别终端用户的身份。此外，还可以一种类REST的方式来获取终端用户的基本画像信息。
+OpenID Connect 1.</description>
+    </item>
+    
+    <item>
+      <title>OAuth 2.0 授权框架梳理</title>
+      <link>https://olzhy.github.io/posts/oauth2-authorization-framework.html</link>
+      <pubDate>Mon, 10 Feb 2020 04:57:37 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/oauth2-authorization-framework.html</guid>
+      <description>OAuth 2.0是一个委托访问授权框架。
+即，若有三方应用想访问我在某网站的一些资源，我不必将用户名密码给它，而是采用OAuth 2.0授权流程，让资源网站通过我的授权给其下发一个访问令牌来实现该功能。
+这样即省去了直接将密码交给三方网站的诸多风险，还可以很好的实现资源限制，令牌过期等细粒度控制。</description>
+    </item>
+    
+  </channel>
+</rss>

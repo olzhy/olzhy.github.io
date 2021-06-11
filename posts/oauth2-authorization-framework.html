@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>OAuth 2.0 授权框架梳理 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>OAuth 2.0 授权框架梳理</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年02月10日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>OAuth 2.0是一个委托访问授权框架。</p>
+<p>即，若有三方应用想访问我在某网站的一些资源，我不必将用户名密码给它，而是采用OAuth 2.0授权流程，让资源网站通过我的授权给其下发一个访问令牌来实现该功能。</p>
+<p>这样即省去了直接将密码交给三方网站的诸多风险，还可以很好的实现资源限制，令牌过期等细粒度控制。</p>
+<p>OAuth 2.0框架应用广泛，如使用GitHub账号登录CSDN，这即是CSDN三方网站想借助GitHub账号能力，通过我的授权，使用我在GitHub的头像名称等基本信息，而实现一键登录。</p>
+<p>OAuth 定义了4个角色。</p>
+<ul>
+<li>
+<p><strong>Resource Owner（资源所有者）</strong>
+对受保护资源进行访问授权的实体，若资源所有者是人，则指的是终端用户。</p>
+</li>
+<li>
+<p><strong>Resource Server（资源服务器）</strong>
+对受保护资源提供服务，接收携带访问令牌的请求，并对其作出响应。</p>
+</li>
+<li>
+<p><strong>Client（客户端）</strong>
+代表资源所有者及其授权发送请求，可以是跑在桌面，服务端或其它设备上的应用。</p>
+</li>
+<li>
+<p><strong>Authorization Server（授权服务器）</strong>
+在对资源所有者鉴权成功后，并在取得资源所有者授权后，对客户端签发访问令牌。</p>
+</li>
+</ul>
+<p>授权服务器与资源服务器可能是一个服务，也可能是分开的两个服务。一个授权服务器可以给多个资源服务器签发令牌。</p>
+<p>如图1，看一下OAuth 2.0大致的授权流程。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/02/oauth2-1.png" alt="" /></p>
+<p>图1：OAuth 2.0大致授权流程（<a href="https://tools.ietf.org/html/rfc6749">引自RFC6749</a>）</p>
+<p>(A) 客户端请求资源所有者授权，授权请求虽可以直接发给资源所有者，但最好经过授权服务器中转。</p>
+<p>(B) 客户端接收到了授权准许，授权准许类型取决于客户端的请求方式及授权服务器所支持的类型。</p>
+<p>(C) 客户端携带授权准许请求授权服务器</p>
+<p>(D) 授权服务器对客户端进行鉴权，包括对客户端的鉴权及对其所携带的资源所有者授权准许的校验，校验成功则发放访问令牌。</p>
+<p>(E) 客户端携带访问令牌请求资源服务器上的受保护资源</p>
+<p>(F) 资源服务器校验客户端携带的访问令牌，若令牌有效，则提供服务。</p>
+<p><strong>关于授权准许</strong></p>
+<p>授权准许为资源所有者同意客户端访问其受保护资源的证明，也是客户端用来获取访问令牌的基础。</p>
+<p>OAuth 2.0定义了4种授权类型：授权码（authorization code），隐式授权（implicit），资源所有者密码证明（resource owner password credentials），客户端证明（client credentials），此外还支持扩展类型。</p>
+<p><strong>授权码</strong></p>
+<p>授权码的获取是通过将授权服务器作为客户端及资源所有者的中间层来实现的。</p>
+<p>避免客户端直接向资源所有者获得授权。客户端通过浏览器等用户代理将资源所有者引导至授权服务器。</p>
+<p>授权服务器对资源所有者进行鉴权并获得资源所有者对客户端要求访问的授权。</p>
+<p>拿到授权码后，用户代理又将资源所有者引导回客户端。</p>
+<p>因资源所有者仅被授权服务器鉴权，所以资源所有者的密钥从没有与客户端分享。</p>
+<p>授权码模式还有一些优点，即提供了授权服务器对客户端进行鉴权的能力，而且访问令牌直接给了客户端，并没有经过资源所有者的用户代理。</p>
+<p><strong>隐式授权</strong></p>
+<p>隐式授权是授权码模式的简化版。用于客户端为诸如JS脚本语言实现的浏览器应用的优化模式。</p>
+<p>隐式授权绕过了对客户端签发授权码，直接给客户端签发访问令牌。</p>
+<p>在隐式授权模式中，签发访问令牌时，授权服务器未对客户端进行校验。某些情况下，客户端身份可以通过对回调路径（用于传递访问令牌）的校验进行识别。隐式授权中，访问令牌可能暴露给资源所有者及有权访问资源所有者用户代理的其它应用。隐式授权减少了请求次数，带来了便捷，但需要权衡其安全问题。</p>
+<p><strong>资源所有者密码证明</strong></p>
+<p>资源所有者密码证明（如用户名密码）可以直接用作授权准许以获取访问令牌。</p>
+<p>该模式仅可在资源所有者充分信任客户端及其它授权类型不可用时使用。</p>
+<p><strong>客户端证明</strong></p>
+<p>客户端证明可以用在授权范围仅限于客户端控制的受保护资源，或者受保护资源之前已被授权服务器分配过。</p>
+<p>客户端证明典型场景是用在客户端即是资源所有者的情况下，或者是获取对之前已被授权过的受保护资源的授权访问。</p>
+<p><strong>访问令牌</strong></p>
+<p>访问令牌是访问受保护资源的证明。访问令牌对客户端透明，用于标识访问范围，访问时段等。访问令牌可以是一个id，也可以是一个自包含验证信息的字符串。</p>
+<p><strong>更新令牌</strong></p>
+<p>更新令牌用于当访问令牌失效时获取新的访问令牌。不同于访问令牌的是，更新令牌只会发给授权服务器，不会与资源服务器交互。</p>
+<p>下面参考图2，看一下更新令牌的使用。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/02/oauth2-2.png" alt="" /></p>
+<p>图2：更新失效的访问令牌（<a href="https://tools.ietf.org/html/rfc6749">引自RFC6749</a>）</p>
+<p>(A) 客户端携带授权准许向授权服务器请求访问令牌。</p>
+<p>(B) 授权服务器对客户端及授权准许进行校验，若校验通过，发放访问令牌及更新令牌。</p>
+<p>(C) 客户端携带访问令牌对资源服务器进行受保护资源访问。</p>
+<p>(D) 资源服务器校验访问令牌，若有效，则提供服务。</p>
+<p>(E) 重复(C)及(D)两步直至访问令牌失效，若客户端已知访问令牌失效，则跳到步骤(G)，否则进行另一次访问。</p>
+<p>(F) 因访问令牌已失效，资源服务器返回访问令牌失效错误。</p>
+<p>(G) 客户端携带更新令牌向授权服务器请求新的访问令牌。</p>
+<p>(H) 授权服务器对客户端及更新令牌进行鉴权，若校验通过，则签发新的访问令牌及更新令牌。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://en.wikipedia.org/wiki/OAuth">https://en.wikipedia.org/wiki/OAuth</a><!-- raw HTML omitted --></p>
+<p>[2] <!-- raw HTML omitted --><a href="https://oauth.net/2/">https://oauth.net/2/</a><!-- raw HTML omitted --></p>
+<p>[3] <!-- raw HTML omitted --><a href="https://tools.ietf.org/html/rfc6749">https://tools.ietf.org/html/rfc6749</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">#架构设计</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

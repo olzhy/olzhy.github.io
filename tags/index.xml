@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/</link>
+    <description>Recent content in Tags on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 21 May 2021 15:14:46 +0800</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PostgreSQL</title>
+      <link>https://olzhy.github.io/tags/postgresql/</link>
+      <pubDate>Fri, 21 May 2021 15:14:46 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/postgresql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>读书</title>
+      <link>https://olzhy.github.io/tags/%E8%AF%BB%E4%B9%A6/</link>
+      <pubDate>Wed, 14 Apr 2021 11:38:36 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E8%AF%BB%E4%B9%A6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://olzhy.github.io/tags/golang/</link>
+      <pubDate>Sat, 03 Apr 2021 08:16:52 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>工具使用</title>
+      <link>https://olzhy.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Sun, 10 Jan 2021 18:27:31 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>随笔</title>
+      <link>https://olzhy.github.io/tags/%E9%9A%8F%E7%AC%94/</link>
+      <pubDate>Thu, 24 Dec 2020 08:13:42 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E9%9A%8F%E7%AC%94/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>架构设计</title>
+      <link>https://olzhy.github.io/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</link>
+      <pubDate>Mon, 14 Dec 2020 14:57:52 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>https://olzhy.github.io/tags/python/</link>
+      <pubDate>Sat, 10 Oct 2020 11:29:15 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>机器学习</title>
+      <link>https://olzhy.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+      <pubDate>Sat, 10 Oct 2020 11:29:15 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>算法</title>
+      <link>https://olzhy.github.io/tags/%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Sat, 10 Oct 2020 11:29:15 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E7%AE%97%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>观影</title>
+      <link>https://olzhy.github.io/tags/%E8%A7%82%E5%BD%B1/</link>
+      <pubDate>Sun, 22 Mar 2020 13:31:38 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E8%A7%82%E5%BD%B1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>容器化</title>
+      <link>https://olzhy.github.io/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/</link>
+      <pubDate>Sun, 01 Mar 2020 00:51:33 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E5%AE%B9%E5%99%A8%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>练字</title>
+      <link>https://olzhy.github.io/tags/%E7%BB%83%E5%AD%97/</link>
+      <pubDate>Sat, 29 Feb 2020 09:29:34 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E7%BB%83%E5%AD%97/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数据分析</title>
+      <link>https://olzhy.github.io/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</link>
+      <pubDate>Tue, 28 Nov 2017 13:42:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ruby</title>
+      <link>https://olzhy.github.io/tags/ruby/</link>
+      <pubDate>Sun, 22 Oct 2017 13:28:51 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/tags/ruby/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

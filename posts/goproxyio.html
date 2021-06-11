@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Golang模块代理goproxy.io源码研读 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Golang模块代理goproxy.io源码研读</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年06月18日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><a href="https://goproxy.io/">goproxy.io</a>是一款很好用的Golang Module Proxy，解决了国内用户无法直接下载Golang模块依赖的问题。</p>
+<p>本文准备研读一下其开源代码<a href="https://github.com/goproxyio/goproxy">github.com/goproxyio/goproxy</a>，了解下其实现原理。</p>
+<p>goproxy工程的主要目录结构如下：</p>
+<pre><code>goproxy
+ ├ build
+ │   └ generate.sh
+ ├ pkg
+ │   └ proxy
+ │       └ proxy.go
+ └ main.go
+</code></pre><p>main.go头部有一行代码：</p>
+<pre><code>//go:generate ./build/generate.sh
+</code></pre><p>下面会解释其作用。</p>
+<p><strong>1 建立一个Golang Proxy服务需要实现哪些功能</strong></p>
+<pre><code>$ go help goproxy
+
+...
+A Go module proxy is any web server that can respond to GET requests for
+URLs of a specified form. The requests have no query parameters, so even
+a site serving from a fixed file system (including a file:/// URL)
+can be a module proxy.
+
+The GET requests sent to a Go module proxy are:
+
+GET $GOPROXY/&lt;module&gt;/@v/list returns a list of all known versions of the
+given module, one per line.
+
+GET $GOPROXY/&lt;module&gt;/@v/.info returns JSON-formatted metadata
+about that version of the given module.
+
+GET $GOPROXY/&lt;module&gt;/@v/.mod returns the go.mod file
+for that version of the given module.
+
+GET $GOPROXY/&lt;module&gt;/@v/.zip returns the zip archive
+for that version of the given module.
+...
+</code></pre><p>从如上说明可知，使用诸如go get等go命令会从vcs下载所需模块，设置GOPROXY环境变量即可指定Go Module Proxy服务，其为不带参数URL的GET请求提供服务，为模块下载作了一层包装。</p>
+<p>其主要提供如下几个接口：</p>
+<ul>
+<li>
+<p>a）<code>GET $GOPROXY/&lt;module&gt;/@v/list</code> 该接口返回给定模块的已知版本号列表，每行一个。</p>
+</li>
+<li>
+<p>b）<code>GET $GOPROXY/&lt;module&gt;/@v/&lt;version&gt;.info</code> 该接口返回给定模块在给定版本的JSON格式的元数据信息。</p>
+</li>
+<li>
+<p>c）<code>GET $GOPROXY/&lt;module&gt;/@v/&lt;version&gt;.mod</code> 该接口返回给定模块在给定版本的go.mod的内容。</p>
+</li>
+<li>
+<p>d）<code>GET $GOPROXY/&lt;module&gt;/@v/&lt;version&gt;.zip</code> 该接口返回给定模块在给定版本的.zip压缩包。</p>
+</li>
+</ul>
+<p>为避免大小写敏感型文件系统服务问题，<code>&lt;module&gt;</code>及<code>&lt;version&gt;</code>会对大写字母加密，即将大写字母转换为!加小写字母的方式。</p>
+<p>如<code>github.com/Azure</code>编码为<code>github.com/!azure</code>。</p>
+<p>JSON格式的元数据信息对应的Go内置结构体为：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Info</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Version</span> <span style="color:#66d9ef">string</span>    <span style="color:#75715e">// version string
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">Time</span>    <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#75715e">// commit time
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>给定模块在给定版本的.zip压缩包内的文件树结构与模块源码树结构一致，且模块及版本未使用大写字母加密。</p>
+<p>不论go命令直接访问vcs还是从Proxy下载，其均会将模块的info、mod及zip文件组合到一起，置于<code>$GOPATH/pkg/mod/cache/download</code>本地缓存。</p>
+<p>因缓存路径与请求路径对应，所以对<code>$GOPATH/pkg/mod/cache/download</code>文件夹以<code>https://example.com/proxy</code>提供服务即可访问到缓存的模块。</p>
+<p><strong>2 goproxy/build/generate.sh</strong></p>
+<p>当执行go generate命令时，Go会扫描当前包相关的源码文件，找出所有包含<code>//go:generate</code>的特殊注释，并执行注释指定的脚本。</p>
+<p>因<code>goproxy.io</code>工程需要使用内置的模块获取包，而由上一篇文章“<a href="/posts/golang-modfetch-package.html">Golang 模块获取包modfetch研读</a>”可知，modfetch、modload等模块获取包是位于<code>cmd/go/internal</code>路径下的，所以无法直接引用，main.go所指向的<code>goproxy/build/generate.sh</code>这个脚本即是用来将modfetch、modload等内部包及其依赖包拷贝至当前工作目录下，以便直接引用。</p>
+<p><strong>3 goproxy/main.go</strong></p>
+<p>main.go负责接收http请求，此外检查git有没有安装（因Go从诸如github.com等vcs下载新的依赖包需要依赖git工具），构造Golang Module的工作目录cacheDir等。</p>
+<p><strong>4 goproxy/pkg/proxy/proxy.go</strong></p>
+<p>proxy.go是该工程的核心代码，其会根据main.go传入的cacheDir设置工作目录。然后分别为后缀为<code>.info</code>，<code>.mod</code>，<code>.zip</code>，<code>/@v/list</code>，<code>/@latest</code>的几种类型的请求提供服务。</p>
+<p>对如上类型的请求，会调用modfetch等包的内置函数来辅助实现，关于modfetch中几个核心函数的功能及用法，请参考上一篇博文：<a href="/posts/golang-modfetch-package.html">Golang 模块获取包modfetch研读</a>。</p>
+<p>a）若请求后缀为/@v/list，/@latest</p>
+<p>因请求的是所有可用版本号或最新版本，所以必须请求vcs系统，所以可以使用<code>modfetch.Lookup</code>函数。若是<code>/@v/list</code>，返回<code>repo.Versions(&quot;&quot;)</code>，若是<code>/@latest</code>，返回<code>repo.Latest()</code>。</p>
+<p>b）若请求后缀为.info</p>
+<p>使用<code>modfetch.Stat</code>函数，传入模块路径及版本号即可获取到修订信息，然后返回即可。</p>
+<p>c）若请求后缀为.mod</p>
+<p>使用modfetch.GoMod函数（源码中使用的是<a href="https://github.com/goproxyio/goproxy/blob/master/pkg/proxy/proxy.go#L80">GoModFile</a>，其实因需返回go.mod内容，使用GoMod即可），传入模块路径及版本号返回go.mod信息即可。</p>
+<p>d）若请求后缀为.zip</p>
+<p>使用modfetch.DownloadZip函数，其会返回文件路径，然后http.ServeFile即可。</p>
+<p>如上即为goproxy.io对Go Module Proxy的实现，总体思路较清晰，代码较简洁。使用goproxy.io或将该开源代码搭建至一台国外ECS上，基本可以解决国内用户对Go Module无法直接下载的问题。</p>
+<p>不过对于深度用户，有诸如权限管理、私有依赖管理等更高的需求。微软的工程师针对这些行业通用需求，实现了一个叫<a href="https://github.com/gomods/athens">athens</a>的工具，有机会可以学习一下。</p>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

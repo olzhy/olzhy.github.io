@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+
+  <section class="banner bg-cover" style="background-image: url('/static/images/site/henry-small.jpg');">
+    <img src="/" class="img-fluid illustration" alt="">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <h1>人心惟危 道心惟微 惟精惟一 允执厥中</h1>
+        </div>
+        <div class="col-lg-6 illustration-mobile">
+          <img src="/" class="img-fluid" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto px-0">
+        <div class="bg-white shadow block">
+          
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/leetcode-house-robber.html">LeetCode 198 入室抢劫者</a></h2>
+  <div class="mb-3 post-meta">
+    2019年07月25日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 题目描述
+假设您是一个老练的盗贼，计划沿着街道进行打家劫舍。该街道每家都存着一定数额的钱，而阻止您进行盗窃的唯一屏障是相邻两家的防盗系统是连接的，若相邻两家在同一晚都发生了盗窃案，该系统会自动通知到警察。
+现在给定一个非负整数数组，代表该街道沿线每家的金钱数额，请计算在不触发系统通知警察的情况下，您今晚能盗窃的最大金钱数额。
+例子1：</p>
+  <a href="https://olzhy.github.io/posts/leetcode-house-robber.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/leetcode-merge-intervals.html">LeetCode 56 合并区间</a></h2>
+  <div class="mb-3 post-meta">
+    2019年07月24日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 题目描述
+给定一组区间，合并所有重叠的区间。
+例子1：
+输入：</p>
+  <a href="https://olzhy.github.io/posts/leetcode-merge-intervals.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/leetcode-find-first-and-last-position-of-element-in-sorted-array.html">LeetCode 34 在有序数组寻找元素的出现范围</a></h2>
+  <div class="mb-3 post-meta">
+    2019年07月23日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 题目描述
+给定一个已按升序排好的整数数组nums，对于一个目标值target，寻找其在数组中的起始位置及结束位置。
+您算法的运行时时间复杂度须满足O(log n)。</p>
+  <a href="https://olzhy.github.io/posts/leetcode-find-first-and-last-position-of-element-in-sorted-array.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/leetcode-design-twitter.html">LeetCode 355 设计推特</a></h2>
+  <div class="mb-3 post-meta">
+    2019年07月22日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 题目描述
+设计一个简单的推特版本。支持用户发推，支持用户关注或取消关注其他用户，且用户可以在动态里看到最近的10条推文。
+您的设计应支持如下几个方法：
+  a）postTweet(userId, tweetId)：发表新推文；</p>
+  <a href="https://olzhy.github.io/posts/leetcode-design-twitter.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/leetcode-check-completeness-of-a-binary-tree.html">LeetCode 958 检查二叉树的完整性</a></h2>
+  <div class="mb-3 post-meta">
+    2019年07月21日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 题目描述
+给定一个二叉树，判断其是否为一个完全二叉树。
+来自Wikipedia的完全二叉树定义：
+在一个完全二叉树中，除了最后一层可能未被完全填充外，其它所有层均被完全填充，且最后一层的节点尽可能靠左。</p>
+  <a href="https://olzhy.github.io/posts/leetcode-check-completeness-of-a-binary-tree.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/leetcode-search-in-rotated-sorted-array.html">LeetCode 33 在旋转的有序数组搜索</a></h2>
+  <div class="mb-3 post-meta">
+    2019年07月21日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 题目描述
+假定一个按升序排好的数组在您预先不可知的某个支点被旋转了。如[0,1,2,4,5,6,7]被旋转为了[4,5,6,7,0,1,2])。 给您一个目标值来搜索，若在数组中找到了，返回其标号，否则返回-1。您可以假定该数组中元素没有重复。您的运行时复杂度须为O(log n)。</p>
+  <a href="https://olzhy.github.io/posts/leetcode-search-in-rotated-sorted-array.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          
+          <div class="mt-5">
+            <!-- pagination -->
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center align-items-center">
+                
+                
+                <li class="page-item">
+                  <a href="/amp/page/10/" class="page-link">
+                    &laquo;
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/amp/page/9/" class="page-link">
+                    9
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/amp/page/10/" class="page-link">
+                    10
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item page-item active ">
+                  <a href="/amp/page/11/" class="page-link">
+                    11
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/amp/page/12/" class="page-link">
+                    12
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/amp/page/13/" class="page-link">
+                    13
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/amp/page/12/" class="page-link">
+                    &raquo;
+                  </a>
+                </li>
+                
+              </ul>
+            </nav>
+            
+            <!-- /pagination -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

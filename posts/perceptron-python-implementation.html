@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>感知机算法及Python实现 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Perceptron, 感知机, 机器学习, Python, 算法">
+  <meta name="description"
+    content="感知机Perceptron算法及Python实现。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>感知机算法及Python实现</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年10月10日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <h3 id="1-何为感知机">1 何为感知机？</h3>
+<p>感知机是一个单层人工神经网络，是一个用于二分类的算法，其也是线性分类器的一种。</p>
+<p>其可被抽象为下图所示模型，即一个神经元接收到来自n个其它神经元的输入信号，对这些输入信号，通过带权值的连接进行计算（各个连接线的权值与对应输入值相乘，然后进行累加），然后判断计算出来的累加值是否超过阈值（Threshold），若等于或超过阈值，则输出y为1，表示该神经元激活，否则输出y为-1表示该神经元抑制。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/10/perceptron.svg#center" alt="" /></p>
+<p>所以，感知机模型可被描述为：</p>
+<p>针对输入<code>$\boldsymbol x = \{x_{1}, x_{2}, ... , x_{n}\}$</code>，有 <code>$z = w_{1} x_{1} + w_{2} x_{2} + ... + w_{n} x_{n}$</code>，当<code>$z$</code>超过阈值<code>$\theta$</code>时，将其输出为1，否则输出为-1。即由符号函数<code>$f(z)$</code>来决定输出的类别。</p>
+<p><code>$f(z)=\left\{\begin{matrix} 1, z\geq \theta &amp;\\-1, z&lt; \theta \end{matrix}\right.$</code></p>
+<p>下面，试着将<code>$\theta$</code>并入线性方程，让<code>$z$</code>看起来更紧凑一点：
+<code>$z = w_{1} x_{1} + w_{2} x_{2} + ... + w_{n} x_{n} - \theta \\ z = w_{1} x_{1} + w_{2} x_{2} + ... + w_{n} x_{n} + (-\theta) \cdot 1$</code></p>
+<p>这样，将<code>$-\theta$</code>当作<code>$w_{0}$</code>，1当作<code>$x_{0}$</code>，上式即可变为：</p>
+<p><code>$z = w_{0} x_{0} + w_{1} x_{1} + ... + w_{n} x_{n} = \boldsymbol{w}^T \boldsymbol{x}$</code></p>
+<p>几何上为<code>$\boldsymbol{w}$</code>与<code>$\boldsymbol{x}$</code>两个向量的内积。</p>
+<p>符号函数<code>$f(z)$</code>变为：
+<code>$f(z)=\left\{\begin{matrix} 1, z\geq 0 &amp;\\-1, z&lt; 0 \end{matrix}\right.$</code></p>
+<h3 id="2-感知机学习算法">2 感知机学习算法</h3>
+<p>原始的感知机学习策略比较简单，即对线性可分数据集：</p>
+<p><code>$T = \{(\boldsymbol x^{(1)}, y^{(1)}), (\boldsymbol x^{(2)}, y^{(2)}), ..., (\boldsymbol x^{(N)}, y^{(N)})\}$</code></p>
+<ul>
+<li>i) 将权重初始化为0；</li>
+<li>ii) 对每个输入样例<code>$\boldsymbol{x}^{(i)}$</code>，根据<code>$f(z)$</code>计算其输出值<code>$\hat{y}^{(i)}$</code>，若其与真实值<code>$y^{(i)}$</code>不一致，则更新<code>$\boldsymbol{w}$</code>权重向量，即将<code>$\boldsymbol{w}$</code>中的每一个维度的值更新为<code>$w_{j}=w_{j}+\Delta w_{j}$</code>，增量<code>$\Delta w_{j}=\eta (y^{(i)} - \hat{y}^{(i)})x_{j}^{(i)}$</code>，其中<code>$0 &lt;\eta \leq 1$</code>为学习率，也称为步长；</li>
+<li>iii) 循环直至所有样例均正确分类或达到最大循环次数退出循环。</li>
+</ul>
+<p>上述步骤ii)中，增量<code>$\Delta w_{j}=\eta (y^{(i)} - \hat{y}^{(i)})x_{j}^{(i)}$</code>设置的非常巧妙，对输入样例<code>$\boldsymbol{x}^{(i)}$</code>，若计算值<code>$\hat{y}^{(i)}$</code>为-1，真实值<code>$y^{(i)}$</code>为1，则表示向正类靠近一点；反之，则向负类靠近一点；更巧妙的是若计算值与真实值一致，则增量为0。</p>
+<h3 id="3-感知机学习算法的python实现">3 感知机学习算法的Python实现</h3>
+<p>下面使用Python对如上感知机学习算法进行实现，Perceptron类包含如下几个方法。</p>
+<ul>
+<li><code>__init__</code> 构造方法，新建Perceptron对象时可指定学习率eta及最大迭代次数max_iter；</li>
+<li><code>fit</code> 训练方法，根据样本输入x（N个n维向量）及样本输出y（N个由+1或-1组成的数值）对n维权重向量_w进行计算，若在最大迭代次数max_iter内找到合适的_w可将样本数据集进行正确划分，则退出，否则，若已达到最大迭代次数仍未找到合适的_w，则训练失败并退出；</li>
+<li><code>_predict</code> 计算权重向量_w与某个样本输入xi向量点积的私有方法，返回值为float类型；</li>
+<li><code>predict</code> 调用<code>_predict</code>算得两向量的点积后判断其是否非负，若非负返回+1，否则返回-1，返回值为int类型。该方法可供<code>fit</code>方法在训练时使用，亦可在训练成功后，使用其对新的输入进行预测。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ cat perceptron.py
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> typing <span style="color:#f92672">import</span> List
+
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Perceptron</span>:
+    <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">    Perceptron binary classifier
+</span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+
+    <span style="color:#66d9ef">def</span> __init__(self, eta: float <span style="color:#f92672">=</span> <span style="color:#ae81ff">1.0</span>, max_iter: int <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>):
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        Perceptron constructor
+</span><span style="color:#e6db74">        :param eta: 0 &lt; eta &lt;= 1.0
+</span><span style="color:#e6db74">        :param max_iter: max iteration
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        self<span style="color:#f92672">.</span>eta <span style="color:#f92672">=</span> eta
+        self<span style="color:#f92672">.</span>max_iter <span style="color:#f92672">=</span> max_iter
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">fit</span>(self, x: List[List[float]], y: List[int]) <span style="color:#f92672">-&gt;</span> None:
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        Fit is used to data training
+</span><span style="color:#e6db74">        after the execution, _w (weight vector) will be produced
+</span><span style="color:#e6db74">        :param x: input, vector list
+</span><span style="color:#e6db74">        :param y: output, class label list
+</span><span style="color:#e6db74">        :return:  None
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        <span style="color:#66d9ef">if</span> len(x) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>:
+            <span style="color:#66d9ef">return</span>
+
+        self<span style="color:#f92672">.</span>_w <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> (len(x[<span style="color:#ae81ff">0</span>]) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)  <span style="color:#75715e"># initialize weight vector to zeros</span>
+        times <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+        <span style="color:#66d9ef">while</span> times <span style="color:#f92672">&lt;</span> self<span style="color:#f92672">.</span>max_iter:
+            times <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+            errors <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+            <span style="color:#66d9ef">for</span> xi, yi <span style="color:#f92672">in</span> zip(x, y):
+                y_predict <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>predict(xi)
+                <span style="color:#66d9ef">if</span> yi <span style="color:#f92672">-</span> y_predict <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>:
+                    errors <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+                    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(xi)):  <span style="color:#75715e"># update vector w</span>
+                        self<span style="color:#f92672">.</span>_w[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">+=</span> self<span style="color:#f92672">.</span>eta <span style="color:#f92672">*</span> (yi <span style="color:#f92672">-</span> y_predict) <span style="color:#f92672">*</span> xi[i]
+                    self<span style="color:#f92672">.</span>_w[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">+=</span> self<span style="color:#f92672">.</span>eta <span style="color:#f92672">*</span> (yi <span style="color:#f92672">-</span> y_predict)
+                <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;times: {}, xi: {}, yi: {}, y_predict: {}, _w: {}&#39;</span><span style="color:#f92672">.</span>format(times, xi, yi, y_predict, self<span style="color:#f92672">.</span>_w))
+            <span style="color:#66d9ef">if</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">==</span> errors:
+                <span style="color:#66d9ef">break</span>
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_predict</span>(self, xi: List[float]) <span style="color:#f92672">-&gt;</span> float:
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        Calculate the predictive value for a single sample input xi
+</span><span style="color:#e6db74">        :param x: a single sample input xi
+</span><span style="color:#e6db74">        :return: dot product of vector _w and xi
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        <span style="color:#66d9ef">return</span> sum([self<span style="color:#f92672">.</span>_w[i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">*</span> xi[i] <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(len(xi))]) <span style="color:#f92672">+</span> self<span style="color:#f92672">.</span>_w[<span style="color:#ae81ff">0</span>]
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">predict</span>(self, xi: List[float]) <span style="color:#f92672">-&gt;</span> int:
+        <span style="color:#e6db74">&#34;&#34;&#34;
+</span><span style="color:#e6db74">        Predict xi belongs to class +1 or -1
+</span><span style="color:#e6db74">        :param xi: a single sample input xi
+</span><span style="color:#e6db74">        :return: class +1 or -1
+</span><span style="color:#e6db74">        &#34;&#34;&#34;</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>_predict(xi) <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+</code></pre></div><p>下面使用该Perceptron模型对仅有两个维度的样本输入X={(3, 3), (4, 3), (1, 1)}，输出Y={1, 1, -1}进行划分：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ cat test.py
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
+<span style="color:#f92672">import</span> perceptron
+
+<span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;__main__&#39;</span> <span style="color:#f92672">==</span> __name__:
+    p <span style="color:#f92672">=</span> perceptron<span style="color:#f92672">.</span>Perceptron(eta<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>, max_iter<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+
+    x <span style="color:#f92672">=</span> [[<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>], [<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">3</span>], [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>]]
+    y <span style="color:#f92672">=</span> [<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>]
+    p<span style="color:#f92672">.</span>fit(x, y)
+</code></pre></div><p>根据如下打印结果可以看到，该算法经过5轮，15次判断，6次权重调整后得到一个可将样本数据正确划分的权重向量。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">times: 1, xi: [3, 3], yi: 1, y_predict: 1, _w: [0, 0, 0]
+times: 1, xi: [4, 3], yi: 1, y_predict: 1, _w: [0, 0, 0]
+times: 1, xi: [1, 1], yi: -1, y_predict: 1, _w: [-2.0, -2.0, -2.0]
+times: 2, xi: [3, 3], yi: 1, y_predict: -1, _w: [0.0, 4.0, 4.0]
+times: 2, xi: [4, 3], yi: 1, y_predict: 1, _w: [0.0, 4.0, 4.0]
+times: 2, xi: [1, 1], yi: -1, y_predict: 1, _w: [-2.0, 2.0, 2.0]
+times: 3, xi: [3, 3], yi: 1, y_predict: 1, _w: [-2.0, 2.0, 2.0]
+times: 3, xi: [4, 3], yi: 1, y_predict: 1, _w: [-2.0, 2.0, 2.0]
+times: 3, xi: [1, 1], yi: -1, y_predict: 1, _w: [-4.0, 0.0, 0.0]
+times: 4, xi: [3, 3], yi: 1, y_predict: -1, _w: [-2.0, 6.0, 6.0]
+times: 4, xi: [4, 3], yi: 1, y_predict: 1, _w: [-2.0, 6.0, 6.0]
+times: 4, xi: [1, 1], yi: -1, y_predict: 1, _w: [-4.0, 4.0, 4.0]
+times: 5, xi: [3, 3], yi: 1, y_predict: 1, _w: [-4.0, 4.0, 4.0]
+times: 5, xi: [4, 3], yi: 1, y_predict: 1, _w: [-4.0, 4.0, 4.0]
+times: 5, xi: [1, 1], yi: -1, y_predict: 1, _w: [-6.0, 2.0, 2.0]
+times: 6, xi: [3, 3], yi: 1, y_predict: 1, _w: [-6.0, 2.0, 2.0]
+times: 6, xi: [4, 3], yi: 1, y_predict: 1, _w: [-6.0, 2.0, 2.0]
+times: 6, xi: [1, 1], yi: -1, y_predict: -1, _w: [-6.0, 2.0, 2.0]
+</code></pre></div><h3 id="4-对iris数据集进行训练及预测">4 对Iris数据集进行训练及预测</h3>
+<p>下面使用3中的代码对<a href="https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data">iris(鸢尾花)</a>数据集进行训练及预测。该数据集共包含三类鸢尾花品种，因Perceptron模型是一个仅支持二分类的分类器。所以仅选取该数据集中的两类数据（Iris-setosa与Iris-versicolor）进行训练及预测（该两类数据均有50条，分别取两者的前40条作为训练样本，分别取两者的后10条作为预测样本）。</p>
+<p>测试代码，测试数据，与Perceptron模型代码（perceptron.py）的目录结构如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ tree .
+perceptron.py
+test.py
+iris.data
+predict.data
+</code></pre></div><p>调用Perceptron的代码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">$ cat test.py
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python3</span>
+<span style="color:#f92672">import</span> perceptron
+<span style="color:#f92672">import</span> csv
+
+<span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;__main__&#39;</span> <span style="color:#f92672">==</span> __name__:
+    <span style="color:#75715e"># perceptron instance</span>
+    p <span style="color:#f92672">=</span> perceptron<span style="color:#f92672">.</span>Perceptron(eta<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>, max_iter<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>)
+
+    <span style="color:#75715e"># training</span>
+    x <span style="color:#f92672">=</span> []
+    y <span style="color:#f92672">=</span> []
+    <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;iris.data&#39;</span>) <span style="color:#66d9ef">as</span> f:
+        <span style="color:#66d9ef">for</span> sample <span style="color:#f92672">in</span> csv<span style="color:#f92672">.</span>reader(f):
+            x<span style="color:#f92672">.</span>append([float(i) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> sample[:<span style="color:#ae81ff">4</span>]])
+            y<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> sample[<span style="color:#ae81ff">4</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Iris-setosa&#39;</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+    p<span style="color:#f92672">.</span>fit(x, y)
+
+    <span style="color:#75715e"># predict</span>
+    <span style="color:#66d9ef">with</span> open(<span style="color:#e6db74">&#39;predict.data&#39;</span>) <span style="color:#66d9ef">as</span> f:
+        <span style="color:#66d9ef">for</span> sample <span style="color:#f92672">in</span> csv<span style="color:#f92672">.</span>reader(f):
+            xi, yi <span style="color:#f92672">=</span> [float(i) <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> sample[:<span style="color:#ae81ff">4</span>]], sample[<span style="color:#ae81ff">4</span>]
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;predict label: {}, real: {}&#39;</span><span style="color:#f92672">.</span>format(p<span style="color:#f92672">.</span>predict(xi), yi))
+</code></pre></div><p>观察输出可以发现，该Perceptron算法经过4轮迭代找到合适的权重向量，然后采用训练的模型对20条测试数据进行预测，结果准确无误。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">...
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: 1, real: Iris-setosa
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+predict label: -1, real: Iris-versicolor
+</code></pre></div><p>本文代码已托管至<a href="https://github.com/olzhy/machine-learning/tree/main/perceptron">GitHub</a>，欢迎Fork。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] Sebastian &amp; Vahid. Python Machine Learning (Second Edition).</p>
+<p>[2] 李航.(2012). 统计学习方法(第2版). 清华大学出版社, 北京.</p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#机器学习</a>
+            <a href="/tags/python/">#Python</a>
+            <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

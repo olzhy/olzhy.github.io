@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+
+
+  <section class="banner bg-cover" style="background-image: url('/static/images/site/henry-small.jpg');">
+    <img src="/" class="img-fluid illustration" alt="">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <h1>人心惟危 道心惟微 惟精惟一 允执厥中</h1>
+        </div>
+        <div class="col-lg-6 illustration-mobile">
+          <img src="/" class="img-fluid" alt="">
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto px-0">
+        <div class="bg-white shadow block">
+          
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/go1dot7-release-notes.html">Go 1.7 Release Notes 要点整理</a></h2>
+  <div class="mb-3 post-meta">
+    2019年04月27日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>Go 1.7在1.6发布6个月后如约而至，绝大多数的变化在工具链、运行时及核心库的实现上。语言规格上有一项小变化。一如既往，该版本遵守Go 1兼容性准则。
+1 语言方面</p>
+  <a href="https://olzhy.github.io/posts/go1dot7-release-notes.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/go1dot6-release-notes.html">Go 1.6 Release Notes 要点整理</a></h2>
+  <div class="mb-3 post-meta">
+    2019年04月26日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>Go 1.6在1.5发布半年后如约而至，该版本主要变化在语言、运行时及库上面，语言规范未有变化。同理，其保持Go 1兼容性准则。
+1 工具方面</p>
+  <a href="https://olzhy.github.io/posts/go1dot6-release-notes.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/leetcode-rotate-list.html">LeetCode 61 旋转链表</a></h2>
+  <div class="mb-3 post-meta">
+    2019年04月24日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 题目描述
+给定一个链表，向右旋转k位，k为非负数。
+例子1：
+输入：1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, k = 2</p>
+  <a href="https://olzhy.github.io/posts/leetcode-rotate-list.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/golang-modules.html">Golang Modules</a></h2>
+  <div class="mb-3 post-meta">
+    2019年03月10日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 速览
+在正式了解Golang Modules之前，我们先速览一下其使用方式。
+在$GOPATH之外的任意地方，创建一个文件夹：</p>
+  <a href="https://olzhy.github.io/posts/golang-modules.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/nice-to-meet-you.html">很开心遇见你</a></h2>
+  <div class="mb-3 post-meta">
+    2019年03月01日  
+    <a href="/categories/%e9%9a%8f%e7%ac%94">随笔</a>
+    
+  </div>
+  <p>去年的这个时候，我遇见了Jane。她是我遇见的真正豁达，内心自由坦荡的人。她待我真心实意，她叫我一声“磊哥”，即会扫去我内心所有的乌云。
+Jane喜欢运动，喜欢听我唱歌，喜欢研究美食。简单的食材，她都会做成一道难忘的美食。她是能把日子过成诗的人。
+她写过一篇《给未来先生的信》。她理想的那个他不需要有多富贵、有多能耐，但需要与她心灵高度契合。他们一起远行，一起做饭，一起游泳，一起做美食，一起过简单的日子。
+她已将世界看清，但不出离。她热爱生活，懂得生活的真谛。她会忙活半天，用心做一份你爱吃的菜。她会为你的出行安排好所有的日用品，她会将家收拾的干干净净的，物品有序摆放，她会记得给家里的芒果树按时浇水，还有，她喜欢花，收到花她会开心的像个孩子。有她在身边，就会感觉，世界上没有难的住的事，所有事情都会迎刃而解。
+她选择了我，她的爱如水一样自然柔和，真心诚意。我知道遇见她有多么的难得，她在我心里有多重。她是那个会陪我到老的人，我是那个坚守承诺的人，我会为她改变，改变自己的所有坏毛病，去帮她一起实现愿望，永远对她好，一起经历这酸甜苦辣。用一生，让她知道“选择你，没有错”。</p>
+  <a href="https://olzhy.github.io/posts/nice-to-meet-you.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/leetcode-swap-nodes-in-pairs.html">LeetCode 24 成对交换节点</a></h2>
+  <div class="mb-3 post-meta">
+    2019年02月24日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 题目描述
+给定一个链表，对每对相邻节点作交换后返回该链表。
+注：勿改动节点中的值，仅可改动节点顺序。
+例子：</p>
+  <a href="https://olzhy.github.io/posts/leetcode-swap-nodes-in-pairs.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          
+          <div class="mt-5">
+            <!-- pagination -->
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center align-items-center">
+                
+                
+                <li class="page-item">
+                  <a href="/page/15/" class="page-link">
+                    &laquo;
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/page/14/" class="page-link">
+                    14
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/page/15/" class="page-link">
+                    15
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item page-item active ">
+                  <a href="/page/16/" class="page-link">
+                    16
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/page/17/" class="page-link">
+                    17
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/page/18/" class="page-link">
+                    18
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/page/17/" class="page-link">
+                    &raquo;
+                  </a>
+                </li>
+                
+              </ul>
+            </nav>
+            
+            <!-- /pagination -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

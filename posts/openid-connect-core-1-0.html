@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>OpenID Connect 1.0 协议要点梳理 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>OpenID Connect 1.0 协议要点梳理</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年02月26日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>OpenID Connect 1.0协议是基于OAuth 2.0授权框架之上的一个身份鉴别层。其使得客户端可以基于授权服务的鉴权能力来验证及识别终端用户的身份。此外，还可以一种类REST的方式来获取终端用户的基本画像信息。</p>
+<p>OpenID Connect 1.0使用<code>Claims</code>来获取终端用户信息，其还描述了一些安全及隐私方面的考量。</p>
+<p>我们知道，OAuth 2.0授权框架为三方应用获得对受保护资源的访问提供了通用标准。其定义了以访问令牌获取受保护资源的机制，但未定义身份鉴别方面的标准。</p>
+<p>OpenID Connect 1.0协议即是为此而生，即其为OAuth 2.0授权框架扩展了鉴权能力。使用起来也很简单，客户端只需在发起授权请求时将scope值设为<code>openid</code>即可。其返回一个<code>JWT</code>格式的身份令牌（ID Token）即具有鉴权能力。</p>
+<p>OAuth 2.0中，实现了OpenID Connect的<code>授权服务（Authentication Server）</code>被叫作<code>开放身份认证提供商（OpenID Providers）</code>，使用了OpenID Connect的<code>客户端（Client）</code>被叫作<code>依赖方（Relying Parties）</code>。</p>
+<p><strong>1 概览</strong></p>
+<p>OpenID Connect协议的概览图如下。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/02/oidc-1.0-overview.png" alt="" /></p>
+<p>(1) 客户端向授权服务发送授权请求。</p>
+<p>(2) 授权服务对终端用户进行鉴权并获得其授权。</p>
+<p>(3) 授权服务对客户端响应以身份令牌及访问令牌。</p>
+<p>(4) 客户端对身份令牌进行校验，并携带访问令牌向授权服务的用户信息端点请求用户信息。</p>
+<p>(5) 授权服务用户信息端点返回终端用户的<code>Claims</code>。</p>
+<p>OpenID Connect对OAuth 2.0作的主要扩展即是引入以<code>JWT</code>格式表示的身份令牌，使用其即可对终端用户作鉴权。下面列出一个身份令牌（ID Token）的样例。</p>
+<pre><code>{
+   &quot;iss&quot;: &quot;https://server.example.com&quot;,
+   &quot;sub&quot;: &quot;mail@leileiluoluo.com&quot;,
+   &quot;aud&quot;: &quot;s6BhdRkqt3&quot;,
+   &quot;nonce&quot;: &quot;n-0S6_WzA2Mj&quot;,
+   &quot;exp&quot;: 1311281970,
+   &quot;iat&quot;: 1311280970,
+   &quot;auth_time&quot;: 1311280969,
+   &quot;acr&quot;: &quot;urn:mace:incommon:iap:silver&quot;
+}
+</code></pre><p>如下是身份令牌的必须字段：</p>
+<ul>
+<li>
+<p>iss 令牌签发者，以https打头的一串URL。</p>
+</li>
+<li>
+<p>sub 终端用户唯一标识。</p>
+</li>
+<li>
+<p>aud 身份另牌的使用对象，其必包含客户端ID（Client ID）。</p>
+</li>
+<li>
+<p>exp 身份令牌失效截止时间，表示为自<code>1970-01-01 00:00:00</code>的秒数。</p>
+</li>
+<li>
+<p>iat 签发时间，单位同样为秒。</p>
+</li>
+</ul>
+<p>如下是一个非常重要的可选字段：</p>
+<ul>
+<li>nonce 联系客户端及身份令牌会话的一个字符串。客户端若收到该字段，须校验是否为其请求授权时所携带。</li>
+</ul>
+<p><strong>2 鉴权</strong></p>
+<p><strong>2.1 使用授权码模式进行鉴权</strong></p>
+<p>我们知道，在OAuth 2.0中，授权码模式的一大优点是令牌的签发由授权服务直接给到客户端，未暴露给用户代理。且在客户端携带授权码请求访问令牌前，授权服务还可对其进行鉴权。授权码模式使得客户端可与授权服务间维护一个客户端密钥（Client Secret）。</p>
+<p>下图为OAuth 2.0授权码模式流程图。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/02/oauth2-authorization-code-flow.png" alt="" /></p>
+<p>下面结合该图的每一步，阐释OpenID Connect授权码模式的鉴权流程。</p>
+<p>(1) 初始由客户端发起，将资源所有者的用户代理导向授权服务的授权端点。</p>
+<p>授权服务会对客户端信息进行校验，若校验通过，会对终端用户进行鉴权。鉴权方法有用户名密码，sesson cookie等。</p>
+<p>样例请求如下：</p>
+<pre><code>HTTP/1.1 302 Found
+  Location: https://server.example.com/authorize?
+    response_type=code
+    &amp;scope=openid%20profile%20email
+    &amp;client_id=s6BhdRkqt3
+    &amp;state=af0ifjsldkj
+    &amp;redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
+</code></pre><p>必须字段有：</p>
+<ul>
+<li>
+<p>scope 要支持OpenID Connect，该字段必须包含openid。</p>
+</li>
+<li>
+<p>response_type 授权码模式，值为code。</p>
+</li>
+<li>
+<p>client_id 客户端ID</p>
+</li>
+<li>
+<p>redirect_uri 在OpenID Provider注册客户端时所填。</p>
+</li>
+</ul>
+<p>推荐字段有：</p>
+<ul>
+<li>state 维护请求及回调状态，一般为与浏览器cookie绑定后的加密字段。</li>
+</ul>
+<p>可选字段有：</p>
+<ul>
+<li>prompt 若为login，请求授权服务对终端用户重新鉴权。若为consent，请求授权服务获取终端用户许可。</li>
+</ul>
+<p>(2) 授权服务对终端用户鉴权通过后，须在返回信息给客户端前获取资源所有者的授权结果。可能会建立一个交互式窗口让终端用户决定授权哪些权限。</p>
+<p>(3) 授权服务对客户端及资源所有者鉴权完成后，会携带结果将请求重定向至客户端所指定的回调URI。</p>
+<p>若鉴权成功，会生成一个一次性授权码，同时将客户端请求时携带的state参数一并通过用户代理返回到客户端。</p>
+<p>鉴权成功的响应样例如下：</p>
+<pre><code>HTTP/1.1 302 Found
+  Location: https://client.example.org/cb?
+    code=SplxlOBeZQQYbYS6WxSbIA
+    &amp;state=af0ifjsldkj
+</code></pre><p>若终端用户拒绝授权或者授权服务对终端用户验证失败，在客户端回调地址正确的情况下，授权服务会将错误信息返回。</p>
+<p>鉴权失败的响应样例如下：</p>
+<pre><code>HTTP/1.1 302 Found
+  Location: https://client.example.org/cb?
+    error=invalid_request
+    &amp;error_description=
+      Unsupported%20response_type%20value
+    &amp;state=af0ifjsldkj
+</code></pre><p>错误码有：</p>
+<ul>
+<li>
+<p>interaction_required</p>
+</li>
+<li>
+<p>login_required</p>
+</li>
+<li>
+<p>consent_required</p>
+</li>
+</ul>
+<p>&hellip;</p>
+<p>(4) 客户端携带授权码及回调地址向授权服务令牌端点请求令牌。</p>
+<p>客户端对授权服务返回的授权码等信息进行校验，同时验证state参数是否与自己发请求时携带的一致等。若验证通过，会携带授权码及回调地址向授权服务请求访问令牌。</p>
+<p>这次携带的回调地址只是用于授权服务端的验证。</p>
+<p>客户端获取令牌的样例请求如下：</p>
+<pre><code>POST /token HTTP/1.1
+  Host: server.example.com
+  Content-Type: application/x-www-form-urlencoded
+  Authorization: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+
+  grant_type=authorization_code&amp;code=SplxlOBeZQQYbYS6WxSbIA
+    &amp;redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
+</code></pre><p>注意客户端密钥信息通过<code>Authorization: Basic ...</code>的方式进行传递。授权码模式的grant_type字段值须设为authorization_code。</p>
+<p>(5) 授权服务为客户端签发令牌</p>
+<p>签发令牌前，授权服务需要校验客户端密钥信息，校验授权码是否有效且是否已使用，校验回调地址是否与初始请求授权码时一致等。</p>
+<p>验证通过，则签发身份令牌及访问令牌。</p>
+<p>授权服务成功签发令牌的样例响应如下。</p>
+<pre><code>HTTP/1.1 200 OK
+  Content-Type: application/json
+  Cache-Control: no-store
+  Pragma: no-cache
+
+  {
+   &quot;access_token&quot;: &quot;SlAV32hkKG&quot;,
+   &quot;token_type&quot;: &quot;Bearer&quot;,
+   &quot;refresh_token&quot;: &quot;8xLOxBtZp8&quot;,
+   &quot;expires_in&quot;: 3600,
+   &quot;id_token&quot;: &quot;eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
+     yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+     NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+     fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
+     AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
+     Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
+     NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+     QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+     K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+     XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg&quot;
+  }
+</code></pre><p>可以看到，响应体为json格式。令牌类型为<code>Bearer</code>，身份令牌为<code>JWT</code>格式。且特别注意响应头<code>Cache-Control</code>及<code>Pragma</code>，说明了签发的令牌为敏感信息。</p>
+<p>若鉴权失败，授权服务令牌签发失败的样例响应如下：</p>
+<pre><code>HTTP/1.1 400 Bad Request
+  Content-Type: application/json
+  Cache-Control: no-store
+  Pragma: no-cache
+
+  {
+   &quot;error&quot;: &quot;invalid_request&quot;
+  }
+</code></pre><p>客户端接收到响应后，须按如下步骤校验身份令牌：</p>
+<ul>
+<li>
+<p>使用公钥（注册OpenID Connect Provider时所生成）及约定算法解码身份令牌。</p>
+</li>
+<li>
+<p>校验身份令牌<code>iss</code>字段，查看签发者是否有效。</p>
+</li>
+<li>
+<p>校验<code>aud</code>字段是否包含自身客户端ID。</p>
+</li>
+</ul>
+<p>&hellip;</p>
+<p>按如下步骤校验访问令牌：</p>
+<ul>
+<li>若身份令牌包含<code>at_hash</code>字段，须按如下步骤校验其是否合法。</li>
+</ul>
+<p>取身份令牌头字段<code>alg</code>所指定哈希算法，计算访问令牌的八进制哈希值；将哈希值左半部分使用base64url加密；其应与at_hash字段值相等。</p>
+<p><strong>2.2 使用隐式授权模式进行鉴权</strong></p>
+<p>我们知道OAuth 2.0中，隐式授权主要针对在浏览器脚本语言实现的客户端，会暴露给用户代理，具有一定安全风险。使用隐式授权，令牌直接从授权端点返回，并未用到令牌端点。隐式授权的鉴权部分大部分与授权码模式一致，仅对nonce字段的校验是必须的。</p>
+<p>下图为OAuth 2.0隐式授权模式流程图。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/02/oauth2-implicit-flow.png" alt="" /></p>
+<p>下面对图中每一步作解释。</p>
+<p>(1) 初始，客户端将资源所有者的用户代理导向授权端点。</p>
+<p>指定client_id，scope，state参数，同时指定回调地址以便授权服务将用户代理重定向回来。</p>
+<p>鉴权方式与采用授权码模式一致。</p>
+<p>样例请求如下：</p>
+<pre><code>GET /authorize?
+    response_type=id_token%20token
+    &amp;client_id=s6BhdRkqt3
+    &amp;redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
+    &amp;scope=openid%20profile
+    &amp;state=af0ifjsldkj
+    &amp;nonce=n-0S6_WzA2Mj HTTP/1.1
+  Host: server.example.com
+</code></pre><p>必须字段：</p>
+<ul>
+<li>
+<p>response_type 可传<code>id_token</code>或<code>id_token token</code>。</p>
+</li>
+<li>
+<p>redirect_uri 客户端回调地址，须与注册时一致。</p>
+</li>
+<li>
+<p>nonce 用于建立客户端会话与令牌的对应关系，将被授权服务原封不动传回。</p>
+</li>
+</ul>
+<p>(2) 取得资源所有者授权。</p>
+<p>授权服务对资源所有者鉴权（通过用户代理），获取是否准许授权的结果。</p>
+<p>鉴权方式与采用授权码模式一致。</p>
+<p>(3) 若准许授权，授权服务将访问令牌拼在URL上，然后将用户代理重定向至客户端回调地址。</p>
+<p>鉴权方式与采用授权码模式一致。</p>
+<p>成功响应样例如下：</p>
+<pre><code>HTTP/1.1 302 Found
+  Location: https://client.example.org/cb#
+    access_token=SlAV32hkKG
+    &amp;token_type=bearer
+    &amp;id_token=eyJ0 ... NiJ9.eyJ1c ... I6IjIifX0.DeWt4Qu ... ZXso
+    &amp;expires_in=3600
+    &amp;state=af0ifjsldkj
+</code></pre><p>错误响应样例与采用授权码模式类似。</p>
+<p>(4) 用户代理接到重定向指令，并请求服务端静态资源（用于解码令牌）。</p>
+<p>(5) 客户端服务器部分返回内置脚本的资源，可以用来将URI中的令牌取出。</p>
+<p>(6) 用户代理使用上述脚本将令牌取出，并给到客户端。</p>
+<p>使用隐式授权获得的身份令牌须包含如下字段：</p>
+<ul>
+<li>nonce 用于客户端验证响应合法性。</li>
+</ul>
+<p>可能包含如下字段：</p>
+<ul>
+<li>at_hash 用于验证访问令牌</li>
+</ul>
+<p><strong>2.3 使用混合模式进行鉴权</strong></p>
+<p>OpenID Connect混合模式的response_type的组合方式有如下几种，<code>code id_token</code>，<code>code token</code>，<code>code id_token token</code>。</p>
+<p>所以混合模式的授权与鉴权流程大致与授权码模式一致。只是在获取授权码的时候可以顺带获取令牌，也多了一些校验。</p>
+<p>样例请求及响应：</p>
+<pre><code>GET /authorize?
+    response_type=code%20token
+    &amp;client_id=s6BhdRkqt3
+    &amp;redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb
+    &amp;state=af0ifjsldkj HTTP/1.1
+  Host: server.example.com
+
+  HTTP/1.1 302 Found
+  Location: https://client.example.org/cb#
+    access_token=2YotnFZFEjr1zCsicMWpAA
+    &amp;token_type=Bearer
+    &amp;code=SplxlOBeZQQYbYS6WxSbIA
+    &amp;state=af0ifjsldkj
+    &amp;expires_in=3600
+</code></pre><p>详细流程不再赘述。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">#架构设计</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

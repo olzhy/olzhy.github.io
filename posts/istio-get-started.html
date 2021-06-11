@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Istio安装使用 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="工具使用, 云原生, Kubernetes, Service Mesh, Istio">
+  <meta name="description"
+    content="Istio安装使用入门，使用mac操作系统，docker-desktop k8s集群部署。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Istio安装使用</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年12月16日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>本文所使用的操作系统为macOS 11.1，使用Docker Desktop 3.0.1自带的Kubernetes(v1.19.3) 作为部署环境。</p>
+<h3 id="1-istio下载及安装">1 Istio下载及安装</h3>
+<p>进入Istio<a href="https://github.com/istio/istio/releases/tag/1.8.1">发布页面</a>，下载适配本文操作系统的最新版本<a href="https://github.com/istio/istio/releases/download/1.8.1/istio-1.8.1-osx.tar.gz">istio-1.8.1-osx.tar.gz</a>，然后解压到<code>/usr/local/istio-1.8.1</code>，可以看到下面包含<code>bin</code>及<code>samples</code>文件夹，<code>bin</code>里包含<code>istioctl</code>命令，<code>samples</code>里包含Istio自带的样例应用的部署配置。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ tree
+
+.
+├── bin
+│   └── istioctl
+├── samples
+│   ├── README.md
+│   ├── addons
+│   ├── bookinfo
+...
+</code></pre></div><p>修改<code>/etc/profile</code>，将<code>/usr/local/istio-1.8.1/bin</code>追加到<code>PATH</code>，这样即可以随时随地使用<code>istioctl</code>命令了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ export PATH<span style="color:#f92672">=</span>/usr/local/istio-1.8.1/bin:$PATH
+</code></pre></div><p>因我们安装Istio主要作样例演示，所以选择<code>profile=demo</code>，安装命令如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ istioctl install --set profile<span style="color:#f92672">=</span>demo -y
+
+...
+✔ Istio core installed                                                                                    
+✔ Istiod installed                                                                                        
+✔ Egress gateways installed                                                                               
+✔ Ingress gateways installed                                                               
+✔ Installation complete
+</code></pre></div><p>约1分钟后，其主要组件Istiod, Ingress Gateway, Egress Gateway都安装完成了。可以发现，其将上述组件安装到了<code>istio-system</code>这个namespace下。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get deployments -n istio-system
+
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+istio-egressgateway    1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           14h
+istio-ingressgateway   1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           14h
+istiod                 1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           14h
+</code></pre></div><h3 id="2-bookinfo样例应用部署">2 Bookinfo样例应用部署</h3>
+<p>在部署样例应用前，我们新建一个专门用来演示的namespace <code>istio-demo</code>，且标记该namespace使用istio自动注入。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl create namespace istio-demo
+$ kubectl label namespace istio-demo istio-injection<span style="color:#f92672">=</span>enabled
+</code></pre></div><p>接下来先粗略看一下待部署应用Bookinfo的几个模块。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ tree -L <span style="color:#ae81ff">1</span> samples/bookinfo/src
+
+.
+├── productpage // Bookinfo的页面入口，前后台一体，JavaScript + Python实现
+├── details // 图书详情后台服务，Ruby实现
+├── reviews // 图书评价后台服务，Java实现，采用Liberty部署
+└── ratings // 图书评价等级后台服务，nodejs编写，数据库采用mysql或mongodb
+</code></pre></div><p>下面，使用Istio <code>samples</code>文件夹下自带的配置部署Bookinfo应用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ kubectl apply -n istio-demo -f samples/bookinfo/platform/kube/bookinfo.yaml
+
+...
+deployment.apps/reviews-v1 created
+deployment.apps/reviews-v2 created
+deployment.apps/reviews-v3 created
+...
+</code></pre></div><p>可以看到<code>reviews</code>组件部署了3个版本，除此之外，其他组件均部署了一个版本。</p>
+<h3 id="3-bookinfo样例应用访问">3 Bookinfo样例应用访问</h3>
+<p>查看deployments及pods，发现Bookinfo的各个组件已部署完成：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get deployments -n istio-demo
+
+NAME             READY   UP-TO-DATE   AVAILABLE   AGE
+details-v1       1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           7m6s
+productpage-v1   1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           7m4s
+ratings-v1       1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           7m6s
+reviews-v1       1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           7m5s
+reviews-v2       1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           7m5s
+reviews-v3       1/1     <span style="color:#ae81ff">1</span>            <span style="color:#ae81ff">1</span>           7m5s
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get pods -n istio-demo
+
+NAME                              READY   STATUS    RESTARTS   AGE
+details-v1-79c697d759-c8h6k       2/2     Running   <span style="color:#ae81ff">0</span>          7m12s
+productpage-v1-65576bb7bf-5ln54   2/2     Running   <span style="color:#ae81ff">0</span>          7m11s
+ratings-v1-7d99676f7f-2k75j       2/2     Running   <span style="color:#ae81ff">0</span>          7m12s
+reviews-v1-987d495c-njj9f         2/2     Running   <span style="color:#ae81ff">0</span>          7m12s
+reviews-v2-6c5bf657cf-c6x46       2/2     Running   <span style="color:#ae81ff">0</span>          7m12s
+reviews-v3-5f7b9f4f77-mpt9z       2/2     Running   <span style="color:#ae81ff">0</span>          7m12s
+</code></pre></div><p>下面我们试着在ratings容器里访问Bookinfo的入口页面productpage。</p>
+<p>使用<code>kubectl describe pod</code>可以发现ratings pod除了原有容器ratings外，多了两个Sidecar：istio-init与istio-proxy。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl describe pod/ratings-v1-7d99676f7f-2k75j -n istio-demo
+
+...
+Created container istio-init
+...
+Created container ratings
+...
+Created container istio-proxy
+</code></pre></div><p>所以，执行命令时，需指定容器为ratings，curl请求productpage，发现页面标题已可正常显示。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl exec ratings-v1-7d99676f7f-2k75j -c ratings -n istio-demo -- curl -s productpage:9080/productpage | grep -o <span style="color:#e6db74">&#34;&lt;title&gt;.*&lt;/title&gt;&#34;</span>
+
+&lt;title&gt;Simple Bookstore App&lt;/title&gt;
+</code></pre></div><p>下面看一下该应用如何在集群外部进行访问。涉及到通过配置Istio的Ingress Gateway，从而将流量打到productpage。同样，需要执行下<code>samples</code>文件夹下自带的配置文件。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl apply -n istio-demo -f samples/bookinfo/networking/bookinfo-gateway.yaml
+</code></pre></div><p>然后查看下Ingress Gateway的ip及端口。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl get service istio-ingressgateway -n istio-system
+
+NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP   PORT<span style="color:#f92672">(</span>S<span style="color:#f92672">)</span>                            AGE
+istio-ingressgateway   LoadBalancer   10.108.227.8   localhost     ...80:32008/TCP,443:30895/TCP...   15h
+</code></pre></div><p>所以，对于本文所采用的Docker Desktop K8s本地部署环境来说，外部IP就是localhost。采用<code>http://localhost/productpage</code>即可访问Bookinfo的productpage页面。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/istio-bookinfo.png#center" alt="" /></p>
+<h3 id="4-istio-dashboard安装">4 Istio Dashboard安装</h3>
+<p>下面安装一下Istio的几个插件，初步体验里边的一些功能。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ kubectl apply -f samples/addons
+
+...
+deployment.apps/kiali created
+deployment.apps/prometheus created
+deployment.apps/jaeger created
+...
+</code></pre></div><p><strong>a）先看一下Kiali面板</strong></p>
+<p>键入如下命令，可以看到，打开了kiali面板。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ istioctl dashboard kiali
+</code></pre></div><p>然后，查看<code>istio-demo</code> namespace的应用拓扑图。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/istio-kiali.png#center" alt="" /></p>
+<p>可以看到，调用关系一目了然，请求由Istio Ingress Gateway进来，首先访问productpage，productpage访问details获取图书详情，productpage访问reviews获取评论，reviews访问ratings获取图书评级。</p>
+<p><strong>b）再看一下Jaeger面板</strong></p>
+<p>键入如下命令，打开jaeger面板。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ istioctl dashboard jaeger
+</code></pre></div><p>左侧Service下拉菜单，选择<code>productpage.istio-demo</code>，从右面的Traces里点击productpage，可以看到如下调用详情。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2020/12/istio-jaeger.png#center" alt="" /></p>
+<p>调用链以时间序横向展示，同样可以看到请求由istio-ingressgateway进来到达productpage，productpage调用details及reviews，reviews调用ratings，每个调用的时间花费亦显示了出来。</p>
+<h3 id="5-istio卸载">5 Istio卸载</h3>
+<p>Istio初探结束，按照如下步骤依序进行卸载。</p>
+<ul>
+<li>卸载addons</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ kubectl delete -f samples/addons
+</code></pre></div><ul>
+<li>卸载Bookinfo</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ cd /usr/local/istio-1.8.1
+$ kubectl delete -n istio-demo -f samples/bookinfo/platform/kube/bookinfo.yaml
+$ kubectl delete -n istio-demo -f samples/bookinfo/networking/bookinfo-gateway.yaml
+</code></pre></div><ul>
+<li>卸载Istio</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ istioctl manifest generate --set profile<span style="color:#f92672">=</span>demo | kubectl delete --ignore-not-found<span style="color:#f92672">=</span>true -f -
+</code></pre></div><ul>
+<li>删除namespace istio-system</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl delete namespace istio-system
+</code></pre></div><ul>
+<li>取消对istio-demo进行Istio自动注入</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl label namespace istio-demo istio-injection-
+</code></pre></div><ul>
+<li>删除namespace istio-demo</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ kubectl delete namespace istio-demo
+</code></pre></div><blockquote>
+<p>参考资料</p>
+<p>[1] <a href="https://istio.io/latest/docs/setup/getting-started/">Get Started - Istio</a></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">#工具使用</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

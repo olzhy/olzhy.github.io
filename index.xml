@@ -1,0 +1,2272 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>磊磊落落</title>
+    <link>https://olzhy.github.io/</link>
+    <description>Recent content on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 21 May 2021 15:14:46 +0800</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PostgreSQL初探</title>
+      <link>https://olzhy.github.io/posts/postgres-getting-started.html</link>
+      <pubDate>Fri, 21 May 2021 15:14:46 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/postgres-getting-started.html</guid>
+      <description>上一篇已经安装好了PostgreSQL环境，本篇会在其上使用SQL做一些简单的操作。
+1 基础SQL操作 a) 建表</description>
+    </item>
+    
+    <item>
+      <title>在CentOS上以源码安装PostgreSQL</title>
+      <link>https://olzhy.github.io/posts/install-postgres-on-centos-from-source.html</link>
+      <pubDate>Thu, 13 May 2021 17:44:42 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/install-postgres-on-centos-from-source.html</guid>
+      <description>PostgreSQL是一款开源的对象关系型数据库管理系统（Object-Relational Database Management System, ORDBMS），其基于加州大学伯克利分校最初的POSTGRE源码开发，支持绝大部分SQL标准并提供诸多现代化特性。</description>
+    </item>
+    
+    <item>
+      <title>读《历史深处的民国》</title>
+      <link>https://olzhy.github.io/posts/reading-one-hundred-year-history.html</link>
+      <pubDate>Wed, 14 Apr 2021 11:38:36 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/reading-one-hundred-year-history.html</guid>
+      <description>一直想花时间了解一下这段离我们最近却不那么熟悉的民国历史。这个四月终于花了一些时间一口气将江城所著的《历史深处的民国》阅读完毕。全书共三部分：晚清的苟延残喘到北洋的初试共和，军阀混战到建立民国，顽强抗日到最终胜利。
+整体来看，这一百年的历史是一个民族受尽苦难又可歌可泣的的新生史。
+晚清的这段历史是多少人愤懑且难以阅读下去的一部分。列强环伺，任人宰割，政府腐败，民不聊生。这个王朝步履蹒跚，昏庸老朽。虽有仁人志士尝试各种革新方法也挽救不了其颓势。
+短暂的共和，虽带来短暂的稳定，但未有坚定的信念与纲领，走到后来或因私心作祟或因利益难衡，终以失败告终。
+接下来的军阀割据，带来较长时间的内乱，都想当老大，都没有足够的实力。终是打来打去，百姓受苦。</description>
+    </item>
+    
+    <item>
+      <title>Golang 高效的字符串拼接方法</title>
+      <link>https://olzhy.github.io/posts/efficent-string-concatenation-in-golang.html</link>
+      <pubDate>Sat, 03 Apr 2021 08:16:52 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/efficent-string-concatenation-in-golang.html</guid>
+      <description>日常编码中离不开字符串拼接，最常用的当属原生的拼接方式（+=）。但其在少量次数拼接中性能还可以，若进行大量的字符串拼接则应使用其它更高效的方式。
+本文首先列出Golang中常用的几种字符串拼接方式，然后会对它们进行基准测试，以期阅读完本文，我们能对各种拼接方法的适用场景有一个基本了解。
+1 字符串拼接有几种方法？ 孔乙己问：“回字有几种写法？”。我们在Golang使用中也难免会被问到：“字符串拼接有几种方法？”。下面就一一道来。</description>
+    </item>
+    
+    <item>
+      <title>Istio证书管理之植入CA证书</title>
+      <link>https://olzhy.github.io/posts/istio-plug-in-ca-certificates.html</link>
+      <pubDate>Sun, 10 Jan 2021 18:27:31 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-plug-in-ca-certificates.html</guid>
+      <description>本文介绍管理员如何使用根证书、签发证书及秘钥为Istio配置CA（证书颁发机构）。Istio CA使用由中间CA签发的私钥及证书，而中间CA由根CA签发。这样，Istio CA即可为工作负载签发根证书及私钥。CA层次结构图如下。
+图片引自(Plug in CA Certificates)</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之安全Gateway</title>
+      <link>https://olzhy.github.io/posts/istio-secure-gateways.html</link>
+      <pubDate>Sat, 02 Jan 2021 08:29:44 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-secure-gateways.html</guid>
+      <description>上文“Istio流量管理之Ingress Gateway”介绍了如何使用Gateway将一个7层HTTP服务暴露给外部使用。本文将介绍如何为Gateway配置单向或双向TLS从而暴露一个安全的HTTPS服务给外部访问。关于Istio安装等环境准备，请参阅“Istio安装使用”。
+1 部署httpbin 使用Istio安装目录自带的配置文件将httpbin部署至istio-demo namespace。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之Ingress Gateway</title>
+      <link>https://olzhy.github.io/posts/istio-ingress-gateways.html</link>
+      <pubDate>Fri, 01 Jan 2021 08:07:25 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-ingress-gateways.html</guid>
+      <description>Istio Ingress Gateway是允许外部流量进入Istio服务网格的边缘服务。其比Kubernetes Ingress更具扩展性。且使用Istio Ingress Gateway，使得Istio对于入口流量同样具有策略控制能力及可观察性。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之流量镜像</title>
+      <link>https://olzhy.github.io/posts/istio-mirroring.html</link>
+      <pubDate>Tue, 29 Dec 2020 14:06:34 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-mirroring.html</guid>
+      <description>本文介绍一下Istio的流量镜像功能，即使用Istio可以将某一服务的实时流量拷贝一份并镜像到另一个服务。该特性对线上调试特别有用。
+本文使用httpbin样例来做测试，首先部署两个版本的httpbin服务，然后将请求流量都打到v1，最后使用流量镜像功能将打到v1的流量同时拷贝一份到v2。
+关于Istio安装等环境准备，请参阅“Istio安装使用”。
+1 httpbin样例部署 部署httpbin-v1，且已开启访问日志。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之熔断</title>
+      <link>https://olzhy.github.io/posts/istio-circuit-breaking.html</link>
+      <pubDate>Mon, 28 Dec 2020 08:23:19 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-circuit-breaking.html</guid>
+      <description>熔断是创建弹性微服务应用的重要特性，使用熔断可以对并发连接太多，请求过频等做出主动防御，避免服务链条因单一故障问题而出现雪崩效应。
+因熔断设置针对的是具体的目标主机，所以Istio使用Destination Rule来进行配置。
+本文使用Istio自带的httpbin样例来设定熔断配置，然后使用fortio客户端模拟并发请求来触发熔断。关于Istio安装等环境准备，请参阅“Istio安装使用”。
+1 httpbin样例部署 httpbin是一个专门用来做HTTP请求测试的服务。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之请求超时</title>
+      <link>https://olzhy.github.io/posts/istio-request-timeouts.html</link>
+      <pubDate>Sun, 27 Dec 2020 16:41:03 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-request-timeouts.html</guid>
+      <description>可以使用Istio在路由中设置请求超时时间。下面使用Bookinfo样例测试一下。
+关于环境准备，请参阅“Istio安装使用”。
+本文，我们将使用v2版本的reviews，然后为ratings注入响应延迟，最后修改reviews的超时时间来查看productpage的变化。
+开始前，先配置默认的Destination Rule。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之TCP流量转移</title>
+      <link>https://olzhy.github.io/posts/istio-tcp-traffic-shifting.html</link>
+      <pubDate>Sat, 26 Dec 2020 08:48:52 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-tcp-traffic-shifting.html</guid>
+      <description>在上文“Istio流量管理之流量转移”中，我们使用Istio为7层HTTP应用作了流量按比例分配测试。本文使用Istio自带的tcp-echo样例对4层TCP应用作一下测试。
+关于Istio安装等环境准备，请参阅“Istio安装使用”。
+1 tcp-echo源码解析 tcp-echo是一个4层应用。其启动后会一直监听所暴露的端口，并等待TCP连接，连接成功后提供ping/pong请求响应。从源码可以看到，其接收到一串字符后会拼上一个前缀并返回给客户端。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之流量转移</title>
+      <link>https://olzhy.github.io/posts/istio-traffic-shifting.html</link>
+      <pubDate>Fri, 25 Dec 2020 07:16:55 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-traffic-shifting.html</guid>
+      <description>在日常的持续部署中，我们一般使用滚动升级的方式来进行微服务升级。若使用Kubernetes容器编排平台进行微服务滚动升级，其一般通过控制实例数的方式来实现。将旧版本下线，将新版本启动，新实例健康检查通过后，统一将流量打到新版本。
+而使用Istio，不用控制实例数，且可以更细粒度的控制流量打到各个版本的百分比，从而实现按比例将流量逐渐迁移到新版本来实现升级。
+下面使用Bookinfo样例看一下Istio的流量转移如何使用。我们知道reviews有三个版本，假定我们想从v1版本升级到v3版本。（关于Istio的安装及Bookinfo样例的部署，请参看上文“Istio安装使用”）
+首先，配置默认的Destination Rule。</description>
+    </item>
+    
+    <item>
+      <title>2020 年終總結</title>
+      <link>https://olzhy.github.io/posts/2020-summary.html</link>
+      <pubDate>Thu, 24 Dec 2020 08:13:42 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/2020-summary.html</guid>
+      <description>2020馬上就要結束了，總結2020，于國家于自己都是不平凡的一年。
+年初，疫情肆虐，讓每個人都心驚膽戰。可敬的是，我們的民族，每當關鍵時刻，總有人不畏艱險，迎難而上，帶領人們走出困境。
+于自己而言，2020將是一生中都難忘的一年：在這一年中，遇到一些事，明白一些道理。
+這一年，太太生產，女兒出生，帶給我不一樣的人生經歷。更重要的是，鞭策我承擔起做一個好丈夫好父親的責任。
+這一年，身體經歷一次非同尋常的考驗，皆因自己多年的不良習慣所致。磨礪我重新審視自己，審視人生。塞翁失馬，焉知非福，也因此結識中醫，結識傳統文化。解決人生的種種問題，皆應內求。—— 這是我至此所明白的最重要的人生道理。而給我這把鑰匙的人即是于網絡空間相識的張慶祥導師，通過導師對『論語』，『心經』，『陽明心學』的解讀，讓我明白自己出問題的根本——即未順應天道。感歎古人的非凡智慧，中華民族的偉大。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之故障注入</title>
+      <link>https://olzhy.github.io/posts/istio-fault-injection.html</link>
+      <pubDate>Wed, 23 Dec 2020 10:04:19 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-fault-injection.html</guid>
+      <description>在微服务架构中，若一个服务不可用，会不会导致调用其API的上游服务也不可用，上游服务有没有针对该种情形做容错处理，这对应用的整体可用性来说是很关键的。Istio可以在对微服务无侵入的情况下来模拟其发生故障，以帮助我们测试应用整体的容错能力。
+Istio主要使用Virtual Service提供两种故障注入能力：响应延迟与服务中止。
+ 响应延迟  用来模拟被调用服务在高负载情况下造成响应延迟。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理之请求路由</title>
+      <link>https://olzhy.github.io/posts/istio-request-routing.html</link>
+      <pubDate>Mon, 21 Dec 2020 08:37:43 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-request-routing.html</guid>
+      <description>在上文“Istio安装使用”中，我们对Istio进行了安装，并对Bookinfo样例进行了部署测试。本文接着上文，对Istio流量管理中的请求路由进行概念学习及样例测试。
+我们知道，Istio通过Envoy数据面拦截了所有服务实例的进出流量。这样基于Istio服务网格即可以实现诸多常规方式难以实现的流量管理策略，诸如灰度发布，A/B测试，按比率分流等。
+Istio主要提供两个通过YAML配置的自定义资源来实现流量管理：Virtual Service及Destination Rule。这样即做到流量管理与上游请求服务及下游被请求服务解耦。Virtual Service主要用来配置流量如何流动（即定义符合哪些规则的流量打到哪些服务子集上），而Destination Rule则主要用来定义具体的服务子集。</description>
+    </item>
+    
+    <item>
+      <title>Istio安装使用</title>
+      <link>https://olzhy.github.io/posts/istio-get-started.html</link>
+      <pubDate>Wed, 16 Dec 2020 07:48:56 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-get-started.html</guid>
+      <description>本文所使用的操作系统为macOS 11.1，使用Docker Desktop 3.0.1自带的Kubernetes(v1.19.3) 作为部署环境。</description>
+    </item>
+    
+    <item>
+      <title>API Gateway与Service Mesh有什么不同？</title>
+      <link>https://olzhy.github.io/posts/api-gateway-and-service-mesh.html</link>
+      <pubDate>Mon, 14 Dec 2020 14:57:52 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/api-gateway-and-service-mesh.html</guid>
+      <description>一般的认为是：API Gateway用来处理南北向流量，Service Mesh用来处理东西向流量。这样的区分方式并不准确。下面会递进式分析两者的使用场景及异同点，以期通过本文可以明白何时使用API Gateway，何时使用Service Mesh？</description>
+    </item>
+    
+    <item>
+      <title>为什么Istio重回单体架构？</title>
+      <link>https://olzhy.github.io/posts/why-istio-back-to-monolithic-architecture.html</link>
+      <pubDate>Wed, 09 Dec 2020 17:52:16 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/why-istio-back-to-monolithic-architecture.html</guid>
+      <description>随着应用规模的不断扩大，单体架构已不能承载企业越来越多的业务需求，微服务架构随之兴起。微服务给我们带来诸多益处的同时也带来诸多挑战，其根源即是复杂性的提升。为了解决微服务带来的诸多问题，其中便催生了服务网格的流行。但2020年初，业内最知名的服务网格实现Istio却反其道而行之，由微服务架构重回单体架构，其原因是什么呢？可能是一个契机，让我们重新审思微服务架构带来的好处及问题。
+1 微服务架构有什么优势？ 将一个复杂的单体应用切分为按领域细分的微服务后，可以让团队聚焦所关注的领域，做到相互独立，彼此不受影响。其带来的优势主要有：
+ 彼此独立交付，快速迭代  各自解耦的微服务，可以让彼此间有明确的边界，各自可以采用不同的语言或技术栈，基于轻量协议（HTTP，RPC等）进行交互。每个微服务可以拥有自己的生命周期，无须相互协调或等待，做到彼此独立交付，相互不受影响。因粒度小，迭代快，从总体看，可以做到并行开发，流水线式产出。</description>
+    </item>
+    
+    <item>
+      <title>什么是服务网格？</title>
+      <link>https://olzhy.github.io/posts/what-is-a-service-mesh.html</link>
+      <pubDate>Mon, 07 Dec 2020 15:37:44 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/what-is-a-service-mesh.html</guid>
+      <description>1 什么是服务网格？ 服务网格是分布式软件系统内部用于管理所有“服务到服务”通信的一个系统。
+聊服务网格为什么会出现之前，可以聊聊服务架构的演进过程。起初，我们使用一个单体应用来提供服务。 比如我们在做一个电商系统，采用典型的MVC三层架构，在单体架构中，组成这个系统的购物车功能，库存查询功能，订单功能等都是这个服务内部的一个函数或接口。所以这些操作都是进程内的函数调用，不涉及诸如RPC等服务与服务的跨进程通信。但随着时间的增加，我们发现单体架构越来越不能满足我们的需求，比如用户访问暴增，业务逻辑愈加复杂，一个单体的服务已不能满足功能及性能的要求。我们需要将其按业务领域拆分为几个独立的服务来对外提供服务，这就是微服务架构。比如原来的购物车功能，库存查询功能，订单功能被拆分为独立的服务。这时接收到一个购物请求，我们需要分别查询不同的微服务来进行业务处理，这就涉及跨进程通信。</description>
+    </item>
+    
+    <item>
+      <title>记青龙山之行</title>
+      <link>https://olzhy.github.io/posts/qinglongshan.html</link>
+      <pubDate>Sun, 29 Nov 2020 12:24:47 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/qinglongshan.html</guid>
+      <description>这是一次难忘的登山旅行。
+来大连三年，除有几次休闲性的登山外，未随驴友真正意义的爬一次山。这次，准备跟随专业的驴友爬一次山，初衷是想捡回时隔三年的登山习惯，感受登山的快乐。
+28号，早上5点起床，穿上登山鞋，冲锋衣，带上太太前日已帮准备好的吃的，带了两瓶热水就出发了。6点半与驴友集合，坐上了去往目的地的小巴。他们多是常年登山的专业驴友，我是他们当中唯一的新人。约行2个半小时，到达目的地盖州青龙山。
+眼前是层峦叠嶂的山峰，不算太高，魏延似青龙，山脚下是一个小湖，晨阳打在里边，波光粼粼。
+刚开始兴致勃勃跟随队伍穿过几个小山坡，当开始真正的上爬模式时，才知道前路艰辛。气息加快，开始用嘴呼吸。常年不运动，身体非常吃力，腿上如绑铅块，难以行进，胳膊上没有力气，抓着石头攀爬，暼到脚下的深谷，感觉就要掉了下去。再看看随行的驴友，个个生龙活虎，如履平地，其中一位65岁的大爷，气息充足，当我毫无气力时，人家放声高歌。这鲜明的对比，真是羞愧难当。我用尽所有力气与全部意志跟随队伍穿越了这两个峰谷。</description>
+    </item>
+    
+    <item>
+      <title>感知机算法及Python实现</title>
+      <link>https://olzhy.github.io/posts/perceptron-python-implementation.html</link>
+      <pubDate>Sat, 10 Oct 2020 11:29:15 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/perceptron-python-implementation.html</guid>
+      <description>1 何为感知机？ 感知机是一个单层人工神经网络，是一个用于二分类的算法，其也是线性分类器的一种。
+其可被抽象为下图所示模型，即一个神经元接收到来自n个其它神经元的输入信号，对这些输入信号，通过带权值的连接进行计算（各个连接线的权值与对应输入值相乘，然后进行累加），然后判断计算出来的累加值是否超过阈值（Threshold），若等于或超过阈值，则输出y为1，表示该神经元激活，否则输出y为-1表示该神经元抑制。
+所以，感知机模型可被描述为：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 105 以先序遍历及中序遍历构造二叉树</title>
+      <link>https://olzhy.github.io/posts/leetcode-construct-binary-tree-from-preorder-and-inorder-traversal.html</link>
+      <pubDate>Tue, 06 Oct 2020 19:07:00 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-construct-binary-tree-from-preorder-and-inorder-traversal.html</guid>
+      <description>1 题目描述 给定一棵二叉树的先序遍历及中序遍历，尝试构建该二叉树。
+说明：
+ 假定树中不存在值重复的情形  例如：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 707 设计链表</title>
+      <link>https://olzhy.github.io/posts/leetcode-design-linked-list.html</link>
+      <pubDate>Mon, 05 Oct 2020 12:09:28 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-design-linked-list.html</guid>
+      <description>1 题目描述 设计链表的实现。您可以选择使用单链表或者双链表来实现。
+单链表中的节点应有val和next两个属性，val为当前节点的值，next为下一个节点的指针或引用。
+若使用双链表实现，则需要一个额外的属性prev来指向当前节点的前一个节点。</description>
+    </item>
+    
+    <item>
+      <title>Golang text/template 使用样例</title>
+      <link>https://olzhy.github.io/posts/golang-text-template.html</link>
+      <pubDate>Sat, 03 Oct 2020 09:05:41 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-text-template.html</guid>
+      <description>Golang text/template 包是一个数据驱动的模版渲染工具。提供条件判断，数组或map遍历；参数赋值，函数或方法调用；自定义函数扩展，模板嵌套及重用等功能。基于该工具，可以轻松实现复杂场景的文本渲染。如Helm Template基于此实现了功能强大的Kubernetes配置文件渲染工作。
+本文使用一个样例来演示text/template的使用，代码已托管至GitHub。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 94 二叉树中序遍历</title>
+      <link>https://olzhy.github.io/posts/leetcode-binary-tree-inorder-traversal.html</link>
+      <pubDate>Sun, 26 Jul 2020 12:15:21 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-binary-tree-inorder-traversal.html</guid>
+      <description>1 题目描述 给定一棵二叉树，返回其节点值的中序遍历结果。
+例如：
+输入：[1,null,2,3] 1 \ 2 / 3 输出：[1,3,2] 注：递归较简单，您可否使用循环来实现？</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 92 反转链表 II</title>
+      <link>https://olzhy.github.io/posts/leetcode-reverse-linked-list-ii.html</link>
+      <pubDate>Sat, 25 Jul 2020 10:00:10 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-reverse-linked-list-ii.html</guid>
+      <description>1 题目描述 对单链表的某一段（自第m个位置起到第n个位置止）进行反转。
+例如：
+输入：1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, m = 2, n = 4 输出：1-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;5-&amp;gt;NULL 注：1 ≤ m ≤ n ≤ length（链表长度）</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 206 反转链表</title>
+      <link>https://olzhy.github.io/posts/leetcode-reverse-linked-list.html</link>
+      <pubDate>Fri, 24 Jul 2020 05:25:30 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-reverse-linked-list.html</guid>
+      <description>1 题目描述 对单链表进行反转。
+例如：
+输入: 1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL 输出: 5-&amp;gt;4-&amp;gt;3-&amp;gt;2-&amp;gt;1-&amp;gt;NULL 注：链表反转可使用循环或者递归方式实现，您能否同时实现此两种算法？</description>
+    </item>
+    
+    <item>
+      <title>《机器学习基石》课程学习笔记</title>
+      <link>https://olzhy.github.io/posts/machine-learning-foundation-notes.html</link>
+      <pubDate>Tue, 23 Jun 2020 05:25:30 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/machine-learning-foundation-notes.html</guid>
+      <description>台大林轩田老师《机器学习基石》课程学习笔记（笔记中所有图片均引自林老师的课件）。
+1 关于学习 1.1 课程介绍 该课程将理论与实践相结合，从基础开始切入。</description>
+    </item>
+    
+    <item>
+      <title>Istio流量管理初探</title>
+      <link>https://olzhy.github.io/posts/istio-traffic-management.html</link>
+      <pubDate>Tue, 21 Apr 2020 08:43:50 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/istio-traffic-management.html</guid>
+      <description>Istio使用Envoy来代理网格服务的所有进出流量，可在不改变服务代码的情况下自由进行流量控制。 使用Istio，诸如熔断处理，服务超时，重试等服务级特性，通过简单的几行配置即可实现；同时，诸如A/B测试，灰度发布，按比例滚动升级等重要任务亦可以很容易实现。
+所有上述高级特性均可通过使用Istio流量管理API来实现，该API使用Kubernetes CRDs（custom resource definitions，自定义资源描述）来进行配置。 流量管理API的几个重要的资源有：Virtual Service，Destination Rule，Gateway，Service Entry，Sidecar。下面分别进行介绍。</description>
+    </item>
+    
+    <item>
+      <title>威胁建模</title>
+      <link>https://olzhy.github.io/posts/threat-modeling.html</link>
+      <pubDate>Sun, 19 Apr 2020 17:57:50 +0800</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/threat-modeling.html</guid>
+      <description>威胁建模是一个识别潜在威胁的过程。通过威胁建模以期找出攻击者的画像及其最可能的攻击路线，以及最易遭受攻击的资产。所以威胁建模做的即是找到最易攻击的地方并制定出应对方案。
+概念上讲，威胁建模就在我们的日常生活中，只是我们未察觉而已。上班早高峰规避危险的操作及地方等以防可能出现的事故。在操场玩耍的孩子们找出最佳路径直奔目的地以规避校霸围追堵截。在更正式的场景，威胁建模从远古起即已用于军事防卫等备战规划上了。
+威胁建模的演进 主要有如下几个。
+1999，微软提出STRIDE模型识别攻击。</description>
+    </item>
+    
+    <item>
+      <title>观《百鸟朝凤》</title>
+      <link>https://olzhy.github.io/posts/hundreds-of-birds.html</link>
+      <pubDate>Sun, 22 Mar 2020 13:31:38 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/hundreds-of-birds.html</guid>
+      <description>今日看了电影《百鸟朝凤》，有一些感触。
+我是一个土生土长的山西人，对唢呐有一些认识，因为唢呐就生长在这黄土地上。
+村里办白事一般会请一班鼓，其由唢呐，笙，鼓等乐器组成，而唢呐又是这班鼓里的灵魂，班主也一般为唢呐吹奏者所担任。
+我叔家堂兄比我大两岁，从小酷爱唢呐，我在十岁时，我们分别得到一把唢呐。我的是我的二舅给买的，我哥的是他的父亲我二叔给买的。得益于家族的基因，我们在未有任何音乐知识的情况下，能拿起唢呐凭着感觉吹出一些歌曲的调子来。
+只能说唢呐还没有真正走进我的心底，所以无缘在这条道路上继续走下去。相反，我哥却是一个从小就知道自己要什么的人。自这把唢呐开始，从初春的村外静处到夏日的玉米地头，秋日的草垛旁边到冬日的院内树上都是他苦练唢呐的地方。</description>
+    </item>
+    
+    <item>
+      <title>构建SaaS应用的十二因子指导原则</title>
+      <link>https://olzhy.github.io/posts/12-factor-app.html</link>
+      <pubDate>Fri, 20 Mar 2020 23:43:02 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/12-factor-app.html</guid>
+      <description>现代软件通常以Web服务的方式交付，称为软件即服务（SaaS），十二因子指导原则即是构建SaaS应用的一套方法论。其不仅是构建SaaS应用的指导原则，也是微服务，云原生应用开发须遵循的指导原则。
+十二因子指导原则或者最佳实践以期达到：
+  使用统一的规范，可以使新进开发人员节省时间成本，按照最佳实践走即可；</description>
+    </item>
+    
+    <item>
+      <title>Golang使用Selenium实现自动化测试初探</title>
+      <link>https://olzhy.github.io/posts/golang-selenium.html</link>
+      <pubDate>Sat, 14 Mar 2020 00:00:16 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-selenium.html</guid>
+      <description>Selenium整合了一揽子工具与依赖库，支持Web浏览器自动化，提供一组扩展来模拟人与浏览器交互。我们基于其满足W3C标准的WebDriver来编写的自动化代码可在各种主流浏览器复用。
+所以这里关键的一个组件即是WebDriver，其负责与浏览器厂商提供的API来与浏览器交互。
+使用其即可做出模拟终端用户的操作，如：文本框输入，下拉框选择，链接点击等。此外还提供鼠标移动，JavaScript脚本执行等能力。
+1 环境准备</description>
+    </item>
+    
+    <item>
+      <title>Istio是什么？</title>
+      <link>https://olzhy.github.io/posts/what-is-istio.html</link>
+      <pubDate>Sun, 08 Mar 2020 07:53:30 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/what-is-istio.html</guid>
+      <description>云平台给我们带来大量好处的同时也给DevOps团队带来很多负担。开发使用微服务来架构，与此同时，运维需要管理超多环境及超复杂的部署。
+Istio即是为解放微服务带来的复杂性而生，其是一个开源的服务网格，可以与现有分布式应用无缝集成。以便为您的分布式微服务架构提供一个统一的方式来连接、管理，保护及监控微服务。
+服务网格是什么？
+组成应用的微服务网络及服务间的交互统称为服务网格。服务网格会愈加庞大也愈加复杂，会变得难以理解且难以管理。其需求通常包括：服务发现，负载均衡，故障恢复，度量监控等。更复杂点的需求可能会有：A/B测试，灰度发布，速率限制，访问控制，端到端鉴权等。
+Istio即是将服务网格看作一个整体来管理，提供完整解决方案以满足微服务应用各类需求。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 515 寻找二叉树每层的最大值</title>
+      <link>https://olzhy.github.io/posts/leetcode-find-largest-value-in-each-tree-row.html</link>
+      <pubDate>Sun, 08 Mar 2020 00:51:33 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-find-largest-value-in-each-tree-row.html</guid>
+      <description>1 题目描述
+该题目需要您找出二叉树中每一层的最大值，然后以数组返回。
+例子：
+输入：</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 概览</title>
+      <link>https://olzhy.github.io/posts/kubernetes-introduction.html</link>
+      <pubDate>Sun, 01 Mar 2020 00:51:33 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/kubernetes-introduction.html</guid>
+      <description>Kubernetes是一个开源的容器编排系统。支持将应用的部署、扩展及管理自动化。其设计思路深受谷歌Borg系统的影响。
+Kubernetes定义了一组构建块，提供了基于CPU，内存及自定义指标来部署，维护及扩展应用的机制。Kubernetes是松耦合的且可对不同的工作载荷进行扩展。其扩展性绝大部分是通过Kubernetes API来实现的。
+1 概览</description>
+    </item>
+    
+    <item>
+      <title>练字《道可道》</title>
+      <link>https://olzhy.github.io/posts/handwriting-tao.html</link>
+      <pubDate>Sat, 29 Feb 2020 09:29:34 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/handwriting-tao.html</guid>
+      <description>“道可道，非常道。名可名，非常名。无，名天地之始；有，名万物之母。此两者同出而异名，同谓之玄。玄之又玄，众妙之门。”——《道德经》
+下图为太太所作：
+大连
+庚子年二月初七</description>
+    </item>
+    
+    <item>
+      <title>OpenID Connect 1.0 协议要点梳理</title>
+      <link>https://olzhy.github.io/posts/openid-connect-core-1-0.html</link>
+      <pubDate>Wed, 26 Feb 2020 01:29:09 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/openid-connect-core-1-0.html</guid>
+      <description>OpenID Connect 1.0协议是基于OAuth 2.0授权框架之上的一个身份鉴别层。其使得客户端可以基于授权服务的鉴权能力来验证及识别终端用户的身份。此外，还可以一种类REST的方式来获取终端用户的基本画像信息。
+OpenID Connect 1.</description>
+    </item>
+    
+    <item>
+      <title>OAuth 2.0 授权框架梳理</title>
+      <link>https://olzhy.github.io/posts/oauth2-authorization-framework.html</link>
+      <pubDate>Mon, 10 Feb 2020 04:57:37 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/oauth2-authorization-framework.html</guid>
+      <description>OAuth 2.0是一个委托访问授权框架。
+即，若有三方应用想访问我在某网站的一些资源，我不必将用户名密码给它，而是采用OAuth 2.0授权流程，让资源网站通过我的授权给其下发一个访问令牌来实现该功能。
+这样即省去了直接将密码交给三方网站的诸多风险，还可以很好的实现资源限制，令牌过期等细粒度控制。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 701 二叉搜索树插入</title>
+      <link>https://olzhy.github.io/posts/leetcode-insert-into-a-binary-search-tree.html</link>
+      <pubDate>Sun, 29 Dec 2019 10:11:09 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-insert-into-a-binary-search-tree.html</guid>
+      <description>1 题目描述
+给定一个二叉搜索树（BST）的根节点及待插入值。请将该值插入到该二叉搜索树，然后返回值插入后的二叉搜索树。（注：待插入值在原二叉搜索树中不存在）
+可能存在多种有效的插入方式，即只要在值插入后仍旧是二叉搜索树即可。您可以返回有效结果的任意一种。
+例子：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 103 二叉树Z字形层次遍历</title>
+      <link>https://olzhy.github.io/posts/leetcode-binary-tree-zigzag-level-order-traversal.html</link>
+      <pubDate>Thu, 21 Nov 2019 11:26:31 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-binary-tree-zigzag-level-order-traversal.html</guid>
+      <description>1 题目描述
+给定一个二叉树，返回其值的Z字形层次遍历。（如，先从左到右，下一层从右到左，以此类推，直至最后一层遍历完成）
+例子：
+输入：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 1008 以先序遍历构建二叉搜索树</title>
+      <link>https://olzhy.github.io/posts/leetcode-construct-binary-search-tree-from-preorder-traversal.html</link>
+      <pubDate>Sun, 17 Nov 2019 09:24:12 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-construct-binary-search-tree-from-preorder-traversal.html</guid>
+      <description>1 题目描述
+以先序遍历构建二叉搜索树，并返回其根节点。
+二叉搜索树是满足如下条件的二叉树：
+对于每个节点，左子树node.left任意节点的值均小于node.val；右子树node.right任意节点的值均大于node.val。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 889 以先序及后序遍历构建二叉树</title>
+      <link>https://olzhy.github.io/posts/leetcode-construct-binary-tree-from-preorder-and-postorder-traversal.html</link>
+      <pubDate>Sun, 17 Nov 2019 01:03:54 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-construct-binary-tree-from-preorder-and-postorder-traversal.html</guid>
+      <description>1 题目描述
+对于给定的先序及后序遍历，返回满足条件的任意二叉树。
+注：
+a）1 &amp;lt;= pre.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 145 二叉树后序遍历</title>
+      <link>https://olzhy.github.io/posts/leetcode-binary-tree-postorder-traversal.html</link>
+      <pubDate>Sat, 16 Nov 2019 01:31:35 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-binary-tree-postorder-traversal.html</guid>
+      <description>1 题目描述
+给定一个二叉树，返回其节点值的后序遍历。
+注：递归实现较简单，可以通过迭代实现吗。
+例子：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 106 根据中序遍历与后序遍历构造二叉树</title>
+      <link>https://olzhy.github.io/posts/leetcode-construct-binary-tree-from-inorder-and-postorder-traversal.html</link>
+      <pubDate>Tue, 05 Nov 2019 12:10:27 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-construct-binary-tree-from-inorder-and-postorder-traversal.html</guid>
+      <description>1 题目描述
+给定一个二叉树的中序遍历与后序遍历，请以此构造出该二叉树。
+注：您可以假定该二叉树中不存在重复节点值。
+例子：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 513 找出二叉树左下角节点的值</title>
+      <link>https://olzhy.github.io/posts/leetcode-find-bottom-left-tree-value.html</link>
+      <pubDate>Thu, 31 Oct 2019 11:17:36 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-find-bottom-left-tree-value.html</guid>
+      <description>1 题目描述
+给定一个二叉树，找出最后一行最左边节点的值。
+注：您可以假定给定的树非空。
+例子1：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 451 以出现频次排序字符</title>
+      <link>https://olzhy.github.io/posts/leetcode-sort-characters-by-frequency.html</link>
+      <pubDate>Wed, 30 Oct 2019 12:27:55 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-sort-characters-by-frequency.html</guid>
+      <description>1 题目描述
+给定一个字符串，请基于字符出现的频次将其倒序排列。
+例子1：
+输入：&amp;quot;tree&amp;quot; 输出：&amp;quot;eert&amp;quot; 释义：&#39;e&#39;出现2次，而&#39;r&#39;及&#39;t&#39;各出现1次，所以&#39;e&#39;应出现在&#39;r&#39;及&#39;t&#39;的前面，因此&amp;quot;eetr&amp;quot;是一个有效的答案。 例子2：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 91 解码方式</title>
+      <link>https://olzhy.github.io/posts/leetcode-decode-ways.html</link>
+      <pubDate>Mon, 28 Oct 2019 06:59:02 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-decode-ways.html</guid>
+      <description>1 题目描述
+一段包含A-Z的文字使用如下映射关系加密为数字。
+&#39;A&#39; -&amp;gt; 1 &#39;B&#39; -&amp;gt; 2 .</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 151 将字符串中的单词翻转</title>
+      <link>https://olzhy.github.io/posts/leetcode-reverse-words-in-a-string.html</link>
+      <pubDate>Sun, 27 Oct 2019 08:59:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-reverse-words-in-a-string.html</guid>
+      <description>1 题目描述
+给定一个字符串，将该字符串依序按单词进行翻转。
+注：
+a）单词被定义为连续的非空字符；</description>
+    </item>
+    
+    <item>
+      <title>Go 1.11 Release Notes 要点整理</title>
+      <link>https://olzhy.github.io/posts/go1dot11-release-notes.html</link>
+      <pubDate>Sat, 05 Oct 2019 08:39:33 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot11-release-notes.html</guid>
+      <description>Go 1.11，在Go 1.10发布半年后如期而至。多数变化在工具链实现、运行时及库上面。该版本继续秉承Go 1兼容性准则。期待几乎所有的程序均可像之前一样编译及运行。
+1 移植</description>
+    </item>
+    
+    <item>
+      <title>Golang WebAssembly 初探</title>
+      <link>https://olzhy.github.io/posts/golang-webassembly.html</link>
+      <pubDate>Fri, 04 Oct 2019 08:46:46 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-webassembly.html</guid>
+      <description>WebAssembly(简写为wasm)是一种新的可以运行在现代web浏览器的二进制格式。其采用底层类汇编语言将高级语言（如C++/Rust/Go）编译为二进制然后运行在web浏览器上，其性能接近原生，且可与JS互相调用，这样即可以一种新的方式（WebAssembly的性能结合JS的表达能力）来实现一个应用。
+Go自1.11起即开始试验性的支持WebAssembly，虽截止目前还处在初级阶段，存在诸如编译的二进制文件太大，不好调试等诸多问题，但不影响我们尝鲜，这些问题期待官方在后续的版本可以逐步丰富与优化。
+1 Hello WebAssembly</description>
+    </item>
+    
+    <item>
+      <title>Go 1.13 Module使用说明</title>
+      <link>https://olzhy.github.io/posts/go1dot13-using-go-modules.html</link>
+      <pubDate>Sun, 29 Sep 2019 00:48:02 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot13-using-go-modules.html</guid>
+      <description>之前写过一篇Golang Modules，是Go Module的入门篇，介绍了Module的设计初衷及工作方式。本文结合Go 1.13最新Module官网文档，进一步梳理Module的使用方式。
+Module是一组相关包的组合，是方便被引用及版本化的单元。自Go 1.</description>
+    </item>
+    
+    <item>
+      <title>Go 1.13 数字表示、移位及分割</title>
+      <link>https://olzhy.github.io/posts/go1dot13-number-literals.html</link>
+      <pubDate>Fri, 27 Sep 2019 02:49:19 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot13-number-literals.html</guid>
+      <description>1 二进制整数表示
+使用前缀0b或0B来表示二进制数，如0b0010。
+示例代码：
+num := 0b0010 fmt.</description>
+    </item>
+    
+    <item>
+      <title>Go 1.10 Release Notes 要点整理</title>
+      <link>https://olzhy.github.io/posts/go1dot10-release-notes.html</link>
+      <pubDate>Sun, 15 Sep 2019 08:30:46 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot10-release-notes.html</guid>
+      <description>Go 1.10，在Go 1.9发布半年后如期而至。其主要变化在工具链实现、运行时及库上面。一如既往，该版本秉承Go 1兼容性准则。以期所有的Go程序如之前一样编译及运行。
+该版本改进了包构建缓存，增加了成功测试结果缓存，在测试时自动进行校验，且准许使用cgo在Go及C程序间直接传递string类型的值。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 86 分割链表</title>
+      <link>https://olzhy.github.io/posts/leetcode-partition-list.html</link>
+      <pubDate>Sun, 15 Sep 2019 03:04:30 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-partition-list.html</guid>
+      <description>1 题目描述
+给定一个链表及一个值x，请以x分割链表以让小于x的节点出现在大于等于x的节点之前。
+您须保证分割后的两部分仍保持原始链表的节点顺序。
+例子：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 508 高频子树和</title>
+      <link>https://olzhy.github.io/posts/leetcode-most-frequent-subtree-sum.html</link>
+      <pubDate>Sat, 24 Aug 2019 15:11:02 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-most-frequent-subtree-sum.html</guid>
+      <description>1 题目描述
+给您一颗二叉树，求出现次数最多的子树和。
+一个节点的子树和的定义：根为该节点的所有子树节点值的总和（包含该根节点本身）。
+所以，求一下出现次数最多的子树和是多少？若出现次数最多的子树和不唯一，请以任意顺序返回这些子树和的全部。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 981 基于时间的“键-值”存储</title>
+      <link>https://olzhy.github.io/posts/leetcode-time-based-key-value-store.html</link>
+      <pubDate>Fri, 23 Aug 2019 03:45:59 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-time-based-key-value-store.html</guid>
+      <description>1 题目描述
+创建一个基于时间的“键-值”存储类TimeMap，其支持两类操作：
+  a）set(string key, string value, int timestamp) 与timestamp一起，存储key, value。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 81 在旋转的排序数组搜索 II</title>
+      <link>https://olzhy.github.io/posts/search-in-rotated-sorted-array-ii.html</link>
+      <pubDate>Mon, 29 Jul 2019 05:53:22 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/search-in-rotated-sorted-array-ii.html</guid>
+      <description>1 题目描述
+假定一个以升序排好的数组在您预先未知的某个支点被旋转了（如：[0,0,1,2,2,5,6]可能变成了[2,5,6,0,0,1,2]）。
+给您一个target值来搜索，若在数组中找到了，请返回true，否则返回false。
+例子1：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 102 二叉树层次遍历</title>
+      <link>https://olzhy.github.io/posts/leetcode-binary-tree-level-order-traversal.html</link>
+      <pubDate>Fri, 26 Jul 2019 08:33:44 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-binary-tree-level-order-traversal.html</guid>
+      <description>1 题目描述
+给定一个二叉树，返回以层次序遍历的节点值（从左到右，遍历完一层遍历下一层）。
+例子：
+ 3 / \ 9 20 / \ 15 7 输入：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 165 版本号比对</title>
+      <link>https://olzhy.github.io/posts/leetcode-compare-version-numbers.html</link>
+      <pubDate>Thu, 25 Jul 2019 14:03:04 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-compare-version-numbers.html</guid>
+      <description>1 题目描述
+比较两个版本号，version1与version2。 若version1 &amp;gt; version2返回1，若version1 &amp;lt; version2返回-1，相等返回0。 您可以假设版本号非空，并且只包含数字和“.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 198 入室抢劫者</title>
+      <link>https://olzhy.github.io/posts/leetcode-house-robber.html</link>
+      <pubDate>Thu, 25 Jul 2019 10:58:34 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-house-robber.html</guid>
+      <description>1 题目描述
+假设您是一个老练的盗贼，计划沿着街道进行打家劫舍。该街道每家都存着一定数额的钱，而阻止您进行盗窃的唯一屏障是相邻两家的防盗系统是连接的，若相邻两家在同一晚都发生了盗窃案，该系统会自动通知到警察。
+现在给定一个非负整数数组，代表该街道沿线每家的金钱数额，请计算在不触发系统通知警察的情况下，您今晚能盗窃的最大金钱数额。
+例子1：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 56 合并区间</title>
+      <link>https://olzhy.github.io/posts/leetcode-merge-intervals.html</link>
+      <pubDate>Wed, 24 Jul 2019 14:45:24 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-merge-intervals.html</guid>
+      <description>1 题目描述
+给定一组区间，合并所有重叠的区间。
+例子1：
+输入：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 34 在有序数组寻找元素的出现范围</title>
+      <link>https://olzhy.github.io/posts/leetcode-find-first-and-last-position-of-element-in-sorted-array.html</link>
+      <pubDate>Tue, 23 Jul 2019 02:41:39 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-find-first-and-last-position-of-element-in-sorted-array.html</guid>
+      <description>1 题目描述
+给定一个已按升序排好的整数数组nums，对于一个目标值target，寻找其在数组中的起始位置及结束位置。
+您算法的运行时时间复杂度须满足O(log n)。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 355 设计推特</title>
+      <link>https://olzhy.github.io/posts/leetcode-design-twitter.html</link>
+      <pubDate>Mon, 22 Jul 2019 13:42:26 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-design-twitter.html</guid>
+      <description>1 题目描述
+设计一个简单的推特版本。支持用户发推，支持用户关注或取消关注其他用户，且用户可以在动态里看到最近的10条推文。
+您的设计应支持如下几个方法：
+  a）postTweet(userId, tweetId)：发表新推文；</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 958 检查二叉树的完整性</title>
+      <link>https://olzhy.github.io/posts/leetcode-check-completeness-of-a-binary-tree.html</link>
+      <pubDate>Sun, 21 Jul 2019 14:33:04 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-check-completeness-of-a-binary-tree.html</guid>
+      <description>1 题目描述
+给定一个二叉树，判断其是否为一个完全二叉树。
+来自Wikipedia的完全二叉树定义：
+在一个完全二叉树中，除了最后一层可能未被完全填充外，其它所有层均被完全填充，且最后一层的节点尽可能靠左。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 33 在旋转的有序数组搜索</title>
+      <link>https://olzhy.github.io/posts/leetcode-search-in-rotated-sorted-array.html</link>
+      <pubDate>Sun, 21 Jul 2019 10:25:10 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-search-in-rotated-sorted-array.html</guid>
+      <description>1 题目描述
+假定一个按升序排好的数组在您预先不可知的某个支点被旋转了。如[0,1,2,4,5,6,7]被旋转为了[4,5,6,7,0,1,2])。 给您一个目标值来搜索，若在数组中找到了，返回其标号，否则返回-1。您可以假定该数组中元素没有重复。您的运行时复杂度须为O(log n)。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 题目Golang实现汇总</title>
+      <link>https://olzhy.github.io/leetcode-golang-implementations/</link>
+      <pubDate>Fri, 19 Jul 2019 00:01:14 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/leetcode-golang-implementations/</guid>
+      <description>GitHub: github.com/olzhy/leetcode
+   题号 题目 难度 实现     2 Add Two Numbers 中 Golang   3 Longest Substring 中 Golang   5 Longest Palindromic Substring 中 Golang   6 ZigZag Conversion 中 Golang   8 String to Integer 中 Golang   12 Integer to Roman 中 Golang   17 Letter Combinations of A&amp;hellip; 中 Golang   19 Remove Nth Node From End of List 中 Golang   24 Swap Nodes In Pairs 中 Golang   33 Search in Rotated Sorted Array 中 Golang   34 Find First and Last Position… 中 Golang   48 Rotate Image 中 Golang   54 Spiral Matrix 中 Golang   55 Jump Game 中 Golang   56 Merge Intervals 中 Golang   59 Spiral Matrix II 中 Golang   60 Permutation Sequence 中 Golang   61 Rotate List 中 Golang   71 Simplify Path 中 Golang   73 Set Matrix Zeroes 中 Golang   74 Search a 2D Matrix 中 Golang   75 Sort Colors 中 Golang   77 Combinations 中 Golang   81 Search in Rotated Sorted Array II 中 Golang   86 Partition List 中 Golang   91 Decode Ways 中 Golang   92 Reverse Linked List II 中 Golang   93 Restore IP Addresses 中 Golang   94 Binary Tree Inorder Traversal 中 Golang   95 Unique Binary Search Trees II 中 Golang   96 Unique Binary Search Trees 中 Golang   98 Validate Binary Search Tree 中 Golang   102 Binary Tree Level Order Traversal 中 Golang   103 Binary Tree Zigzag Level Order Traversal 中 Golang   105 Construct Binary Tree from Preorder&amp;hellip; 中 Golang, Python   106 Construct Binary Tree from Inorder&amp;hellip; 中 Golang   130 Surrounded Regions 中 Golang   143 Reorder List 中 Golang   144 Binary Tree Preorder Traversal 中 Golang   145 Binary Tree Postorder Traversal 难 Golang   151 Reverse Words in a String 中 Golang   165 Compare Version Numbers 中 Golang   198 House Robber 易 Golang   199 Binary Tree Right Side View 中 Golang   206 Reverse Linked List 易 Golang   224 Basic Calculator 难 Golang   338 Couting Bits 中 Golang   355 Design Twitter 中 Golang   393 UTF-8 Validation 中 Golang   413 Arithmetic Slices 中 Golang   451 Sort Characters By Frequency 中 Golang   477 Total Hamming Distance 中 Golang   508 Most Frequent Subtree Sum 中 Golang   513 Find Bottom Left Tree Value 中 Golang   515 Find Largest Value in Each Tree Row 中 Golang   641 Design Circular Deque 中 Golang   701 Insert into a Binary Search Tree 中 Golang   707 Design Linked List 中 Golang, Python   807 Max Increase to Keep City&amp;hellip; 中 Golang   856 Score of Parentheses 中 Golang   885 Spiral Matrix III 中 Golang   889 Construct Binary Tree from&amp;hellip; 中 Golang   911 Online Election 中 Golang   946 Validate Stack Sequences 中 Golang   958 Check Completeness of a Binary Tree 中 Golang   981 Time Based Key-Value Store 中 Golang   1008 Construct Binary Search Tree&amp;hellip; 中 Golang    </description>
+    </item>
+    
+    <item>
+      <title>LeetCode 95 不同的二叉搜索树 II</title>
+      <link>https://olzhy.github.io/posts/leetcode-unique-binary-search-trees-ii.html</link>
+      <pubDate>Thu, 18 Jul 2019 12:44:22 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-unique-binary-search-trees-ii.html</guid>
+      <description>1 题目描述
+给定一个整数n，生成节点为1&amp;hellip;n的所有的二叉搜索树（BST）。
+例子1：
+输入：3</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 96 不同的二叉搜索树</title>
+      <link>https://olzhy.github.io/posts/leetcode-unique-binary-search-trees.html</link>
+      <pubDate>Thu, 18 Jul 2019 07:09:30 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-unique-binary-search-trees.html</guid>
+      <description>1 题目描述
+给定一个整数n，求以1 &amp;hellip; n为节点所组成的二叉搜索树（BST）共有多少种情形？</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 98 校验二叉搜索树</title>
+      <link>https://olzhy.github.io/posts/leetcode-validate-binary-search-tree.html</link>
+      <pubDate>Wed, 17 Jul 2019 11:38:51 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-validate-binary-search-tree.html</guid>
+      <description>1 题目描述
+给定一个二叉树，判断其是否为一个有效的二叉搜索树（BST）。
+假定一个二叉搜索树的定义为：
+a）一个节点的左子树包含的节点的key小于该节点的key；</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 199 二叉树右侧视角图</title>
+      <link>https://olzhy.github.io/posts/leetcode-binary-tree-right-side-view.html</link>
+      <pubDate>Wed, 17 Jul 2019 07:34:28 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-binary-tree-right-side-view.html</guid>
+      <description>1 题目描述
+给定一个二叉树，想象站在其右侧，返回以该视角看到的自上而下的节点值。
+例子1：
+输入：[1,2,3,null,5,null,4]</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 77 组合</title>
+      <link>https://olzhy.github.io/posts/leetcode-combinations.html</link>
+      <pubDate>Tue, 16 Jul 2019 06:55:25 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-combinations.html</guid>
+      <description>1 题目描述
+给定两个整数n与k，返回出自区间[1, n]的所有可能的k个数的组合。
+例子1：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 911 在线选举</title>
+      <link>https://olzhy.github.io/posts/leetcode-online-election.html</link>
+      <pubDate>Mon, 15 Jul 2019 04:01:04 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-online-election.html</guid>
+      <description>1 题目描述
+在一次选举中，定义第i次投票为在时间times[i]给人persons[i]投票。现在，我们想实现如下查询函数：
+TopVotedCandidate.q(int t) 其会返回在给定时间t的领先者编号。在t时刻的投票也会计入查询。在有平局的情况下，最近被投票的为领先者。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 885 螺旋矩阵 III</title>
+      <link>https://olzhy.github.io/posts/leetcode-spiral-matrix-iii.html</link>
+      <pubDate>Sun, 14 Jul 2019 08:35:27 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-spiral-matrix-iii.html</guid>
+      <description>1 题目描述
+在一个R行C列的二维网格上，我们起始在(r0, c0)位置，且面朝东。
+这样，矩阵的西北角在第一行第一列，东南角在最后一行最后一列。</description>
+    </item>
+    
+    <item>
+      <title>使用delve调试Golang程序</title>
+      <link>https://olzhy.github.io/posts/debugging-golang-programs-with-delve.html</link>
+      <pubDate>Tue, 09 Jul 2019 10:30:31 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/debugging-golang-programs-with-delve.html</guid>
+      <description>delve是一款专门针对Golang程序调试而开发的命令行调试器，该工具功能强大，简单易用。
+本文从安装开始，使用一个实际的Golang程序调试例子，学习一下delve的主要调试方式及常用调试命令。
+本文所使用的是Windows环境。
+1 安装</description>
+    </item>
+    
+    <item>
+      <title>实现一个Golang Module Proxy</title>
+      <link>https://olzhy.github.io/posts/implement-a-golang-module-proxy.html</link>
+      <pubDate>Sat, 22 Jun 2019 03:09:06 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/implement-a-golang-module-proxy.html</guid>
+      <description>在前两篇文章（Golang 模块获取包modfetch研读，Golang模块代理goproxy.io源码研读），我们学习了Golang Module Proxy的工作原理以及实现原理。
+本文尝试独立实现一个Golang Module Proxy服务。</description>
+    </item>
+    
+    <item>
+      <title>Golang模块代理goproxy.io源码研读</title>
+      <link>https://olzhy.github.io/posts/goproxyio.html</link>
+      <pubDate>Tue, 18 Jun 2019 00:31:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/goproxyio.html</guid>
+      <description>goproxy.io是一款很好用的Golang Module Proxy，解决了国内用户无法直接下载Golang模块依赖的问题。
+本文准备研读一下其开源代码github.com/goproxyio/goproxy，了解下其实现原理。
+goproxy工程的主要目录结构如下：</description>
+    </item>
+    
+    <item>
+      <title>Golang 模块获取包modfetch研读</title>
+      <link>https://olzhy.github.io/posts/golang-modfetch-package.html</link>
+      <pubDate>Wed, 12 Jun 2019 07:22:36 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-modfetch-package.html</guid>
+      <description>自Go 1.11引入Modules以来，其内置命令已集成包查询、下载等功能。
+之前专门写过一篇Golang Modules的文章，介绍了Module的使用方式。
+如一个Module工程，使用命令构建时会自动获取依赖，如：</description>
+    </item>
+    
+    <item>
+      <title>Golang 优雅的终止一个服务</title>
+      <link>https://olzhy.github.io/posts/golang-shutdown-server-gracefully.html</link>
+      <pubDate>Tue, 11 Jun 2019 08:26:04 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-shutdown-server-gracefully.html</guid>
+      <description>采用常规方式启动一个Golang http服务时，若服务被意外终止或中断，即未等待服务对现有请求连接处理并正常返回且亦未对服务停止前作一些必要的处理工作，这样即会造成服务硬终止。这种方式不是很优雅。
+参看如下代码，该http服务请求路径为根路径，请求该路径，其会在2s后返回hello。
+var addr = flag.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 55 跳跃游戏</title>
+      <link>https://olzhy.github.io/posts/leetcode-jump-game.html</link>
+      <pubDate>Mon, 10 Jun 2019 07:38:27 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-jump-game.html</guid>
+      <description>1 题目描述
+给定一个非负整数数组，您初始位于数组的第一个位置。
+数组中的每个元素，代表您在该位置可以跳跃的最大长度。
+请判断您能否抵达数组的最后一个位置。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 641 设计循环双端队列</title>
+      <link>https://olzhy.github.io/posts/leetcode-design-circular-deque.html</link>
+      <pubDate>Sun, 09 Jun 2019 01:49:07 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-design-circular-deque.html</guid>
+      <description>1 题目描述
+请设计对双端队列的实现。
+实现需支持如下操作：
+  a）MyCircularDeque(k): 构造器，设置双端队列的容量</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 946 校验栈序列</title>
+      <link>https://olzhy.github.io/posts/leetcode-validate-stack-sequences.html</link>
+      <pubDate>Sat, 08 Jun 2019 15:20:40 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-validate-stack-sequences.html</guid>
+      <description>1 题目描述
+给定两个序列pushed与popped，每个序列内的值均是不同的。对于一个空的栈，当前仅当其是有效的push与pop操作序列时返回true。
+例子1：
+输入：pushed = [1,2,3,4,5], popped = [4,5,3,2,1]</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 807 求保持城市现有天际线的最大增高</title>
+      <link>https://olzhy.github.io/posts/leetcode-max-increase-to-keep-city-skyline.html</link>
+      <pubDate>Sat, 08 Jun 2019 06:24:13 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-max-increase-to-keep-city-skyline.html</guid>
+      <description>1 题目描述
+在二维数组grid中，每个值grid[i][j]代表位于此的建筑物高度。我们允许对其中的任意建筑物增长不等的高度。高度0仍为一个有效的建筑物。 增高后的建筑群，从其四个方向来看，必须与之前建筑群的天际线保持一致。城市天际线是从远处观看时，由所有建筑组成的外形轮廓。请看如下例子。
+请计算所有建筑物可以增长的最大总和。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 144 二叉树先序遍历</title>
+      <link>https://olzhy.github.io/posts/leetcode-binary-tree-preorder-traversal.html</link>
+      <pubDate>Thu, 06 Jun 2019 10:43:01 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-binary-tree-preorder-traversal.html</guid>
+      <description>1 题目描述
+给定一个二叉树，返回节点值先序遍历数组。
+注：勿使用递归，请使用循环解决。
+例子：</description>
+    </item>
+    
+    <item>
+      <title>Go 1.9 Release Notes 要点整理</title>
+      <link>https://olzhy.github.io/posts/go1dot9-release-notes.html</link>
+      <pubDate>Wed, 05 Jun 2019 07:25:32 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot9-release-notes.html</guid>
+      <description>Go 1.9，在1.8发布6个月后如约而至，其是Go 1.x系列的第10个版本。
+该版本有两项语言级变化：增加了类型别名支持以及对可能熔断浮点操作实现的定义。
+多数变化在工具链、运行时及库的实现上。一如既往，Go 1.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 75 颜色排序</title>
+      <link>https://olzhy.github.io/posts/leetcode-sort-colors.html</link>
+      <pubDate>Fri, 17 May 2019 07:53:58 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-sort-colors.html</guid>
+      <description>1 题目描述
+给定一个数组，该数组有N个对象，每个对象被标记为红、白、蓝三种颜色中的某一种。对该对象数组进行排序，使相同颜色的对象连在一起，分别为红色部分，白色部分，蓝色部分。
+这里，我们将数字1，2，3分别代表红，白，蓝。
+注：请勿使用sort库函数。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 74 二维矩阵搜索</title>
+      <link>https://olzhy.github.io/posts/leetcode-search-a-2d-matrix.html</link>
+      <pubDate>Thu, 16 May 2019 10:19:37 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-search-a-2d-matrix.html</guid>
+      <description>1 题目描述
+对m x n整数矩阵，写一个对某值进行高效搜索的算法。该矩阵有如下特征：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 71 简化路径</title>
+      <link>https://olzhy.github.io/posts/leetcode-simplify-path.html</link>
+      <pubDate>Wed, 15 May 2019 14:05:53 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-simplify-path.html</guid>
+      <description>1 题目描述
+给定一个类Unix绝对路径，请将其简化，换言之，请将其转换为“canonical”路径。 在类Unix文件系统中，“.”代表当前目录，“..”代表移至上层目录。注意返回的简化路径需以“/”开头，而且两个文件夹名称之间须有分隔符“/”，最后一个文件夹名称（若有的话），不能以“/”结尾。此外，简化路径须是绝对路径的最短表示。
+例子1：</description>
+    </item>
+    
+    <item>
+      <title>Go 2 错误处理设计草案预览</title>
+      <link>https://olzhy.github.io/posts/go2-error-handling-draft-design.html</link>
+      <pubDate>Mon, 06 May 2019 03:07:08 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go2-error-handling-draft-design.html</guid>
+      <description>Go 2的总体目标是在辅助工程扩展为大的代码基线时做到游刃有余。
+通常，我们的Go程序有很多错误检查，但缺少错误处理。我们通常使用如下代码所示的赋值判断语句进行错误检查。
+if _, err := io.</description>
+    </item>
+    
+    <item>
+      <title>Go 1.8 Release Notes 要点整理</title>
+      <link>https://olzhy.github.io/posts/go1dot8-release-notes.html</link>
+      <pubDate>Fri, 03 May 2019 01:04:48 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot8-release-notes.html</guid>
+      <description>Go 1.8，在Go 1.7发布半年后如约而至。该版本的绝大多数变化是在工具链、运行时及库的实现上。有两项小的语言规范上的变化。一如既往，该版本遵守Go 1兼容性准则，期待所有程序像之前一样编译及运行。
+1 语言方面</description>
+    </item>
+    
+    <item>
+      <title>Golang Context使用小结</title>
+      <link>https://olzhy.github.io/posts/golang-context.html</link>
+      <pubDate>Sat, 27 Apr 2019 12:29:25 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-context.html</guid>
+      <description>1 场景
+我们知道，在Go服务端，每个进入的请求会被其所属goroutine处理。
+例如，如下代码，每次请求，Handler会创建一个goroutine来为其提供服务，而且连续请求3次，r的地址也是不同的。
+package mainimport (&amp;#34;fmt&amp;#34;&amp;#34;log&amp;#34;&amp;#34;net/http&amp;#34;)func main() {http.</description>
+    </item>
+    
+    <item>
+      <title>Go 1.7 Release Notes 要点整理</title>
+      <link>https://olzhy.github.io/posts/go1dot7-release-notes.html</link>
+      <pubDate>Sat, 27 Apr 2019 07:03:13 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot7-release-notes.html</guid>
+      <description>Go 1.7在1.6发布6个月后如约而至，绝大多数的变化在工具链、运行时及核心库的实现上。语言规格上有一项小变化。一如既往，该版本遵守Go 1兼容性准则。
+1 语言方面</description>
+    </item>
+    
+    <item>
+      <title>Go 1.6 Release Notes 要点整理</title>
+      <link>https://olzhy.github.io/posts/go1dot6-release-notes.html</link>
+      <pubDate>Fri, 26 Apr 2019 03:00:41 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot6-release-notes.html</guid>
+      <description>Go 1.6在1.5发布半年后如约而至，该版本主要变化在语言、运行时及库上面，语言规范未有变化。同理，其保持Go 1兼容性准则。
+1 工具方面</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 61 旋转链表</title>
+      <link>https://olzhy.github.io/posts/leetcode-rotate-list.html</link>
+      <pubDate>Wed, 24 Apr 2019 07:57:15 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-rotate-list.html</guid>
+      <description>1 题目描述
+给定一个链表，向右旋转k位，k为非负数。
+例子1：
+输入：1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5-&amp;gt;NULL, k = 2</description>
+    </item>
+    
+    <item>
+      <title>Golang Modules</title>
+      <link>https://olzhy.github.io/posts/golang-modules.html</link>
+      <pubDate>Sun, 10 Mar 2019 04:20:54 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-modules.html</guid>
+      <description>1 速览
+在正式了解Golang Modules之前，我们先速览一下其使用方式。
+在$GOPATH之外的任意地方，创建一个文件夹：</description>
+    </item>
+    
+    <item>
+      <title>很开心遇见你</title>
+      <link>https://olzhy.github.io/posts/nice-to-meet-you.html</link>
+      <pubDate>Fri, 01 Mar 2019 12:40:10 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/nice-to-meet-you.html</guid>
+      <description>去年的这个时候，我遇见了Jane。她是我遇见的真正豁达，内心自由坦荡的人。她待我真心实意，她叫我一声“磊哥”，即会扫去我内心所有的乌云。
+Jane喜欢运动，喜欢听我唱歌，喜欢研究美食。简单的食材，她都会做成一道难忘的美食。她是能把日子过成诗的人。
+她写过一篇《给未来先生的信》。她理想的那个他不需要有多富贵、有多能耐，但需要与她心灵高度契合。他们一起远行，一起做饭，一起游泳，一起做美食，一起过简单的日子。
+她已将世界看清，但不出离。她热爱生活，懂得生活的真谛。她会忙活半天，用心做一份你爱吃的菜。她会为你的出行安排好所有的日用品，她会将家收拾的干干净净的，物品有序摆放，她会记得给家里的芒果树按时浇水，还有，她喜欢花，收到花她会开心的像个孩子。有她在身边，就会感觉，世界上没有难的住的事，所有事情都会迎刃而解。
+她选择了我，她的爱如水一样自然柔和，真心诚意。我知道遇见她有多么的难得，她在我心里有多重。她是那个会陪我到老的人，我是那个坚守承诺的人，我会为她改变，改变自己的所有坏毛病，去帮她一起实现愿望，永远对她好，一起经历这酸甜苦辣。用一生，让她知道“选择你，没有错”。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 24 成对交换节点</title>
+      <link>https://olzhy.github.io/posts/leetcode-swap-nodes-in-pairs.html</link>
+      <pubDate>Sun, 24 Feb 2019 10:39:25 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-swap-nodes-in-pairs.html</guid>
+      <description>1 题目描述
+给定一个链表，对每对相邻节点作交换后返回该链表。
+注：勿改动节点中的值，仅可改动节点顺序。
+例子：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 19 移除链表末尾起第N个节点</title>
+      <link>https://olzhy.github.io/posts/leetcode-remove-nth-node-from-end-of-list.html</link>
+      <pubDate>Sat, 23 Feb 2019 10:45:31 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-remove-nth-node-from-end-of-list.html</guid>
+      <description>1 题目描述
+给定一个链表，移除其自末尾起第N个节点后返回该链表。
+例子：
+输入：给定链表1-&amp;gt;2-&amp;gt;3-&amp;gt;4-&amp;gt;5，且n=2</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 8 字符串转整数</title>
+      <link>https://olzhy.github.io/posts/leetcode-string-to-integer.html</link>
+      <pubDate>Fri, 22 Feb 2019 08:18:51 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-string-to-integer.html</guid>
+      <description>1 题目描述
+实现atoi函数，以将字符串转换为一个整数。
+该函数首先丢弃尽可能多的空格字符，直至找到第一个非空格字符。然后由该字符开始（可能会有正负标志）找出尽可能多的数字字符，最后将其转换为一个整数。
+在连续数值字符后可能还会有其他字符，请将这些字符略过，并不影响函数行为。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 5 最长回文子串</title>
+      <link>https://olzhy.github.io/posts/leetcode-longest-palindromic-substring.html</link>
+      <pubDate>Thu, 21 Feb 2019 01:41:53 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-longest-palindromic-substring.html</guid>
+      <description>1 题目描述
+对给定字符串s，找出其最长回文子串（假定s的最大长度为1000）。
+例子1：
+输入：&amp;ldquo;babad&amp;rdquo;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 2 两数相加</title>
+      <link>https://olzhy.github.io/posts/leetcode-add-two-numbers.html</link>
+      <pubDate>Wed, 20 Feb 2019 03:35:44 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-add-two-numbers.html</guid>
+      <description>1 题目描述
+给定两个代表两个非负整数的非空链表。数字在链表以逆序存储且链表的每个节点均包含一位数字，将两数相加且以链表返回。
+您可以假设，除数字0外，两数都不会以0开头。
+例子：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 12 整数转罗马数</title>
+      <link>https://olzhy.github.io/posts/leetcode-integer-to-roman.html</link>
+      <pubDate>Tue, 19 Feb 2019 09:07:58 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-integer-to-roman.html</guid>
+      <description>1 题目描述
+罗马数字由7种符号（I，V，X，L，C，D，M）表示。
+与数值对应关系如下表：
+符号 值 I 1 V 5 X 10 L 50 C 100 D 500 M 1000 如，2的罗马数字写作II，即两个1的相加。然而4的罗马数字非IIII，而是写作IV，将1放在5之前，即5-1。同理，9写作IX。该种作减法的情形有如下6种：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 393 UTF-8编码校验</title>
+      <link>https://olzhy.github.io/posts/leetcode-utf8-validation.html</link>
+      <pubDate>Tue, 19 Feb 2019 03:08:45 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-utf8-validation.html</guid>
+      <description>1 题目描述
+一个UTF8编码的字符是满足如下规则的1~4字节长的字符。
+a）对单字节字符，第一个bit位为0；
+b）对n字节字符，前n个bit位全为1，第n+1个bit位是0，然后接着n-1个字节的前两个bit位均是10。</description>
+    </item>
+    
+    <item>
+      <title>Go 1.5 Release Notes 研读</title>
+      <link>https://olzhy.github.io/posts/go1dot5-release-notes-reading.html</link>
+      <pubDate>Mon, 18 Feb 2019 08:58:57 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot5-release-notes-reading.html</guid>
+      <description>1 Go 1.5简介
+Go 1.5是一个重要的版本，包括主要实现结构调整。尽管这样，我们期待绝大多数程序可以像之前一样编译、运行（因该版本仍遵守Go 1兼容性承诺）。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 93 还原IP地址</title>
+      <link>https://olzhy.github.io/posts/leetcode-restore-ip-addresses.html</link>
+      <pubDate>Mon, 18 Feb 2019 08:40:41 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-restore-ip-addresses.html</guid>
+      <description>1 题目描述
+给定一个仅包含数字的字符串，通过返回所有有效的IP地址组合来还原它。
+例子：
+输入：&amp;ldquo;25525511135&amp;rdquo;</description>
+    </item>
+    
+    <item>
+      <title>Go 1.4 Release Notes 研读</title>
+      <link>https://olzhy.github.io/posts/go1dot4-release-notes-reading.html</link>
+      <pubDate>Mon, 11 Feb 2019 06:34:31 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot4-release-notes-reading.html</guid>
+      <description>1 Go 1.4简介
+Go 1.4在Go 1.</description>
+    </item>
+    
+    <item>
+      <title>Golang 内存模型</title>
+      <link>https://olzhy.github.io/posts/golang-memory-model.html</link>
+      <pubDate>Fri, 25 Jan 2019 02:53:17 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-memory-model.html</guid>
+      <description>1 指令顺序调整
+对于单goroutine程序代码，编译器和处理器有时会调整源码中的指令顺序来做一些优化。当然，此类调整在当前gorouine程序来看并不会改变其源码指令所指定的行为。但在多个线程共享内存的情形下，某个goroutine内部的指令顺序调整可能会影响到依赖其指令顺序的其他goroutine的行为。
+看一段代码：
+package mainimport &amp;#34;fmt&amp;#34;var s stringvar done boolfunc setup() {s = &amp;#34;hello world&amp;#34;done = trueif done {fmt.</description>
+    </item>
+    
+    <item>
+      <title>Go 1.3 Release Notes 研读</title>
+      <link>https://olzhy.github.io/posts/go1dot3-release-notes-reading.html</link>
+      <pubDate>Thu, 24 Jan 2019 01:22:30 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot3-release-notes-reading.html</guid>
+      <description>1 Go 1.3简介
+Go 1.3在Go 1.</description>
+    </item>
+    
+    <item>
+      <title>Golang vendor文件夹使用</title>
+      <link>https://olzhy.github.io/posts/golang-vendoring.html</link>
+      <pubDate>Mon, 21 Jan 2019 07:00:19 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-vendoring.html</guid>
+      <description>1 提出问题
+我们知道，一个工程稍大一点，通常会依赖各种各样的包。而Go使用统一的GOPATH管理依赖包，且每个包仅保留一个版本。而不同的依赖包由各自的版本工具独立管理，所以当所依赖的包在新版本发生接口变更或删除时，会面临很多问题。
+为避免此类问题，我们可能会为不同的工程设置不同的GOPATH，或者更改依赖包路径名称。这样手动维护起来也很头疼。
+2 解决问题</description>
+    </item>
+    
+    <item>
+      <title>Go 1.2 Release Notes 研读</title>
+      <link>https://olzhy.github.io/posts/go1dot2-release-notes-reading.html</link>
+      <pubDate>Mon, 21 Jan 2019 02:23:08 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot2-release-notes-reading.html</guid>
+      <description>1 Go 1.2 简介
+自Go 1.</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 413 等差数列切片</title>
+      <link>https://olzhy.github.io/posts/leetcode-arithmetic-slices.html</link>
+      <pubDate>Sun, 20 Jan 2019 08:50:34 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-arithmetic-slices.html</guid>
+      <description>1 题目描述
+若一个数列至少有三个元素，且任意相邻两元素的差相等，则该数列为一个等差数列。
+例如，如下三个数列即为等差数列：
+1, 3, 5, 7, 9 7, 7, 7, 7 3, -1, -5, -9 如下数列不是等差数列：</description>
+    </item>
+    
+    <item>
+      <title>Go 1.1 Release Notes 研读</title>
+      <link>https://olzhy.github.io/posts/go1dot1-release-notes-reading.html</link>
+      <pubDate>Wed, 16 Jan 2019 03:32:16 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1dot1-release-notes-reading.html</guid>
+      <description>1 Go 1.1 简介
+Go 1.</description>
+    </item>
+    
+    <item>
+      <title>Go 1 Release Notes 研读</title>
+      <link>https://olzhy.github.io/posts/go1-release-notes-reading.html</link>
+      <pubDate>Tue, 15 Jan 2019 07:02:31 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/go1-release-notes-reading.html</guid>
+      <description>1 Go 1简介
+Go 1对语言及核心库作了标准化定义。并声明之后发布的版本需遵守向后兼容的原则。</description>
+    </item>
+    
+    <item>
+      <title>Golang 正则表达式使用小结</title>
+      <link>https://olzhy.github.io/posts/golang-regexp.html</link>
+      <pubDate>Thu, 10 Jan 2019 07:22:34 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-regexp.html</guid>
+      <description>golang Regexp主要提供如下正则所表示的16个方法：
+Find(All)?(String)?(Submatch)?(Index)?若带All，该方法返回一个所有递进匹配结果的slice；该方法需要额外传一个整数n，若n&amp;gt;=0，至多返回n个匹配或子匹配，若x&amp;lt;0，返回全部。
+若带String，该方法传入的参数需是string，否则为字节slice，返回结果也为对应的string。</description>
+    </item>
+    
+    <item>
+      <title>Golang worker pool 实现</title>
+      <link>https://olzhy.github.io/posts/golang-worker-pool.html</link>
+      <pubDate>Tue, 08 Jan 2019 06:48:23 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-worker-pool.html</guid>
+      <description>worker pool的设计常用来加速处理执行较耗时的重任务，且为了避免goroutine的过度创建，需要指定工作池的大小。使用golang的goroutine与chan，数行代码即可实现一个简单的工作池。
+1 简单 worker pool</description>
+    </item>
+    
+    <item>
+      <title>Golang Timers Tickers 使用小结</title>
+      <link>https://olzhy.github.io/posts/golang-timers-and-tickers.html</link>
+      <pubDate>Mon, 07 Jan 2019 03:44:55 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-timers-and-tickers.html</guid>
+      <description>业务中，会有对某段逻辑在未来某一时刻执行或以一定时间间隔周期性执行的需求。golang使用timer及ticker来满足该需求场景。
+1 Timers
+Timer表示在未来某一刻执行仅一次的事件。如下代码中，第一个timer表示1s后执行，&amp;lt;-timer.C会一直阻塞，直至预定时间到达。第二个timer表示2s后执行，新启一个goroutine等待时间到达，主routine在时间未到达前即调用了Stop()，这样，新启的goroutine中的逻辑即不会被执行。
+package main import ( &amp;#34;fmt&amp;#34; &amp;#34;time&amp;#34; ) func main() { timer := time.</description>
+    </item>
+    
+    <item>
+      <title>Golang 使用channel作并发访问吞吐量限制</title>
+      <link>https://olzhy.github.io/posts/golang-throughput-limit.html</link>
+      <pubDate>Sun, 06 Jan 2019 10:50:25 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-throughput-limit.html</guid>
+      <description>golang中可以使用Buffered channel作为信号量来对服务的并发访问作吞吐量限制。
+如下代码中，Serve函数遍历请求队列，对每次请求，启动一个goroutine来进行handle，sem的缓冲大小限制了同时调用handle函数的数量，Serve函数虽可保障每一刻最多有MaxOutstanding个goroutine正在调用handle函数，但在请求过频与过多的情况下无法保证goroutine的过度创建以造成资源耗尽的风险。
+ServeWithThroughputLimit函数对Serve作了改进，即对给sem发送消息提到了goroutine创建之前，以对goroutine的创建作限制。这样，同一时刻最多有MaxOutstanding个goroutine对请求进行handle。
+golang中可以使用Buffered channel作为信号量来对服务的并发访问作吞吐量限制。</description>
+    </item>
+    
+    <item>
+      <title>Golang channel 使用小结</title>
+      <link>https://olzhy.github.io/posts/golang-channels.html</link>
+      <pubDate>Sat, 05 Jan 2019 09:14:45 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-channels.html</guid>
+      <description>以常规方式编写并发程序，需要对共享变量作正确的访问控制，处理起来很困难。而golang提出一种不同的方式，即共享变量通过channel传递，共享变量从不被各个独立运行的线程(goroutine)同时享有，在任一时刻，共享变量仅可被一个goroutine访问。所以，不会产生数据竞争。并发编程，golang鼓励以此种方式进行思考，精简为一句口号——“勿通过共享内存来进行通信，而应通过通信来进行内存共享”。
+1 Unbuffered channels与Buffered channels</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 73 矩阵置零</title>
+      <link>https://olzhy.github.io/posts/leetcode-set-matrix-zeroes.html</link>
+      <pubDate>Fri, 04 Jan 2019 03:40:09 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-set-matrix-zeroes.html</guid>
+      <description>1 题目描述
+给定一个m x n矩阵，若一个元素为0，将其所在行与列全部元素置为0，请使用原地计算。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 6 Z字形变换</title>
+      <link>https://olzhy.github.io/posts/leetcode-zigzag-conversion.html</link>
+      <pubDate>Thu, 20 Dec 2018 08:27:55 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-zigzag-conversion.html</guid>
+      <description>1 题目描述
+给定字符串，以Z字形显示。如&amp;quot;PAYPALISHIRING&amp;quot;以给定行数为3的Z字形显示为：
+然后从左到右一行一行拼起来为：&amp;ldquo;PAHNAPLSIIGYIR&amp;rdquo;。
+现在，传入一个字符串及行数，请编写代码求该字符串的Z字形变换。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 59 螺旋矩阵 II</title>
+      <link>https://olzhy.github.io/posts/leetcode-spiral-matrix-ii.html</link>
+      <pubDate>Sun, 16 Dec 2018 11:27:15 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-spiral-matrix-ii.html</guid>
+      <description>1 题目描述
+给定一个正整数n，生成一个由1到n^2元素以螺旋顺序填充的n x n矩阵。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 477 汉明距离总和</title>
+      <link>https://olzhy.github.io/posts/leetcode-total-hamming-distance.html</link>
+      <pubDate>Sun, 09 Dec 2018 14:24:02 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-total-hamming-distance.html</guid>
+      <description>1 题目描述
+两个整数之间的汉明距离是指两数的二进制数中各对应比特位不同的个数。现给定一组整数，计算该组整数中所有两数组合的汉明距离总和。
+例子：
+输入：4, 14, 2</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 54 螺旋矩阵</title>
+      <link>https://olzhy.github.io/posts/leetcode-spiral-matrix.html</link>
+      <pubDate>Sun, 18 Nov 2018 10:53:55 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-spiral-matrix.html</guid>
+      <description>1 题目描述
+给定一个m x n矩阵（m行，n列），按顺时针螺旋顺序返回矩阵的所有元素。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 143 重排链表</title>
+      <link>https://olzhy.github.io/posts/leetcode-reorder-linked-list.html</link>
+      <pubDate>Sat, 17 Nov 2018 14:25:38 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-reorder-linked-list.html</guid>
+      <description>1 题目描述
+给定一个单链表L： L0 → L1 → … → Ln-1 → Ln，将其重排为L0 → Ln → L1 → Ln-1 → L2 → Ln-2→…。请勿更改节点中的值。</description>
+    </item>
+    
+    <item>
+      <title>Thanks</title>
+      <link>https://olzhy.github.io/thanks/</link>
+      <pubDate>Mon, 12 Nov 2018 12:15:39 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/thanks/</guid>
+      <description>谢谢您的打赏，我会努力写更多有价值的文章！
+2021
+ 02.18微信用户A*e打赏  2020</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 130 围起的区域</title>
+      <link>https://olzhy.github.io/posts/leetcode-surrounded-regions.html</link>
+      <pubDate>Sun, 11 Nov 2018 13:37:39 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-surrounded-regions.html</guid>
+      <description>1 题目描述
+给定一个包含字母&amp;rsquo;O&#39;与&amp;rsquo;X&#39;的二维平面，占领所有被&amp;rsquo;X&#39;包围的区域（将被&amp;rsquo;X&#39;包围的区域中的&amp;rsquo;O&#39;填充为&amp;rsquo;X&#39;即为占领）。
+例子：
+输入：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 60 求第k个排列</title>
+      <link>https://olzhy.github.io/posts/leetcode-permutation-sequence.html</link>
+      <pubDate>Sun, 11 Nov 2018 02:42:50 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-permutation-sequence.html</guid>
+      <description>1 题目描述
+我们知道集合[1,2,3,&amp;hellip;,n]共包含n!个排列。以n=3为例，其有序全排列如下。
+&amp;ldquo;123&amp;rdquo;
+&amp;ldquo;132&amp;rdquo;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 17 求电话号码的字母组合</title>
+      <link>https://olzhy.github.io/posts/leetcode-letter-combinations-of-a-phone-number.html</link>
+      <pubDate>Wed, 07 Nov 2018 13:22:54 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-letter-combinations-of-a-phone-number.html</guid>
+      <description>1 题目描述
+给定一个包含数字[2-9]的字符串（闭区间），求数字可以代表的所有可能的字母组合。数字与字母的映射关系与手机号码簿相同（如下图），注意数字1未映射任何字母。
+例子：
+输入：&amp;ldquo;23&amp;rdquo;</description>
+    </item>
+    
+    <item>
+      <title>求字符串的有序全排列</title>
+      <link>https://olzhy.github.io/posts/algorithm-permutation.html</link>
+      <pubDate>Tue, 06 Nov 2018 12:51:53 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/algorithm-permutation.html</guid>
+      <description>1 题目描述
+我们知道，集合[1,2,3,&amp;hellip;,n]共有n!种全排列，现给定n (1&amp;lt;=n&amp;lt;=9)，求其有序全排列。
+例子1：</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 48 旋转图像</title>
+      <link>https://olzhy.github.io/posts/leetcode-rotate-image.html</link>
+      <pubDate>Mon, 05 Nov 2018 13:16:47 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-rotate-image.html</guid>
+      <description>1 题目描述
+给定一个 n x n 的二维矩阵表征一幅图像，求顺时针旋转90度后的图像。</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 3 求不含重复字符的最长子串</title>
+      <link>https://olzhy.github.io/posts/leetcode-longest-substring-without-repeating-characters.html</link>
+      <pubDate>Sun, 04 Nov 2018 10:42:58 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-longest-substring-without-repeating-characters.html</guid>
+      <description>1 题目描述
+给定一个字符串，求不含重复字符的最长子串的长度。
+例子1：
+输入：&amp;ldquo;abcabcbb&amp;rdquo;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 856 括号的分值</title>
+      <link>https://olzhy.github.io/posts/leetcode-score-of-parentheses.html</link>
+      <pubDate>Sat, 03 Nov 2018 15:07:17 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-score-of-parentheses.html</guid>
+      <description>1 题目描述
+给定一个以括号组成的平衡字符串表达式，基于如下规则计算括号表达式的分值。
+1）()的分值为1；
+2）AB的分值为A+B，其中A与B均是平衡字符串；</description>
+    </item>
+    
+    <item>
+      <title>LeetCode 224 简单计算器</title>
+      <link>https://olzhy.github.io/posts/leetcode-basic-calculator.html</link>
+      <pubDate>Sat, 03 Nov 2018 10:16:12 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-basic-calculator.html</guid>
+      <description>1 题目描述
+实现一个可以对简单字符串表达式进行计算的计算器。该字符串表达式由+，-，(，)及非负整数组成。
+例子1：
+输入：&amp;ldquo;1 + 1&amp;rdquo;</description>
+    </item>
+    
+    <item>
+      <title>LeetCode  338 计算二进制数中1的个数</title>
+      <link>https://olzhy.github.io/posts/leetcode-counting-binary-bits.html</link>
+      <pubDate>Thu, 01 Nov 2018 11:40:31 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/leetcode-counting-binary-bits.html</guid>
+      <description>1 题目描述
+给定一个非负整数num，对0 ≤ i ≤ num区间内每个整数，计算其对应的二进制数中1的个数，结果用数组返回。</description>
+    </item>
+    
+    <item>
+      <title>Golang struct slice排序</title>
+      <link>https://olzhy.github.io/posts/golang-struct-slice-sorting.html</link>
+      <pubDate>Mon, 29 Oct 2018 12:31:12 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-struct-slice-sorting.html</guid>
+      <description>1 提供less(i, j int) bool函数</description>
+    </item>
+    
+    <item>
+      <title>Golang方法调用值拷贝与引用拷贝</title>
+      <link>https://olzhy.github.io/posts/golang-method-calling-value-copy-or-reference-copy.html</link>
+      <pubDate>Sun, 28 Oct 2018 05:27:29 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-method-calling-value-copy-or-reference-copy.html</guid>
+      <description>1 方法调用采用值拷贝
+1.1 array
+golang中以array作为参数的方法调用，方法接收的是整个array的值拷贝，所以方法中对array的item重新赋值不起作用。</description>
+    </item>
+    
+    <item>
+      <title>VS Code Golang环境搭建</title>
+      <link>https://olzhy.github.io/posts/vs-code-golang-environment-configuration.html</link>
+      <pubDate>Sat, 27 Oct 2018 12:53:55 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/vs-code-golang-environment-configuration.html</guid>
+      <description>1 vscode安装
+从[1]下载安装vscode，然后安装[2]插件。
+2 插件安装</description>
+    </item>
+    
+    <item>
+      <title>找出字符串中的所有整数</title>
+      <link>https://olzhy.github.io/posts/find-integers-in-a-string.html</link>
+      <pubDate>Sat, 27 Oct 2018 04:06:11 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/find-integers-in-a-string.html</guid>
+      <description>1 题目
+找出字符串中的所有整数
+2 golang实现代码</description>
+    </item>
+    
+    <item>
+      <title>珍珍我错了</title>
+      <link>https://olzhy.github.io/posts/jane-i-am-sorry.html</link>
+      <pubDate>Mon, 10 Sep 2018 08:41:05 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/jane-i-am-sorry.html</guid>
+      <description>珍珍我错了</description>
+    </item>
+    
+    <item>
+      <title>Golang websocket结合一致性哈希算法构建高并发推送服务</title>
+      <link>https://olzhy.github.io/posts/golang-websocket-combine-consistent-hashing.html</link>
+      <pubDate>Sun, 02 Sep 2018 04:08:45 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/golang-websocket-combine-consistent-hashing.html</guid>
+      <description>1 场景介绍
+web应用中，常有业务状态需要实时更新的场景。如一个较长的后台任务，从浏览器用户触发执行到执行完成可能需几十秒的时间，这时前端需隔几秒请求一次后台，查询任务执行进度。此种方式是长轮询的方式，是存在一定弊端的，增加了后台服务的负载，若并发操作量太大，后台压力会成倍激增。业界常采用http1.1的websocket扩展协议与浏览器建立长连接来实现实时业务状态更新。
+2 实现方案</description>
+    </item>
+    
+    <item>
+      <title>練字：酒色端能誤國邦</title>
+      <link>https://olzhy.github.io/posts/handwriting-abstinence.html</link>
+      <pubDate>Sat, 17 Mar 2018 15:48:34 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/handwriting-abstinence.html</guid>
+      <description>酒色端能誤國邦，由來美色陷忠良。紂因妲己宗祧失，吳為西施社稷亡。自愛青春行處樂，豈知紅粉笑中槍。武松已殺貪淫婦，莫向東方怨彼蒼。——《水滸傳》第十四回
+大连
+戊戌年二月初一
+2018年3月18日</description>
+    </item>
+    
+    <item>
+      <title>观《肖申克的救赎》</title>
+      <link>https://olzhy.github.io/posts/watching-the-shawshank-redemption.html</link>
+      <pubDate>Sun, 11 Mar 2018 02:45:15 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/watching-the-shawshank-redemption.html</guid>
+      <description>我叫瑞德，一个在鲨堡监狱已服刑20年的囚徒，我在这里让狱友有求必应，在狱中略显奢侈的物品，如香烟、酒水等，我都能想办法弄到。
+安迪初进来时，很另类，不善言谈，独来独往，活像个局外人。
+他第一次找我，想通过我的渠道获得一个小锤子。
+安迪，初进大牢，看过同期狱友“猪公”被老鸟羞辱，痛哭难熬，被打死在狱中，连个名字都没有留下。
+后被三姐妹欺负，也得忍辱活着。</description>
+    </item>
+    
+    <item>
+      <title>WordPress站点Ansible Playbook自动化部署脚本</title>
+      <link>https://olzhy.github.io/posts/wordpress-ansible-playbook-script.html</link>
+      <pubDate>Thu, 01 Feb 2018 14:59:28 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/wordpress-ansible-playbook-script.html</guid>
+      <description>今日新购了服务器，为方便博客搬家，特编写了ansible playbook部署脚本。
+本站采用Nginx+PHP+Maridb+Wordpress搭建。需要备份的数据有nginx配置文件（nginx.conf），nginx html（html.zip），数据库脚本（wordpress.sql）。部署的目标机操作系统为CentOS7.2。
+1）该playbook目录结构</description>
+    </item>
+    
+    <item>
+      <title>观《卧虎藏龙》</title>
+      <link>https://olzhy.github.io/posts/see-crouching-tiger-hidden-dragon.html</link>
+      <pubDate>Sun, 21 Jan 2018 10:25:10 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/see-crouching-tiger-hidden-dragon.html</guid>
+      <description>今日一睹李安导演的《卧虎藏龙》，心中略有感慨，记录如下。
+一个“藏”字，道出了传统中国男人很普遍的一面。男女情深，羞于言；父子情深，讷于口；家国情深，藏于心。
+李慕白，得道之时嘱托师妹俞秀莲将挚爱的青冥宝剑赠予京城的贝勒爷。浪迹江湖逾半生，早已看淡尔虞我诈，打打杀杀，也厌倦了刀光剑影，你死我活。本该云淡风轻，却没有得道的喜悦，反被一种寂灭的悲哀环绕。
+是什么让他难过呢，即是心中隐藏多年的情。
+我愿放弃做一个盖世英雄，一个让天下人敬仰的侠客。刀剑易挡也易破，唯是人心最难识。罢了，罢了，这世间的人情纠葛，爱恨情仇，岂是我能斩得断理得清。师妹啊，去了却这烦扰吧，此剑易主，此身自此可以回归本心，不受束缚，只愿同你共余生。</description>
+    </item>
+    
+    <item>
+      <title>k-d tree算法原理及实现</title>
+      <link>https://olzhy.github.io/posts/kdtree-algorithm-and-implementation.html</link>
+      <pubDate>Thu, 28 Dec 2017 14:58:11 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/kdtree-algorithm-and-implementation.html</guid>
+      <description>k-d tree即k-dimensional tree，常用来作空间划分及近邻搜索，是二叉空间划分树的一个特例。通常，对于维度为$k$，数据点数为$N$的数据集，k-d tree适用于$N\gg2^k$的情形。
+1）k-d tree算法原理</description>
+    </item>
+    
+    <item>
+      <title>读《风雅颂》</title>
+      <link>https://olzhy.github.io/posts/reading-feng-ya-song.html</link>
+      <pubDate>Sun, 10 Dec 2017 04:01:29 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/reading-feng-ya-song.html</guid>
+      <description>这是阎连科先生在写知识分子自己“丑陋”的一步作品。小说情节看似荒诞，但现实世界正在发生的事情远比小说荒诞多了。
+“我”没有选择青梅竹马，为了地位，为了事业，“我”娶了教授的女儿，赵茹萍。
+然而婚后生活并不幸福，“我”追求的学术在妻子看来一文不值。她深谙世道，能“睡觉”得到的东西，就不用专研学术。“我”更像是时代的遗儿，“我”和这个时代太不合了。面对妻子赵茹萍与校长李广智的通奸，更像是“我”做错了事，“我”活的没有一个男人样，竟给茹萍跪下来苦苦求饶“不要再有下次了好吗”，写出了知识分子的懦弱。
+“我”像一个异类一样被送进了精神病院（当“权威”说你有病，你就是有病，你没有辩驳的权利）。当院长说，你不是教授吗，你去给病人讲课，当他们交头接耳，不愿听，你就可以出院了（将一个人交给“病人”来裁判时，你的认真无法逃脱这个荒诞）。“我”想着方式让病人听不懂，他们却异常认真，这时，“我”的常识失效了，“我”会进入一个死循环，“我”要逃离这里，去哪里？回家。
+乡人知道“我”是“清燕大学”的教授，带着孩子争相找“我”摸头，送吃送喝，为的是孩子能考中。然而未中时，竟似盗贼样争抢我家里的东西。他们正巧撞上我后露出的一丝“羞愧”已将乡人“淳朴”的外衣撕的仅剩一件内裤了（一般作家是不敢“得罪”农民的，阎连科偏敢写出来）。</description>
+    </item>
+    
+    <item>
+      <title>一致性哈希算法与高可用集群代理</title>
+      <link>https://olzhy.github.io/posts/consistent-hashing-and-high-available-cluster-proxy.html</link>
+      <pubDate>Thu, 30 Nov 2017 13:56:51 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/consistent-hashing-and-high-available-cluster-proxy.html</guid>
+      <description>假定N为后台服务节点数，当前台携带关键字key发起请求时，我们通常将key进行hash后采用模运算（hash(key)%N）来将请求分发到不同的节点上。
+对前台请求于后台无状态服务节点不敏感的场景而言，只要请求key具有一定的随机性，哪怕节点动态增删，该算法于后台而言已可以达到很好的负载均衡效果。
+但对于分布式缓存，或者分布式数据库等场景而言，上述方式就不合适了。因后台节点的增删会引起几乎所有key的重新映射。这样，于分布式缓存而言，均发生cache miss；于分布式数据库而言发生数据错乱，其影响是灾难性的。
+而一致性哈希算法的目标是，当K个请求key发起请求时。后台增减节点，只会引起K/N的key发生重新映射。即一致性哈希算法，在后台节点稳定时，同一key的每次请求映射到的节点是一样的。而当后台节点增减时，该算法尽量将K个key映射到与之前相同的节点上。</description>
+    </item>
+    
+    <item>
+      <title>手机品牌搜索走势图</title>
+      <link>https://olzhy.github.io/posts/search-trends-of-mobile-phone-brands.html</link>
+      <pubDate>Tue, 28 Nov 2017 13:42:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/search-trends-of-mobile-phone-brands.html</guid>
+      <description>当前，各应用平台每天都在产生海量的数据。基于海量数据的深度分析报告越来越有价值。该领域涵盖数学、统计学，计算机科学等众多学科，是一个值得深入研究的方向。本文涉及的是一个简单的数据分析场景，旨在梳理使用Python数据分析涉及的常用类库（pandas、matplotlib等）与入门知识。本文对指定的几家手机品牌，按日期区间，从百度指数网站获取其月度搜索数据，然后绘制出它们的搜索走势对比图。
+1）关键点
+a）日期区间（使用pandas的date_range方法）；
+b）对指定日期（年月），获取手机品牌清单中各品牌的搜索量（requests使用）；
+c）构造DataFrame（重点关注data、index和columns参数传值），结合matplotlib绘图。</description>
+    </item>
+    
+    <item>
+      <title>友情链接</title>
+      <link>https://olzhy.github.io/links/</link>
+      <pubDate>Sat, 28 Oct 2017 10:35:42 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/links/</guid>
+      <description>Go语言中文网 | Tony Bai | Jing blog | Xiaobin’s Blog | 土木坛子 | 有点才艺的孟仔</description>
+    </item>
+    
+    <item>
+      <title>关于本站</title>
+      <link>https://olzhy.github.io/about/</link>
+      <pubDate>Mon, 23 Oct 2017 02:05:07 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/about/</guid>
+      <description>关于博主
+“大丈夫行事，当磊磊落落，如日月皎然。”——《晋书》
+磊磊落落：IT从业者，生活记录者。博客名称取自《晋书》，勉励本人光明磊落做人做事。该博客是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。
+许可证
+本站文章及图片采用知识共享署名4.0许可证进行许可，转载请注明原文出处。</description>
+    </item>
+    
+    <item>
+      <title>修行</title>
+      <link>https://olzhy.github.io/posts/padipata.html</link>
+      <pubDate>Sun, 22 Oct 2017 15:54:16 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/padipata.html</guid>
+      <description>行急思缓，静久思动，欲频需节，气堵需疏。
+人浮于世，几乎需对遇见的每个对立命题都得寻得一个平衡点。如游走于太极图谱，凡事不能直接落入黑白，得不断摸索这黑白的交界。而修行即是让心灵不断靠近这条线。
+世事变化，内心却要寻得某种不变，即是一种平衡的状态。
+内心活动看似包裹在驱壳之内，旁人难以察觉，实则心气流动，皆会以某种方式露于形色。若让修道之人，略观其色，听其片语，判断其心念涌动，结果不出其二。
+人在世上游走，于对立的命题间找不到平衡，会被有形的社会规则与无形的内心斗争所折磨，所以需要不断修行。</description>
+    </item>
+    
+    <item>
+      <title>根据遍历结果反向构建树</title>
+      <link>https://olzhy.github.io/posts/reverse-build-tree.html</link>
+      <pubDate>Sun, 22 Oct 2017 13:28:51 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/reverse-build-tree.html</guid>
+      <description>业务中也许会遇到反向构建树的情形，如从外部工具获取到依赖关系、行政区划，组织架构等文本数据时，如何去反向构建树。我们以“获取到了树的深度遍历结果，然后将树结构构建出来，最后用JSON格式输出”，来模拟此类树的反向构建过程。本文采用Ruby作为描述语言。
+1） 已获取的树的遍历结果文本
+company +- org-1 +- org-2 | \- org-2.</description>
+    </item>
+    
+    <item>
+      <title>人</title>
+      <link>https://olzhy.github.io/posts/people.html</link>
+      <pubDate>Mon, 13 Feb 2017 14:19:02 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/people.html</guid>
+      <description>每个人是极其独立的个体，很多事情是非常主观的，你说它重要它就重要，你说它不重要它便不重要，你说它有意义它就有意义，你说它没意义也就瞬间没意义了。人与人的共同理解是极少的，即便语言这种描述媒介表达出来甚是相同，仔细去看却有天壤之别。人多数以为的认同感都是一厢情愿的，我们都活在各自的世界里，去完成自己的人生使命，只是在彼此交织构筑的网里，做了一场属于自己的梦。
+2017.02.13
+于DS-BJ火车上</description>
+    </item>
+    
+    <item>
+      <title>作家是一个时代的记录者</title>
+      <link>https://olzhy.github.io/posts/writer-is-chronicler.html</link>
+      <pubDate>Mon, 13 Feb 2017 12:17:03 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/writer-is-chronicler.html</guid>
+      <description>从时间长河来看，每个人都是沧海一粟，每个人的旅程也都是白驹过溪。作家，作为这其中的极少数，不一定是这些人中最敏感，情感或经历最丰富的，却是这当中难得的放弃沉默的记录者。不管是刻画内心独特的波澜，还是描绘时代的声音，都是当中少有的留下印记的人，这也是作家对于时间和时代的意义。于作家自身，也在记录的过程中完成了自己人生的意义。
+2017.02.13
+于DS-BJ火车上</description>
+    </item>
+    
+    <item>
+      <title>往事如烟</title>
+      <link>https://olzhy.github.io/posts/past-like-wind.html</link>
+      <pubDate>Tue, 07 Feb 2017 12:24:56 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/past-like-wind.html</guid>
+      <description>某天，翻开了几年前使用过的旧手机。
+翻看当年的条条短信息，惊讶当时出现过的那些人，发生的那些事，不仔细回想，竟像从没有发生过一样。
+那时让我心跳加速的话语，竟可以平心静气的读出来。
+那些让我欣喜，让我烦恼的人与事，不知何时已从自己的生活中流走了。
+世事交替，人物变换。</description>
+    </item>
+    
+    <item>
+      <title>热闹处有宁静</title>
+      <link>https://olzhy.github.io/posts/quiet-in-bustling.html</link>
+      <pubDate>Sun, 09 Oct 2016 03:57:20 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/quiet-in-bustling.html</guid>
+      <description>与大多年轻人一样，这几多年，多是为了生存忙碌着。于一生也是一个不可或缺的过程，希望若干年后，可以追随内心，寻得一种平淡明朗的生活，与世界和平相处。相信历经岁月的洗礼，内心自有一份豁达与坦荡。热闹处有宁静，平寂时有欢愉。
+BJ
+2016.10.09</description>
+    </item>
+    
+    <item>
+      <title>对现实世界不妥协</title>
+      <link>https://olzhy.github.io/posts/uncompromising-to-real-life.html</link>
+      <pubDate>Sat, 08 Oct 2016 03:58:54 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/uncompromising-to-real-life.html</guid>
+      <description>人有多种活法，世界有多种解读方式。那种只遵从内心，跳出常人理解与现有规则过生活的人，需要忍受现实世界多少折磨。那是一种值得敬畏的人生态度，需要倾注生命与灵魂来保持心灵的纯粹，受尽折磨，内心寻得一片空明。由生至死，对隐形力量不顺从，对现实世界不妥协。
+BJ
+2016.10.08</description>
+    </item>
+    
+    <item>
+      <title>修炼内心</title>
+      <link>https://olzhy.github.io/posts/cultivate-inner-heart.html</link>
+      <pubDate>Thu, 06 Oct 2016 04:00:12 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/cultivate-inner-heart.html</guid>
+      <description>假期结束了，感觉人慢下来才会真正开始想生活， 一想才知道错过些什么，或者突然意识到还有好多重要的事情没有做。人可能要寻得一个属于自己的节奏吧，不急不缓，不忧不扰，不娇纵失望，不迷失自己，也许活着就是在修炼内心，这是一生的事，不能急于求成。
+东胜
+2016.10.06</description>
+    </item>
+    
+    <item>
+      <title>珍藏情感</title>
+      <link>https://olzhy.github.io/posts/enshrine-emotion.html</link>
+      <pubDate>Mon, 29 Aug 2016 04:05:37 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/enshrine-emotion.html</guid>
+      <description>去年读《麦田里的守望者》，感叹少年的内心好似雨后的一道彩虹，年少的时光就像夜里洒向麦田的月光。感叹之余又可惜好多那个年纪独有的情感已经从内心忘却了。看到此书时，虽然惊叹作者用别样的文笔勾勒了少年内心那广阔的田野，但自己的童年明明有过相似甚至超脱书籍的异常强烈的情感，但过后了就再也寻不到了。
+年轻时拥有过的爱情，甜的也好，苦的也罢，当时觉得没什么，过后了才会感叹原来那是属于那个年纪独有的一种波澜。
+你我有时可能会出现极其丰富的情感，当时无以名状，或者怯于表达，过后有时会若隐若现，但很难完整的复现那时的心情了。所以同一朵花，在不同的年纪去看，对内心的触动是不一样的。
+相机可以定格女子的美丽，声音也可以留存，唯一难以恒久的是此刻的情感。所以在各个不同的年纪，若有引起内心波澜的人与事，要用最接近真实感受的方式记下来，这是很珍贵的。
+BJ</description>
+    </item>
+    
+    <item>
+      <title>人缺的是一个认真懂你的听众</title>
+      <link>https://olzhy.github.io/posts/people-lack-of-a-listener.html</link>
+      <pubDate>Sat, 27 Aug 2016 04:13:54 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/people-lack-of-a-listener.html</guid>
+      <description>人，都 “懒”的去表达一些深层次的理解。
+每个人都有丰富的独有的内心世界。但语言这种表达媒介，只能传达少之又少的信息。人大量时间由琐事占据，日常交流，要么有不少冗余与失真，要么压根缺少表达的欲望，于别人会觉得“所以你不说，我不知道”。
+话不在多，相处不在久，也许几十年有一个下午和自己的老父亲谈谈心，也是一次难得的经历，会铭记终生，“哦，原来您有这么多有趣的理解”。每个人的内心世界，除了自己，没人能懂，甚至自己也不懂，这也是人的孤独性。
+真正心底的东西，也许此生只会倾心述说一次，也许一次都不会。</description>
+    </item>
+    
+    <item>
+      <title>人类的自由性与独立性</title>
+      <link>https://olzhy.github.io/posts/freedom-and-independence-of-people.html</link>
+      <pubDate>Sun, 10 Jul 2016 04:16:24 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/freedom-and-independence-of-people.html</guid>
+      <description>昨日山中巧遇一人，相聊甚欢。今日初醒，突有一些小感，特作记录。
+造物主（姑且这样说），粗暴式主宰人类的三种方式。
+一、人生来就无自我决定性
+人类无法逃离土地，氧气，父体呵护以及依赖的环境而独立生长。这是第一层约束，生物本体存在性制约。所以一开始我们就被有形的，无形的力量左右着。
+二、遗传式知识累积与传递</description>
+    </item>
+    
+    <item>
+      <title>契合点</title>
+      <link>https://olzhy.github.io/posts/fitting-point.html</link>
+      <pubDate>Sat, 23 Apr 2016 04:18:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/fitting-point.html</guid>
+      <description>人、鬼，宇宙； 宗教、物理学； 人类活动、天地气象； 一切看似无关的东西，终会寻得某种契合点。
+BJ</description>
+    </item>
+    
+    <item>
+      <title>修养与性格</title>
+      <link>https://olzhy.github.io/posts/virtue-and-character.html</link>
+      <pubDate>Sat, 23 Apr 2016 00:20:19 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/virtue-and-character.html</guid>
+      <description>甚至一个人的性格，都可看作学识、才智，品性修养的统一表征。
+BJ
+2016.04.23</description>
+    </item>
+    
+    <item>
+      <title>一个好的管理者</title>
+      <link>https://olzhy.github.io/posts/a-good-manager.html</link>
+      <pubDate>Sat, 12 Mar 2016 04:21:39 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/a-good-manager.html</guid>
+      <description>一个好的管理者绝不仅仅是一个任务分发者。事要做好做巧，需要在各方面下苦功，对人对团队的了解要像自己的器官一样细致入微，谁能干什么谁不能干什么，做到胸有成竹。不同人的组合会爆发不一样的“化学反应”，这需要很高的情商与智慧。往大了讲，人类活动，社会文化，物理聚变，化学反应，以及种种奇妙之事，均源于人或物质的组合方式。
+BJ
+2016.03.12</description>
+    </item>
+    
+    <item>
+      <title>古老城墙</title>
+      <link>https://olzhy.github.io/posts/ancient-city-wall.html</link>
+      <pubDate>Tue, 01 Dec 2015 00:24:32 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/ancient-city-wall.html</guid>
+      <description>手指轻触这古老的城墙，感觉到人的渺小；在它面前，人好似一株花一样，匆匆走过，生生灭灭。
+BJ
+2015.12.01</description>
+    </item>
+    
+    <item>
+      <title>记忆中的秋收时节</title>
+      <link>https://olzhy.github.io/posts/autumn-harvest-in-memory.html</link>
+      <pubDate>Sat, 03 Oct 2015 04:28:46 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/autumn-harvest-in-memory.html</guid>
+      <description>这几日正是往常老家秋收繁忙的时候。
+我在的村子不算旱，但可以灌溉的田也没几成，还得是靠天吃饭。人们将几亩好地种菜种瓜，大多的地都来种玉米了。
+清早刚吃过早饭就要去地里干活了。有全家出动的，也有你家我家合伙收割的，一派繁忙景象。
+后面老汉赶着跟他一样上了岁数的老黄牛，驮着老伴，缓慢的向田里行进。
+前面开动的三轮车砰砰作响，后座上淘气的孩子隔着护栏伸手去抓前座男人寥寥无几的头发，几次下来，男人有些恼怒，小孩却嘎嘎笑着。</description>
+    </item>
+    
+    <item>
+      <title>正视自己，正视别人</title>
+      <link>https://olzhy.github.io/posts/face-self-and-others.html</link>
+      <pubDate>Sat, 19 Sep 2015 04:30:00 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/face-self-and-others.html</guid>
+      <description>对于高考的不平等，有人讲“农村孩子高分低能，北京上海考生综合素质高，所以低分进北大复旦乃情理之中”。我看到一个回复说“既然要求综合素质高，那就应该考查综合素质！凭什么会弹琴就叫综合素质，会种田养猪不叫综合素质？”。
+我看了很有感触，这些年，见过城市的高楼，看过富人的奢华，但都不是那么向往的快乐。想到快乐，也许现在或者将来都难敌小时候在村里捉蚯蚓的那种心情。如果素质不仅是拥有金钱还包括感知生活与获取快乐的能力，那么在那块土地的生活与经历对于我都是难得的至宝。这些年从读书到工作，也接触过不少优秀与值得尊敬的人，见过出身贫寒到学识渊博温文尔雅的蜕变，也见过家境殷实仍奋力追逐的人，对穷人的小瞧与对富人的仇视都是我们应当摒弃的“素质”。
+BJ
+2015.9.19</description>
+    </item>
+    
+    <item>
+      <title>父母的身影</title>
+      <link>https://olzhy.github.io/posts/figure-of-parents.html</link>
+      <pubDate>Sat, 19 Sep 2015 00:31:25 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/figure-of-parents.html</guid>
+      <description>走了一天回来了，去吃类似呷哺的小火锅，不经意看到旁边的女孩带着她的母亲一起吃，看着女孩母亲去坐这种支的高高的凳子很费劲，心里另一种滋味。远方的父母也到这个岁数，每次看到年龄相仿的老人，浮现的总是他们的身影。
+上次户外回来，也在这家店。一个父亲年纪的人来应聘服务员，年轻小伙子指导着说叔叔您这样那样调调火加点水，那个瞬间我看着老人的背影竟觉得跟父亲那么像，我心里酸酸的，当年外面念书也偶尔跟同学出去聚餐吃喝，却难以体会父母在外边打工挣钱的艰辛，心里很自责。
+BJ
+2015.9.19</description>
+    </item>
+    
+    <item>
+      <title>买票</title>
+      <link>https://olzhy.github.io/posts/buy-a-ticket.html</link>
+      <pubDate>Wed, 02 Sep 2015 04:33:06 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/buy-a-ticket.html</guid>
+      <description>买票，一乡村老人翻着被袋子手绢包裹的零钱，跟售票员说去北京火车站。听着说“北京”这个字眼时略带骄傲的声调，体会到那个年代的人对首都的深深向往与浓烈情感。感叹现实是首都内化于我，而我外化于她，但某天这个城市终究会变得包容与热爱每一个爱她的人，所憾的是她再也不能给远去的那个时代的老人一次热烈的拥抱了。
+BJ
+2015.09.02</description>
+    </item>
+    
+    <item>
+      <title>古人留给我们的锦囊</title>
+      <link>https://olzhy.github.io/posts/silk-bag-left-behind-by-ancestors.html</link>
+      <pubDate>Tue, 01 Sep 2015 04:34:17 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/silk-bag-left-behind-by-ancestors.html</guid>
+      <description>中华文化博大精深，日本人只得分毫，便可振兴民族，改头换面。中国的儒、道、佛、法；中医、星象、风水、伦理等虽门类有别，各成体系，却一脉相承，统一交融。中华文化历经千年积淀，丰富圆满，可谓天地日月之精华。这不仅是老祖宗留给我们的个个锦囊，此生此世此民族遇到的种种，都能在古人的文化瑰宝里得到启迪，找到答案。
+BJ
+2015.09.01</description>
+    </item>
+    
+    <item>
+      <title>不确定的东西</title>
+      <link>https://olzhy.github.io/posts/something-uncertainly.html</link>
+      <pubDate>Fri, 28 Aug 2015 04:35:43 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/something-uncertainly.html</guid>
+      <description>这世界，并非所有东西都是确定的，那些偶然的不确定的东西似乎以更微妙的方式影响着我们的生活。
+确定的东西，拥有确定的维度，处于空间某一个角落，你朝那个方向走，就能找到它；不确定的东西，以高维度方式存在，你从自我认知方向去寻找，不一定能抓住它，你就泰然自若，无心插柳，做好本职，它极有可能以不经意的方式出现。
+BJ
+2015.08.28</description>
+    </item>
+    
+    <item>
+      <title>人生的边界</title>
+      <link>https://olzhy.github.io/posts/boundary-of-our-life.html</link>
+      <pubDate>Sat, 25 Jul 2015 04:37:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/boundary-of-our-life.html</guid>
+      <description>人生的边界就是这个世上的规则，我们所处时代的程式，人生难以逾越的固有思维。
+比如谈恋爱，男孩就应该体面，有眼缘，对你关心呵护，慢慢走近，然后觉得不错，在一起，然后进行后续的。
+如果路上遇到一个陌生人，尾随你，然后当面说我喜欢你，就会觉得好变态，是不是流氓。
+但谁也无法证明一种就比另一种更出自初心。
+就像生来就应该好好赚钱、养家、生子，安享晚年。我们在这个世上生活，总会有一种固有的程式被放进大脑。</description>
+    </item>
+    
+    <item>
+      <title>时代的牢笼</title>
+      <link>https://olzhy.github.io/posts/cage-of-time.html</link>
+      <pubDate>Sat, 25 Jul 2015 00:38:47 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/cage-of-time.html</guid>
+      <description>一个时代有一个时代“楚门的世界”，我们也许从生到死都不会意识到这种难言的悲哀 。我们生在一个时代，身体血液思维都会受其所限，每个时代都有每个时代的标准活法，而且自我意识会认为我们所走的每一步都理应如此。人们自认为自己的生活拥有超凡的自由度，但永远挣脱不了时代给人的牢笼。
+YY.BJ
+2015.07.25</description>
+    </item>
+    
+    <item>
+      <title>诗人的灵魂</title>
+      <link>https://olzhy.github.io/posts/soul-of-poet.html</link>
+      <pubDate>Thu, 30 Apr 2015 04:40:06 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/soul-of-poet.html</guid>
+      <description>诗人为了保持灵魂的独立，一生都在逃离世俗。如顾城，如海子。他安静的坐在那里，但思想如鸽子一样早已在脑海放飞了，我们很难体会那种脱缰的快感。而鸽子飞累了，终究需要一个地方歇歇脚，但即便寻得一处人间的世外桃源，也终究属于尘世这张网，就算包得再严实，也避免不了某时会落入一颗凡尘，而诗人又有极度的精神洁癖，容不得丝毫世俗之物。到最后，唯有结束生命，才能保持灵魂的洁净。
+YY.BJ
+2015.04.30</description>
+    </item>
+    
+    <item>
+      <title>关于爱国</title>
+      <link>https://olzhy.github.io/posts/about-petriotism.html</link>
+      <pubDate>Sat, 14 Feb 2015 07:58:48 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/about-petriotism.html</guid>
+      <description>爱国从不是不停的歌颂与赞美，也不是无休止的争论。因为动真情的人一般更沉默一些，他们在经历艰难的独立思考，这其中或许会有许多次的痛苦挣扎，也或许会产生各种爱恨交织的复杂情感。但这是真实的，我们不要逃避，也不要认为怀疑就是抹黑。因为爱到深处时往往是爱之俞深 ，责之俞切。当她不完美时，你并没想离开她，相反，你想改造它，改变它，让她变得更好，这或许才是一种真爱国吧。
+BJ
+2015.02.14</description>
+    </item>
+    
+    <item>
+      <title>读《缘豆儿》</title>
+      <link>https://olzhy.github.io/posts/read-feat-bean.html</link>
+      <pubDate>Mon, 19 Jan 2015 08:00:37 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/read-feat-bean.html</guid>
+      <description>记得有一次从火车站出来，视野里来来往往的人们为不同的目的地匆匆赶路。我放下行李，驻足去看这最普通不过的情景，心里竟生得一丝曼妙的哲学意味——想象着若运用蒙太奇手法将每个路人真实的一生与这短暂的擦肩剪接到一起同时去看，我们可能会对人生有更加深刻的理解。
+今日读过张晓风的《缘豆儿》，觉得一生的承载就如同这手捧的小小钵子，人世间的情与缘就像这一粒粒各色各样普普通通的豆子。你我初生时，钵子里便有了一粒豆子，那是你我与父母此生注定的缘分。我们拿着这钵子一路跑啊跑，由婴儿长成了少年，由少年长成了成年，钵子里施予的是你我对世界的感恩，收获的是你我与世人的缘分。这一路上有苦，有甜，有乐，有悲；有人，有物，有情，有怨。所有的这些都因缘而生。当持钵子的手变得苍老，人白了头发，这钵子或轻或重；或施予的多，若收获的多；或甜多过苦，或悲多过乐。都不重要了，我们只记得彼时的少年，在奔跑的途中不经意相遇，凝视彼此澈亮的眸子，交换一粒小小的豆子，难掩兴奋。
+YY.BJ
+2015.01.19</description>
+    </item>
+    
+    <item>
+      <title>读《在细雨中呼喊》</title>
+      <link>https://olzhy.github.io/posts/read-cries-in-the-drizzle.html</link>
+      <pubDate>Sun, 08 Jun 2014 08:03:35 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/read-cries-in-the-drizzle.html</guid>
+      <description>我在农村长大，也深爱那里的土地，那里的人。我记得乡民的勤劳，憨厚，淳朴，却不曾发现我可爱的相亲骨子里的丑陋。余华的《在细雨中呼喊》，虽述说的是我还未出生的那个年代，但一个个栩栩如生的人物，一件件活灵活现的故事，将国人骨子里的那种可悲的共性表现得淋漓尽致，仔细想想，这些人，在我生活过的村子都能找到原型，读几页就得舒一口气，读完，心重的难以释怀。
+SY
+2014年6月8日</description>
+    </item>
+    
+    <item>
+      <title>雨</title>
+      <link>https://olzhy.github.io/posts/rain.html</link>
+      <pubDate>Thu, 22 May 2014 08:06:02 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/rain.html</guid>
+      <description>近些天，沈阳下了雨。
+身在城市坚固的建筑里，雨打不到，衣湿不了，马路不会因雨变得泥泞，工作不会因雨而停歇。雨来了，也感受不到雨的气息了。对雨的记忆，还在故乡，还在小时候。那里那时的雨带给我的是另一种思绪。
+那时，我还是上小学的年纪。周末，不用去上学。刚吃完早饭，隔壁院子的老人就来串门了。老人拉着家常，母亲边答话边做着针线活。我坐在炕上挨着玻璃的位置捣鼓着破旧的收音机，这里拧拧，那里拆拆。今天阴天，虽是上午时分，天色显然不像往常那么明亮，准是要下雨的样子。三五句话功夫，雷声一响，就知道雨要来了。母亲吩咐我赶快下炕去收衣服，话音刚落，她已跑去找塑料布去盖晒在院里的农作物了。故乡的雨来的总是那么匆忙，那么毫无防备，收拾中间，雨已从天而降。你奔我跑，以最快的速度收拾完毕，人没被打的很湿，事也还算没被耽误。
+回到屋里，用毛巾擦擦身上的雨水。各自回到炕上，又恢复了原来的安静。屋外却是另一番景象，雨哗哗直下，地面水波涌动，似开了锅的水。隔着墙听到街上有人奔跑的脚步声。有串门的人，有打早去田里干活的人，都被雨夹在了半路上，人们不得不就近躲雨了。这不，街门洞里就听到了躲雨人的嬉笑声。有男人脱了草帽，点根烟蹲在那里说着笑话。也有女人哄着怀里的孩子说着今年的收成差不了。
+又过了些时候，雨小了。我便坐不住了，拿个小桶走出屋子，不为接水，而是倒放着。看着雨滴顺着瓦檐泻下，敲中小桶，发出清脆的滴答声，就会觉得很快乐。玩耍着，周围的几处烟囱开始冒出青烟，已有人家开始做午饭了。母亲喊我到柴房去抱干的玉米秸秆，我们也要烧火做饭了。灶台就在家门口，大部分都被屋檐挡着，只有烟筒伸出外檐。第一锅是烧开水的，等到烧第二锅，母亲已将包子包好了。一排排放在高粱秸秆做的夹层上，似浑圆的灯笼，盖好锅盖，开蒸了。我边烧火边看着滴落的雨将烟筒打湿，燃烧着的秸秆又将烟筒烘干，就这样重复着。约莫一个时辰，饭就熟了，锅盖一揭，热气直冲雨滴现一阵白气，然后便是扑鼻的饭香。</description>
+    </item>
+    
+    <item>
+      <title>读《穆斯林的葬礼》</title>
+      <link>https://olzhy.github.io/posts/muslim-funeral-reading.html</link>
+      <pubDate>Fri, 02 May 2014 08:13:49 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/muslim-funeral-reading.html</guid>
+      <description>五一小长假的第二天，图书馆里冷冷清清，我照旧坐在最后一排靠窗的位置，准备用这一下午的时光静静读完《穆》的最后几章。看着窗外落下的点点细雨，读着书中的凄惨故事，不禁唏嘘。当书签夹在最后一页，轻轻将书阖上，心里有种东西在翻滚。
+读到新月告别的那一段，整个心都碎了。人在这世上走一走，酸甜苦辣都得尝一尝。也许只有当我们真正告别的时候才能体会这世间最珍贵的东西是什么。这世间所有的怨都可以忘记，所有的恨都可以原谅，所有的伤都可以释怀，唯有这真情让人恋恋不舍。
+整个故事就像易卜拉欣跟着吐罗耶定巴巴在朝觐的路上看到的幻景，这幻景缘于玉，葬于玉。玉本身是美丽的，和玉留下的故事却是凄惨的。当易卜拉欣清醒之后，掸一掸身上的尘土，这一切都好像没有发生过，继续朝着圣地麦加的方向前行。
+也许你我也是缘于某种东西落入凡尘。我们来到这里，在这里经历我们看到的、想到的、听到的。这里有善、有恶，有怨、有情。我们因这里的人开心难过，为这里的事迷茫彷徨。我们在这里轻唱，我们在这里挣扎，我们在这里怒号。我们厌恶这里，我们怀念这里。梦醒了，我们要和这里告别了，我们也许会留下些什么，也许什么都不会留下。轻轻的离开，好似什么都没有发生过。
+生是一瞬，死是长存。只因人间有爱，才使这瞬间的东西在恒久面前更显珍贵、美丽。</description>
+    </item>
+    
+    <item>
+      <title>读《穆》</title>
+      <link>https://olzhy.github.io/posts/muslin-funeral.html</link>
+      <pubDate>Mon, 28 Apr 2014 08:15:43 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/muslin-funeral.html</guid>
+      <description>上周末刚读到《月清》，想起新月母亲对女儿表现出的漠不关心，以及种种微妙的迹象说明这后面一定有着不一样的故事。刚刚脑海突然闪过一个可怕的猜测“难道新月是韩子奇跟他小姨子所生？”。
+NS
+2014.04.28</description>
+    </item>
+    
+    <item>
+      <title>又是一年春来到</title>
+      <link>https://olzhy.github.io/posts/spring-coming-again.html</link>
+      <pubDate>Thu, 10 Apr 2014 08:16:55 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/spring-coming-again.html</guid>
+      <description>午后伏案小睡，窗口吹来轻风，下意识去关窗户，无意间看到那远处的桃花树，我睡眼惺忪，远处的颜色由一团到一簇，再到一朵朵，须臾间花已将我唤醒了。索性将下午的事放在一边，轻快向它走去，伸手轻触那袅娜柔美的花瓣，花蕊轻颤，那是今春的第一次花语。
+幻想曲
+NS
+2014.04.10</description>
+    </item>
+    
+    <item>
+      <title>一下午的暖暖阳光</title>
+      <link>https://olzhy.github.io/posts/warm-sunshine-of-afternoon.html</link>
+      <pubDate>Sun, 23 Mar 2014 08:19:25 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/warm-sunshine-of-afternoon.html</guid>
+      <description>周末去公园走了走。
+到一斜坡处，一位小女孩尝试去爬眼前一座看上去很陡峭很危险的石头坡，本以为她身后的父亲会将其制止。没想到父亲没有做声，而是紧随其后，左手发力，右手作保护状，移动笨拙的步子，目不转睛的盯着女儿，提心吊胆爬起坡来。到坡顶了，小女孩开心极了，咯咯的笑着，女孩的父亲出了一头的汗水。
+到一拱桥处，一对年轻恋人在用剪刀石头布来决定移动脚步。男孩连输几局，眼看女友离自己越来越远，焦急的追赶起来。
+现在夜已深了，脑海依然浮现着小女孩天使般的笑容和女孩父亲的闪闪汗珠；年轻恋人的嬉笑追赶和一下午的暖暖阳光。
+NEU</description>
+    </item>
+    
+    <item>
+      <title>忘记就意味着背叛</title>
+      <link>https://olzhy.github.io/posts/fogetting-past-means-betrayal.html</link>
+      <pubDate>Wed, 19 Mar 2014 08:21:17 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/fogetting-past-means-betrayal.html</guid>
+      <description>看到有国人为克里米亚入俄而欢呼雀跃，这欢呼声像在打我们自己的脸一样振聋发聩。我们早已忘记了谁怂恿下的外蒙古独立，而那“公投”的形式又是何等相似。黑龙江以北，乌苏里江以东，天山以西，唐努乌梁海等上百万平方公里的领土不知被谁强占。我们不去延续仇恨，但也不能忘记耻辱，忘记就意味着背叛。
+NEU
+2014.03.19</description>
+    </item>
+    
+    <item>
+      <title>人文与科技</title>
+      <link>https://olzhy.github.io/posts/humanity-vs-science-and-technology.html</link>
+      <pubDate>Wed, 19 Feb 2014 08:22:22 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/humanity-vs-science-and-technology.html</guid>
+      <description>如今充斥着唯实用至上，金钱至上的价值观，我们重科技而轻人文。使得人文思想滞后科技发展，我们的物质大厦越建越高，道德大厦，精神大厦却一路滑坡。
+科技充实物质生活，人文引领精神追求；科技是看到的，人文是想到的；只有人文领跑科技，才不会出现历史性倒退。
+NS
+2014.02.19</description>
+    </item>
+    
+    <item>
+      <title>关于好文字</title>
+      <link>https://olzhy.github.io/posts/about-good-writing.html</link>
+      <pubDate>Tue, 18 Feb 2014 08:24:12 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/about-good-writing.html</guid>
+      <description>刚开始，我会觉得精心雕琢过，外壳华丽的文字会引人一震。
+后来觉得这样的文字大多看外表美轮美奂，品内容不知所云。
+现在觉得文字不应以外壳论贵贱，能从中读到真我的就是好文字。
+好文字长满想象的羽翼，源于但超脱本体，如涌泉出水，源远流长。这种由阅读而来的快感无法言喻，它会在脑海无尽絮绕，这美… 无法刻度。它也许还会跨过几多时间，影响时光另一端的少年———让其彻夜难眠。</description>
+    </item>
+    
+    <item>
+      <title>人生几何</title>
+      <link>https://olzhy.github.io/posts/how-much-our-life.html</link>
+      <pubDate>Sat, 25 Jan 2014 08:25:37 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/how-much-our-life.html</guid>
+      <description>一生太短，只够嗅几次花，只够听几回雨，只够拾几朵叶，只够看几场雪，只够做几件事， 只够读几首诗，只够陪几年父母，只够活一种人生。
+东胜红泥塔
+2014.01.25</description>
+    </item>
+    
+    <item>
+      <title>战胜自己</title>
+      <link>https://olzhy.github.io/posts/conquer-myself.html</link>
+      <pubDate>Thu, 02 Jan 2014 08:26:59 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/conquer-myself.html</guid>
+      <description>总结2013，我做的不够好，今日深刻反省，彻头彻尾照照丑陋的自己，以此为鉴。目前摆在我面前最大的敌人就是我自己，身上几个致命的毛病像恶魔一样时时阻碍我前行，不及时改正将使我此生一事无成。
+一、爱伪装，对感情不真诚。刘墉说“当你遇到一个女子，只有淡淡喜欢的感觉，却没有原子裂变似的反应，不要去招惹人家”。这一条我没有做到，尤其2013表现的非常可耻，为了恋爱而恋爱，为了取悦对方而说喜欢，真是亵渎了爱情和自己的人格。从此警告自己，以后不暧昧，不伪装。感情的事，慢慢等待，顺其自然。绝不刻意去寻求所谓的爱情。喜欢二字非常神圣，不是发自内心，绝不随便说出口。
+二、没有坚定的目标，执行力不够，办事拖拉。2013仅10月、11月目标坚定，表现良好。其它月份三天打鱼，两天晒网。纯粹忘了自己活着的意义，目标不清晰，活得行尸走肉。“天下古今之庸人，皆以一惰字致败。” 从今以后，每一天都要有追求，有意义的活着，一天都不能虚度。
+三、不够孝顺。为父母付出的远远不够。子欲孝而亲不待。从此刻开始，全心全意去爱自己的家人。</description>
+    </item>
+    
+    <item>
+      <title>静夜思</title>
+      <link>https://olzhy.github.io/posts/on-a-quiet-night.html</link>
+      <pubDate>Sun, 01 Dec 2013 08:28:52 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/on-a-quiet-night.html</guid>
+      <description>不经意看到一句话，说“有的时候你会觉得整个世界都是你自己的，比如上完晚自习的路上下起了鹅毛大雪”。读完闭上眼睛，想象这美妙的画面，只觉唯有这样温暖的句子才能让这喧嚣的世界静下来。
+我喜欢夜，喜欢雪，也喜欢安静。想起年少时在一个下着大雪的夜晚，坐在炉边烤着红薯，听着炉子里焰火燃烧的声音，等待着红薯烤熟后香味飘出的那一刻是多美的场景啊。
+也不知故乡离我远了，还是我离那个年纪远了，现在身处他乡，却再也寻不得那种感觉了。自哪天起，我开始厌倦城市的灯火通明，这里的夜黑的不彻底。有的时候黑暗并不是可憎的，我想着一个下雪夜，躺在家乡的热炕头，这里没有现代文明的星光灿烂，关上灯便一切皆无，天地都在安睡，静的只剩下这个静谧的小村庄和自己的心跳，这样的夜才是纯粹的。我仍然睁着眼睛，不为寻找光明，只为享受这无暇的黑。这样的夜看不见一切，又仿佛看见了一切。读读心声，想想事情，不知何时已微笑着睡去，那情景又是多么的美妙。
+NEU寝室
+2013.12.01 22点</description>
+    </item>
+    
+    <item>
+      <title>忙与闲</title>
+      <link>https://olzhy.github.io/posts/busy-and-leisure.html</link>
+      <pubDate>Mon, 12 Aug 2013 08:32:52 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/busy-and-leisure.html</guid>
+      <description>从六月份实习以来，每天都很忙。这次突然放假一周，相较之前的假期，虽短，但也非常欣喜。
+平日里很忙，整天都像在赶早起的班车。待到周末，都有种偷得浮生半日闲的感觉。早上不必早起，中午可以吃顿自己想吃的菜，晌午睡一觉，醒来后泡上衣服不急着洗，待到吃完晚饭，天也凉快了许多。寻得一处小角落，坐下来，拿一瓶冰镇啤酒慢慢喝，当几个小嗝顺着喉咙打上来，那种捎带刺激的气体直通鼻腔，带着啤酒的余味，那个享受，那个畅快，心里油然生得一种快乐，这就是生活。到此情景，想一想，也难怪林清玄先生说看到喝汽水喝到打嗝的人无比的羡慕，他们的脸上都露着幸福的微笑。
+忙起来，脑子里想到的是任务，理想和责任；闲下来想到的是亲朋，自由和生活。忙起来感觉每天都有目标，都在收获；闲下来却可以做几件漫无目的的事，看到的是另一蕃风景。
+日出，日落，花开，花谢，风起，风止。大自然每天都在述说着美丽，每天都是馈赠。睁开双眼，万物尽收眼底；伸开双手，拥抱的就是世界。 其实上天赐予我们的一点都不少，每个人从出生所看到的这世界就是一份厚礼，刚开始我们一样富有，随着生活的推移，有的人物质富有了，心灵却干涸了。走到最后，唯有那个懂得欣赏，懂得感恩的人从没有贫穷过。正如威廉·布莱克所言“一沙一世界，一花一天堂，无限掌中置，刹那成永恒。”或忙或闲，都多看看这个美丽的世界吧。</description>
+    </item>
+    
+    <item>
+      <title>做沙子还是做珍珠</title>
+      <link>https://olzhy.github.io/posts/be-a-sand-or-pearl.html</link>
+      <pubDate>Sat, 08 Jun 2013 08:38:43 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/be-a-sand-or-pearl.html</guid>
+      <description>2013辽宁高考作文谈做沙子还是做珍珠，最后讲”一个人，只有做珍珠才能得到别人的认可”。
+个人以为，这样的价值观有待商榷。人关键不在于做沙子还是做珍珠，而在于沙子与珍珠都有用场。沙子就像一个个普通人，他们默默无闻，不引人注目，但可筑高楼做桥梁，依然很重要。珍珠光鲜透亮，但也许只能夺人耳目，却不实用。
+NS
+2013.06.08</description>
+    </item>
+    
+    <item>
+      <title>花不语，人自醉</title>
+      <link>https://olzhy.github.io/posts/flower-say-nothing-someone-infatuation.html</link>
+      <pubDate>Sun, 12 May 2013 08:43:34 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/flower-say-nothing-someone-infatuation.html</guid>
+      <description>从寝室去实验室，途径一条小道。道旁有多颗叫不出名字的树，这个季节，树上开满了花。我不懂花，自然叫不上它们的名字。只觉得那是一种美丽柔和的颜色，让你耳目清爽，心情愉悦。
+路人途经此地，便争相拍照，平日里稍显冷清的小路瞬间热闹了许多。路人冲镜头微笑，而我也会冲路人一笑，无形间花已将我们拉近了。
+途经那个花香最浓的拐角，我总会放慢脚步。穿行的瞬间，闭上双眼，仰面与开近的花朵拂面而过，花不语，人自醉。那种沁人心脾的香，让整个身心灵都得到了释放。这一刻我又似乎很懂花。
+2013.05.12</description>
+    </item>
+    
+    <item>
+      <title>原来命运如此无常</title>
+      <link>https://olzhy.github.io/posts/destiny.html</link>
+      <pubDate>Wed, 17 Apr 2013 08:56:29 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/destiny.html</guid>
+      <description>刚才无意中登微博看到一则噩耗，我们当年的辅导员，赵老师不幸得了肾衰竭。
+感叹命运无情，悲痛欲绝，学生还在贷款读书，只能尽己所能汇去500元，献出一点绵薄之力。
+只盼赵老师换肾成功，定要活着归来。
+他是我们大学的辅导员，虽四年没有太多交流。给我的印象是那种爱开玩笑，嘻嘻哈哈，热爱生活但不追求事业，知足常乐的那种人。
+四年没有太多接触，只记得毕业后一年，也就是去年暑假去他那帮同学盖章还产生过一点小误会。</description>
+    </item>
+    
+    <item>
+      <title>光明磊落，一身正气</title>
+      <link>https://olzhy.github.io/posts/light.html</link>
+      <pubDate>Thu, 21 Mar 2013 08:54:47 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/light.html</guid>
+      <description>我们改变不了大千世界，但可以改变方寸土地，只要每个人从我做起光明磊落，一身正气，明规则便会星火燎原，潜规则便会无地自容。
+2013.03.21</description>
+    </item>
+    
+    <item>
+      <title>朋友啊，你的被动久了让我很受伤害</title>
+      <link>https://olzhy.github.io/posts/friend.html</link>
+      <pubDate>Mon, 04 Feb 2013 08:59:31 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/friend.html</guid>
+      <description>这几个月因为妈妈的身体，家里的事情，心里压力很大，心情很沉重。有好多事情需要承担，有的时候心里着实喘不过气来。 我这个人喜欢安静，不怎么喜欢交朋友。所以这么多年来，自认为处的最真心的朋友就那么几个，当然我也觉得朋友不在于多少， 有个知心的足矣。心情郁闷的时候总是自己藏在心里。至于我家里窘迫和复杂情况，这么多年只跟一个人讲过 。他便是那位我认为最好的朋友。平时我们坐在一起无话不谈，想说心里话第一个想起的是他。 他有什也愿意和我分享。我们是12年的同学，我们是高中同班，上同一个大学，一起考研一起奋斗过。 他心地善良，为人老实，性格内向，不善言语，做事被动。</description>
+    </item>
+    
+    <item>
+      <title>从北楼看见你</title>
+      <link>https://olzhy.github.io/posts/see-you.html</link>
+      <pubDate>Mon, 14 Jan 2013 09:00:54 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/see-you.html</guid>
+      <description>偶然想起几年前在收音机里听到的一个故事，多年过去了，已想不起故事的名字。但清晰记得是讲一个高中时代，男孩每到课间时间出来透风时对面总有一个穿裙子的漂亮女孩同时在对面的楼上做同样的事，他们虽无交集，但深深住刻在彼此的脑海。偶然一次课余活动，他隐约听到了她的名字，多年之后这个名字一直住在他的脑海。他喜欢上了她，他要找到她。不知是上天安排还是缘分注定。他找到了她–一个藏在他脑海多年的人。他们约好回当年读书的地方见面。她告他:”我到了”，他放下电话跑到了她跟前，是的，没错就是她。美丽的裙子，长长的头发，就是当年对面楼上的那个女孩。他叫出了藏在心里多年的名字。转身出现的却是她的闺蜜。过去的一次相见才发展阴差阳错记错了名字。当年的那个女孩站在眼前他叫出的却是另一个名字，却是她好友的名字。一切恍然大悟，全然不知所措。世事弄人，这个结局不禁让人感叹。想起这个故事心底还是跟之前一样的感动。总结几个关键字尽然搜到了这个故事的名字，叫从北楼看你。重新读了一遍，每一个字都是那么的纯真美丽，但结局未免让人遗憾。但仔细想想这个结局也许更接近现实。
+2013.01.14</description>
+    </item>
+    
+    <item>
+      <title>读《简爱》</title>
+      <link>https://olzhy.github.io/posts/jane-eyre.html</link>
+      <pubDate>Fri, 11 Jan 2013 09:02:21 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/jane-eyre.html</guid>
+      <description>简爱读到19章，这时出现的吉普赛人神奇的读心术引人入胜，让人赞叹。与简爱的对话更妙不可言。读到高潮当初揭面纱一刹那，怎么都想不到这个人竟是罗切斯特。这是我读到目前看到最精彩的一幕。
+2013.01.11</description>
+    </item>
+    
+    <item>
+      <title>我有一个梦想</title>
+      <link>https://olzhy.github.io/posts/dream.html</link>
+      <pubDate>Thu, 15 Nov 2012 09:05:45 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/dream.html</guid>
+      <description>对于旅行，也许最重要的不是有很多钱，而是收拾行囊，迈出脚下的第一步。人生不是为了工作，而是为了生活。期待有一天，带着自己所爱的人环游世界！
+2012.11.15</description>
+    </item>
+    
+    <item>
+      <title>父亲</title>
+      <link>https://olzhy.github.io/posts/parent.html</link>
+      <pubDate>Wed, 14 Nov 2012 09:06:47 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/parent.html</guid>
+      <description>那天在火车上听到筷子兄弟的这首歌，触到我心灵了。妈妈，您为我付出的太多了，岁月走得慢些吧，儿子一定要让您过上美好的生活。
+2012.11.14</description>
+    </item>
+    
+    <item>
+      <title>写给将要结婚的两位初中同学（二保和袅袅）</title>
+      <link>https://olzhy.github.io/posts/wish.html</link>
+      <pubDate>Thu, 01 Nov 2012 09:37:16 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/wish.html</guid>
+      <description>还记得初一那个年少懵懂的年纪，还记得有人陪伴过我们的青葱岁月。自某一刻起，我们不经意作为见证人经历了这份坚定的爱情。走过这么多年， 世间经历多少变迁，有样东西丝毫没有改变。十二年了，真爱经住了风吹雨打与似水流年 。这一刻看着幸福的两个人要结婚的喜讯，心里流淌着的是温暖。你们化作美妙的乐曲装点过我年少的记忆，更让我坚定对爱情的信仰。最美的祝愿送给你们，我看到了好结果，更得到了正能量！
+2012.11.01</description>
+    </item>
+    
+    <item>
+      <title>怀揣信念</title>
+      <link>https://olzhy.github.io/posts/faith.html</link>
+      <pubDate>Sun, 02 Oct 2011 08:51:07 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/faith.html</guid>
+      <description>只要心中有着无比坚定的信念，内心深处的力量就会源源不断涌现；一路上再大的绊脚石，都将被视作成功的基石踩在脚下；眺望前方，竟如此美丽，突感没有了疲惫，朝着前方快步向前。
+考研前三个月 2011.10.02</description>
+    </item>
+    
+  </channel>
+</rss>

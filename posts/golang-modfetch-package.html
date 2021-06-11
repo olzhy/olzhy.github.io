@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Golang 模块获取包modfetch研读 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Golang 模块获取包modfetch研读</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年06月12日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>自Go 1.11引入Modules以来，其内置命令已集成包查询、下载等功能。</p>
+<p>之前专门写过一篇<a href="/posts/golang-modules.html">Golang Modules</a>的文章，介绍了Module的使用方式。</p>
+<p>如一个Module工程，使用命令构建时会自动获取依赖，如：</p>
+<pre><code>$ go build
+go: finding github.com/olzhy/quote latest
+go: downloading github.com/olzhy/quote v0.0.0-20190510033103-5cb7d4598cfa
+go: extracting github.com/olzhy/quote v0.0.0-20190510033103-5cb7d4598cfa
+</code></pre><p>使用命令亦可查询最新可用版本:</p>
+<pre><code>$ go get -u
+go: finding github.com/olzhy/quote v1.0.0
+go: downloading github.com/olzhy/quote v1.0.0
+go: extracting github.com/olzhy/quote v1.0.0
+</code></pre><p>这些均是因为内置命令已集成了模块查询、获取的能力。支撑模块获取的一个关键的包即是“cmd/go/internal/modfetch”，本文将研读一下该包的几个关键的接口、结构体及函数。</p>
+<p><strong>1 Repo接口与Lookup函数</strong></p>
+<p>Repo表示一个仓库的一个模块存储的所有版本。</p>
+<pre><code>$ go doc modfetch.Repo
+</code></pre><p>其接口定义如下，ModulePath返回模块路径；Versions列出给定前缀的语义学版本；Stat返回修订信息（可以是提交哈希、分支、标签等）；Latest返回默认分支的最新修订（仅用于没有标签的修订）； GoMod返回给定版本的go.mod信息；Zip将指定版本的压缩文件写到目标位置。</p>
+<pre><code>type Repo interface {
+    // ModulePath returns the module path.
+    ModulePath() string
+
+    // Versions lists all known versions with the given prefix.
+    // Pseudo-versions are not included.
+    // Versions should be returned sorted in semver order
+    // (implementations can use SortVersions).
+    Versions(prefix string) (tags []string, err error)
+
+    // Stat returns information about the revision rev.
+    // A revision can be any identifier known to the underlying service:
+    // commit hash, branch, tag, and so on.
+    Stat(rev string) (*RevInfo, error)
+
+    // Latest returns the latest revision on the default branch,
+    // whatever that means in the underlying source code repository.
+    // It is only used when there are no tagged versions.
+    Latest() (*RevInfo, error)
+
+    // GoMod returns the go.mod file for the given version.
+    GoMod(version string) (data []byte, err error)
+
+    // Zip writes a zip file for the given version to dst.
+    Zip(dst io.Writer, version string) error
+}
+</code></pre><p>接下来看一下如何获取到一个Module的Repo信息。</p>
+<pre><code>$ go doc modfetch.Lookup
+</code></pre><p>其go doc如下，Lookup可以返回一个Module的Repo信息。</p>
+<pre><code>func Lookup(path string) (Repo, error)
+    Lookup returns the module with the given module path. A successful return
+    does not guarantee that the module has any defined versions.
+</code></pre><p>下面，我们使用其获取一下“<a href="https://github.com/olzhy/quote">github.com/olzhy/quote</a>”这个Go Module的Repo信息。</p>
+<p>首先我的工作空间为workspace，在工作空间下，test.go文件位于<code>github.com/olzhy/test</code>下，目录结构为：</p>
+<pre><code>workspace
+ └ github.com
+     └ olzhy
+         └ test
+             └ test.go
+</code></pre><p>因modfetch包是internal包，不可直接引用，需将其拷贝至当前模块目录（<code>github.com/olzhy/test</code>）下，然后将codefetch包及其相关依赖拷贝进来，并将引用路径替换。</p>
+<p>shell脚本<code>github.com/olzhy/test/copy_replace.sh</code>内容如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+mkdir internal
+
+<span style="color:#75715e"># copy dependencies</span>
+cp -r $GOROOT/src/cmd/go/internal/modfetch ./internal/
+cp -r $GOROOT/src/cmd/go/internal/modfile ./internal/
+cp -r $GOROOT/src/cmd/go/internal/modinfo ./internal/
+cp -r $GOROOT/src/cmd/go/internal/base ./internal/
+cp -r $GOROOT/src/cmd/go/internal/cache ./internal/
+cp -r $GOROOT/src/cmd/go/internal/lockedfile ./internal/
+cp -r $GOROOT/src/cmd/go/internal/module ./internal/
+cp -r $GOROOT/src/cmd/go/internal/par ./internal/
+cp -r $GOROOT/src/cmd/go/internal/renameio ./internal/
+cp -r $GOROOT/src/cmd/go/internal/semver ./internal/
+cp -r $GOROOT/src/cmd/go/internal/cfg ./internal/
+cp -r $GOROOT/src/cmd/go/internal/str ./internal/
+cp -r $GOROOT/src/cmd/go/internal/dirhash ./internal/
+cp -r $GOROOT/src/cmd/go/internal/get ./internal/
+cp -r $GOROOT/src/cmd/go/internal/web ./internal/
+cp -r $GOROOT/src/cmd/go/internal/web2 ./internal/
+cp -r $GOROOT/src/cmd/go/internal/load ./internal/
+cp -r $GOROOT/src/cmd/go/internal/search ./internal/
+cp -r $GOROOT/src/cmd/go/internal/work ./internal/
+
+cp -r $GOROOT/src/cmd/internal/sys ./internal/
+cp -r $GOROOT/src/cmd/internal/objabi ./internal/
+cp -r $GOROOT/src/cmd/internal/buildid ./internal/
+cp -r $GOROOT/src/cmd/internal/browser ./internal/
+cp -r $GOROOT/src/internal/testenv ./internal/
+cp -r $GOROOT/src/internal/singleflight ./internal/
+cp -r $GOROOT/src/internal/xcoff ./internal/
+
+<span style="color:#75715e"># replace import paths</span>
+find . -type f -name <span style="color:#e6db74">&#34;*.go&#34;</span> -exec sed -i <span style="color:#e6db74">&#39;&#39;</span> <span style="color:#e6db74">&#39;s#cmd/go/internal/#github.com/olzhy/test/internal/#g&#39;</span> <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span> 
+find . -type f -name <span style="color:#e6db74">&#34;*.go&#34;</span> -exec sed -i <span style="color:#e6db74">&#39;&#39;</span> <span style="color:#e6db74">&#39;s#cmd/internal/#github.com/olzhy/test/internal/#g&#39;</span> <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span> 
+find . -type f -name <span style="color:#e6db74">&#34;*.go&#34;</span> -exec sed -i <span style="color:#e6db74">&#39;&#39;</span> <span style="color:#e6db74">&#39;s#internal/testenv#github.com/olzhy/test/internal/testenv#g&#39;</span> <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span> 
+find . -type f -name <span style="color:#e6db74">&#34;*.go&#34;</span> -exec sed -i <span style="color:#e6db74">&#39;&#39;</span> <span style="color:#e6db74">&#39;s#internal/singleflight#github.com/olzhy/test/internal/singleflight#g&#39;</span> <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span> 
+find . -type f -name <span style="color:#e6db74">&#34;*.go&#34;</span> -exec sed -i <span style="color:#e6db74">&#39;&#39;</span> <span style="color:#e6db74">&#39;s#internal/xcoff#github.com/olzhy/test/internal/xcoff#g&#39;</span> <span style="color:#f92672">{}</span> <span style="color:#ae81ff">\;</span>
+</code></pre></div><p>拷贝并替换完成后，我们在test.go（<code>github.com/olzhy/test/test.go</code>）使用一下modfetch.Lookup，代码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+    <span style="color:#e6db74">&#34;os&#34;</span>
+    <span style="color:#e6db74">&#34;path/filepath&#34;</span>
+
+    <span style="color:#e6db74">&#34;github.com/olzhy/test/internal/modfetch&#34;</span>
+    <span style="color:#e6db74">&#34;github.com/olzhy/test/internal/modfetch/codehost&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#75715e">// mod dir is $GOPATH/pkg/mod
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">modfetch</span>.<span style="color:#a6e22e">PkgMod</span> = <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;GOPATH&#34;</span>), <span style="color:#e6db74">&#34;pkg&#34;</span>, <span style="color:#e6db74">&#34;mod&#34;</span>)
+    <span style="color:#75715e">// work dir is $GOPATH/pkg/mod/cache/vcs
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">codehost</span>.<span style="color:#a6e22e">WorkRoot</span> = <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">modfetch</span>.<span style="color:#a6e22e">PkgMod</span>, <span style="color:#e6db74">&#34;cache&#34;</span>, <span style="color:#e6db74">&#34;vcs&#34;</span>)
+
+    <span style="color:#a6e22e">repo</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">modfetch</span>.<span style="color:#a6e22e">Lookup</span>(<span style="color:#e6db74">&#34;github.com/olzhy/quote&#34;</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">err</span> {
+        panic(<span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">repo</span>.<span style="color:#a6e22e">Latest</span>())
+}
+</code></pre></div><p>使用modfetch.Lookup时需设置codehost.WorkRoot变量，即vcs下载的模块工作路径，一般为<code>$GOPATH/pkg/mod/cache/vcs</code>，如上代码获取“<code>github.com/olzhy/quote</code>”模块的最新提交信息，运行test.go，输出为：</p>
+<pre><code>go: finding github.com/olzhy/quote latest
+&amp;{v0.0.0-20190515022821-f8e0536df3d4 2019-05-15 02:28:21 +0000 UTC  } 
+</code></pre><p>然后看一下codehost.WorkRoot下新下载了什么：</p>
+<pre><code>$ ls $GOPATH/pkg/mod/cache/vcs
+
+274f0d09769743d2dea3632161aca27cae4d90c87432a7984a434e7deeb6a244
+274f0d09769743d2dea3632161aca27cae4d90c87432a7984a434e7deeb6a244.info
+274f0d09769743d2dea3632161aca27cae4d90c87432a7984a434e7deeb6a244.lock
+</code></pre><p>可以看到modfetch.Lookup会请求vcs，获取包在master分支最新修正信息，并且下载至本地。</p>
+<p><strong>2 RevInfo结构体及Stat函数</strong></p>
+<pre><code>$ go doc modfetch.RevInfo
+</code></pre><p>Rev表示Module仓库的一个修订。其有版本名称Version及提交时间Time两个重要属性。</p>
+<p>Stat函数可以返回指定Module路径的某次修订的具体信息。</p>
+<pre><code>type RevInfo struct {
+    Version string    // version string
+    Time    time.Time // commit time
+
+    // These fields are used for Stat of arbitrary rev,
+    // but they are not recorded when talking about module versions.
+    Name  string `json:&quot;-&quot;` // complete ID in underlying repository
+    Short string `json:&quot;-&quot;` // shortened ID, for use in pseudo-version
+}
+    A Rev describes a single revision in a module repository.
+
+func Stat(path, rev string) (*RevInfo, error)
+</code></pre><p>下面，我们使用其获取一下“<code>github.com/olzhy/quote</code>”这个Go Module版本v1.0.0的信息。</p>
+<p>test.go main函数如下：</p>
+<pre><code>func main() {
+    // mod dir is $GOPATH/pkg/mod
+    modfetch.PkgMod = filepath.Join(os.Getenv(&quot;GOPATH&quot;), &quot;pkg&quot;, &quot;mod&quot;)
+    // work dir is $GOPATH/pkg/mod/cache/vcs
+    codehost.WorkRoot = filepath.Join(modfetch.PkgMod, &quot;cache&quot;, &quot;vcs&quot;)
+
+    stat, err := modfetch.Stat(&quot;github.com/olzhy/quote&quot;, &quot;v1.0.0&quot;)
+    if nil != err {
+        panic(err)
+    }
+    fmt.Println(stat)
+}
+</code></pre><p>输出为：</p>
+<pre><code>&amp;{v1.0.0 2019-05-10 03:40:59 +0000 UTC  }
+</code></pre><p>且若之前未获取过这个版本，其会将对应版本代码下载至$GOPATH/pkg/mod下。</p>
+<pre><code>$ ls $GOPATH/pkg/mod/github.com/olzhy/
+quote@v1.0.0
+</code></pre><p><strong>3 GoMod、DownloadZip函数</strong></p>
+<pre><code>$ go doc modfetch.GoMod
+</code></pre><p>GoMod类似于Lookup(path).GoMod(rev)，但其不会解析仓库路径从而请求网络而从版本控制网站来获取，而会先看本地缓存有没有。</p>
+<pre><code>func GoMod(path, rev string) ([]byte, error)
+    GoMod is like Lookup(path).GoMod(rev) but avoids the repository path
+    resolution in Lookup if the result is already cached on local disk.
+</code></pre><p>下面，我们使用其获取一下“<code>github.com/olzhy/quote</code>”这个Module的go.mod内容。</p>
+<p>test.go main函数如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#75715e">// mod dir is $GOPATH/pkg/mod
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">modfetch</span>.<span style="color:#a6e22e">PkgMod</span> = <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;GOPATH&#34;</span>), <span style="color:#e6db74">&#34;pkg&#34;</span>, <span style="color:#e6db74">&#34;mod&#34;</span>)
+
+    <span style="color:#a6e22e">mod</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">modfetch</span>.<span style="color:#a6e22e">GoMod</span>(<span style="color:#e6db74">&#34;github.com/olzhy/quote&#34;</span>, <span style="color:#e6db74">&#34;v1.0.0&#34;</span>)
+    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">err</span> {
+        panic(<span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(string(<span style="color:#a6e22e">mod</span>))
+}
+</code></pre></div><p>输出为：</p>
+<pre><code>module github.com/olzhy/quote
+</code></pre><p>即该模块go.mod的内容。</p>
+<p>最后看一下modfetch.DownloadZip的使用。</p>
+<pre><code>$ go doc modfetch.DownloadZip
+</code></pre><p>DownloadZip有一个参数module.Version，其有两个属性Path与Version。</p>
+<p>对于指定模块，传入模块路径及版本信息，DownloadZip首先会看本地有没有，本地有直接返回文件名，否则会下载该模块至本地缓存并返回文件名。</p>
+<pre><code>func DownloadZip(mod module.Version) (zipfile string, err error)
+    DownloadZip downloads the specific module version to the local zip cache and
+    returns the name of the zip file.
+</code></pre><p>下面，我们使用其下载“<code>github.com/olzhy/quote</code>”这个Module的在版本v1.0.0的zip文件。</p>
+<p>test.go main函数如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#75715e">// mod dir is $GOPATH/pkg/mod
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">modfetch</span>.<span style="color:#a6e22e">PkgMod</span> = <span style="color:#a6e22e">filepath</span>.<span style="color:#a6e22e">Join</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Getenv</span>(<span style="color:#e6db74">&#34;GOPATH&#34;</span>), <span style="color:#e6db74">&#34;pkg&#34;</span>, <span style="color:#e6db74">&#34;mod&#34;</span>)
+
+    <span style="color:#a6e22e">zipfile</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">modfetch</span>.<span style="color:#a6e22e">DownloadZip</span>(<span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">Version</span>{<span style="color:#a6e22e">Path</span>: <span style="color:#e6db74">&#34;github.com/olzhy/quote&#34;</span>, <span style="color:#a6e22e">Version</span>: <span style="color:#e6db74">&#34;v1.0.0&#34;</span>})
+    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">err</span> {
+        panic(<span style="color:#a6e22e">err</span>)
+    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">zipfile</span>)
+}
+</code></pre></div><p>输出为：</p>
+<pre><code>/Users/larry/Documents/workspace/pkg/mod/cache/download/github.com/olzhy/quote/@v/v1.0.0.zip
+</code></pre><blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/pkg/cmd/go/internal/modfetch/">https://golang.org/pkg/cmd/go/internal/modfetch/</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>使用delve调试Golang程序 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>使用delve调试Golang程序</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年07月09日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><a href="https://github.com/go-delve/delve">delve</a>是一款专门针对Golang程序调试而开发的命令行调试器，该工具功能强大，简单易用。</p>
+<p>本文从安装开始，使用一个实际的Golang程序调试例子，学习一下delve的主要调试方式及常用调试命令。</p>
+<p>本文所使用的是Windows环境。</p>
+<p><strong>1 安装</strong></p>
+<p>使用go get命令安装构建delve。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> go get <span style="color:#f92672">-</span>u github.com<span style="color:#f92672">/</span>go<span style="color:#f92672">-</span>delve<span style="color:#f92672">/</span>delve<span style="color:#f92672">/</span>cmd<span style="color:#f92672">/</span>dlv
+</code></pre></div><p>其会在$GOPATH/bin下生成二进制可执行文件dlv.exe，将$GOPATH/bin添加到PATH环境变量即可在任意目录使用dlv。</p>
+<p><strong>2 主要调试方式</strong></p>
+<p>键入dlv help可以看到dlv的使用帮助文档。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> dlv help
+Delve is a source level debugger for Go programs.
+
+Delve enables you to interact with your program by controlling the execution of the process,
+evaluating variables, and providing information of thread <span style="color:#f92672">/</span> goroutine state, CPU register state and more.
+
+The goal of this tool is to provide a simple yet powerful interface for debugging Go programs.
+
+Pass flags to the program you are debugging using `--`, for example<span style="color:#f92672">:</span>
+
+`dlv exec ./hello -- server --config conf/config.toml`
+
+Usage<span style="color:#f92672">:</span>
+  dlv [command]
+
+Available Commands<span style="color:#f92672">:</span>
+  attach      Attach to running process and begin debugging.
+  connect     Connect to a headless debug server.
+  core        Examine a core dump.
+  debug       Compile and begin debugging main package in current directory, or the package specified.
+  exec        Execute a precompiled binary, and begin a debug session.
+  help        Help about any command
+  run         Deprecated command. Use <span style="color:#e6db74">&#39;debug&#39;</span> instead.
+  test        Compile test binary and begin debugging program.
+  trace       Compile and begin tracing program.
+  version     Prints version.
+
+Flags<span style="color:#f92672">:</span>
+  <span style="color:#66d9ef">...</span>
+</code></pre></div><p>下面我们会结合一个实际的例子看一下主要的几种调试方式。</p>
+<p>我们就以Golang<a href="github.com/golang/example/hello">官方的例子</a> 着手吧。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> go get <span style="color:#f92672">-</span>u github.com<span style="color:#f92672">/</span>golang<span style="color:#f92672">/</span>example<span style="color:#f92672">/</span>hello
+</code></pre></div><p>如上命令会将<code>github.com/golang/example/hello</code>下载到<code>$GOPATH/src</code>下。</p>
+<p>进入到$GOPATH/src/github.com/golang/example下，查看文件目录结构：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> cd <span style="color:#f92672">$</span>GOPATH<span style="color:#f92672">/</span>src<span style="color:#f92672">/</span>github.com<span style="color:#f92672">/</span>golang<span style="color:#f92672">/</span>example
+<span style="color:#f92672">$</span> tree
+.
+├─ hello
+│   └─ hello.go
+├─ stringutil
+│   ├─ reverse.go
+│   └─ reverse_test.go
+└─ template
+    <span style="color:#66d9ef">...</span>
+</code></pre></div><p>我们后面仅会涉及到hello.go与reverse.go这两个文件。</p>
+<p><strong>a）dlv debug</strong></p>
+<p>使用dlv debug可以在main函数文件所在目录直接对main函数进行调试，也可以在根目录以指定包路径的方式对main函数进行调试。</p>
+<p><strong>b）dlv test</strong></p>
+<p>使用dlv test可以对test包进行调试。</p>
+<p><strong>c）dlv attach</strong></p>
+<p>使用dlv attach可以附加到一个已在运行的进程进行调试。</p>
+<p><strong>d）dlv connect</strong></p>
+<p>使用dlv connect可以连接到调试服务器进行调试。</p>
+<p><strong>e）dlv trace</strong></p>
+<p>使用dlv trace可以追踪程序。</p>
+<p><strong>f）dlv exec</strong></p>
+<p>使用dlv exec可以对编译好的二进制进行调试。</p>
+<p><strong>3 常用调试命令</strong></p>
+<p>下面对<code>github.com/golang/example/hello</code>包进行调试，学习一下常用的调试命令。</p>
+<p>首先看一下该包下唯一的文件hello.go的内容。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#960050;background-color:#1e0010">$</span> <span style="color:#a6e22e">cat</span> <span style="color:#a6e22e">hello</span>.<span style="color:#66d9ef">go</span>
+
+<span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;fmt&#34;</span>
+
+    <span style="color:#e6db74">&#34;github.com/golang/example/stringutil&#34;</span>
+)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">stringutil</span>.<span style="color:#a6e22e">Reverse</span>(<span style="color:#e6db74">&#34;!selpmaxe oG ,olleH&#34;</span>))
+}
+</code></pre></div><p>可以看到hello.go程序主要在main函数调用了一下stringutil包的Reverse方法。</p>
+<p>下面进入调试。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> cd <span style="color:#f92672">$</span>GOPATH<span style="color:#f92672">/</span>src<span style="color:#f92672">/</span>github.com<span style="color:#f92672">/</span>golang<span style="color:#f92672">/</span>example<span style="color:#f92672">/</span>hello
+<span style="color:#f92672">$</span> dlv debug
+</code></pre></div><p><strong>a）使用break或b对main.main设置断点</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> b main.main
+</code></pre></div><p>显示已设置OK。</p>
+<pre><code>Breakpoint 1 set at 0x4af2aa for main.main() E:/workspace/go/src/github.com/golang/example/hello/hello.go:25
+</code></pre><p><strong>b）使用continue或c进入断点</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> c
+</code></pre></div><p>显示已进入。</p>
+<pre><code>&gt; main.main() E:/workspace/go/src/github.com/golang/example/hello/hello.go:25 (hits goroutine(1):1 total:1) (PC: 0x4af2aa)
+    20:         &quot;fmt&quot;
+    21:
+    22:         &quot;github.com/golang/example/stringutil&quot;
+    23: )
+    24:
+=&gt;  25: func main() {
+    26:         fmt.Println(stringutil.Reverse(&quot;!selpmaxe oG ,olleH&quot;))
+    27: }
+</code></pre><p><strong>c）使用next或n移至下一步</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> n
+</code></pre></div><p>显示已移至下一步。</p>
+<pre><code>&gt; main.main() E:/workspace/go/src/github.com/golang/example/hello/hello.go:26 (PC: 0x4af2bb)
+    21:
+    22:         &quot;github.com/golang/example/stringutil&quot;
+    23: )
+    24:
+    25: func main() {
+=&gt;  26:         fmt.Println(stringutil.Reverse(&quot;!selpmaxe oG ,olleH&quot;))
+    27: }
+</code></pre><p><strong>d）使用step或s进入函数</strong></p>
+<p>显示已进入Reverse函数。</p>
+<pre><code>&gt; github.com/golang/example/stringutil.Reverse() E:/workspace/go/src/github.com/golang/example/stringutil/reverse.go:21 (PC: 0x4af0b2)
+    16:
+    17: // Package stringutil contains utility functions for working with strings.
+    18: package stringutil
+    19:
+    20: // Reverse returns its argument string reversed rune-wise left to right.
+=&gt;  21: func Reverse(s string) string {
+    22:         r := []rune(s)
+    23:         for i, j := 0, len(r)-1; i &lt; len(r)/2; i, j = i+1, j-1 {
+    24:                 r[i], r[j] = r[j], r[i]
+    25:         }
+    26:         return string(r)
+</code></pre><p><strong>e）在指定行设置断点</strong></p>
+<pre><code>b 24
+</code></pre><p>对24行设置了一个断点，输入c进入该断点。</p>
+<p><strong>f）打印变量</strong></p>
+<pre><code>p i
+</code></pre><p>打印i的值，输出为0。</p>
+<p>查看局部变量的值可以使用locals。</p>
+<pre><code>locals
+r = []int32 len: 19, cap: 32, [...]
+j = 18
+i = 0
+</code></pre><p><strong>g）使用breakpoint或bp查看所有断点</strong></p>
+<pre><code>bp
+Breakpoint unrecovered-panic at 0x42f4b0 for runtime.fatalpanic() D:/soft/go/location/src/runtime/panic.go:690 (0)
+        print runtime.curg._panic.arg
+Breakpoint 1 at 0x4af2aa for main.main() E:/workspace/go/src/github.com/golang/example/hello/hello.go:25 (1)
+Breakpoint 2 at 0x4af162 for github.com/golang/example/stringutil.Reverse() E:/workspace/go/src/github.com/golang/example/stringutil/reverse.go:24 (1)
+</code></pre><p>可以看到我们先后设置的两个断点hello.go:25与reverse.go:24的详细信息，且它们的id分别为1和2。</p>
+<p><strong>h）对指定断点设置执行脚本</strong></p>
+<p>对于一个循环，想查看其局部变量值，如i的值，每次都print比较麻烦，这时可以使用on对断点设置一个执行脚本。</p>
+<pre><code>on 2 print i
+on 2 print j
+</code></pre><p>如上命令对reverse.go:24这个断点设置了执行脚本，接下来每次触发该断点的时候，即会打印i与j的值。</p>
+<p>下面执行continue，其再一次进入该断点，输出为：</p>
+<pre><code>c
+&gt; github.com/golang/example/stringutil.Reverse() E:/workspace/go/src/github.com/golang/example/stringutil/reverse.go:24 (hits goroutine(1):2 total:2) (PC: 0x4af162)
+        i: 1
+        j: 17
+    19:
+    20: // Reverse returns its argument string reversed rune-wise left to right.
+    21: func Reverse(s string) string {
+    22:         r := []rune(s)
+    23:         for i, j := 0, len(r)-1; i &lt; len(r)/2; i, j = i+1, j-1 {
+=&gt;  24:                 r[i], r[j] = r[j], r[i]
+    25:         }
+    26:         return string(r)
+    27: }
+</code></pre><p>可以看到额外输出了i与j的值。</p>
+<p><strong>i）对指定断点设置条件</strong></p>
+<p>对于一个循环，若整个迭代比较多，我们调试时要走到想要的位置，一直输入continue也不是办法，这时可以使用cond给断点设置条件。</p>
+<pre><code>cond 2 5==i
+</code></pre><p>如上命令对reverse.go:24这个断点设置了条件，即5==i，这次执行c的时候会直接走到该条件触发的位置。</p>
+<pre><code>c
+&gt; github.com/golang/example/stringutil.Reverse() E:/workspace/go/src/github.com/golang/example/stringutil/reverse.go:24 (hits goroutine(1):4 total:4) (PC: 0x4af162)
+        i: 5
+        j: 13
+    19:
+    20: // Reverse returns its argument string reversed rune-wise left to right.
+    21: func Reverse(s string) string {
+    22:         r := []rune(s)
+    23:         for i, j := 0, len(r)-1; i &lt; len(r)/2; i, j = i+1, j-1 {
+=&gt;  24:                 r[i], r[j] = r[j], r[i]
+    25:         }
+    26:         return string(r)
+    27: }
+</code></pre><p><strong>j）使用stepout跳出当前函数</strong></p>
+<p>该函数调试的差不多了，可以使用stepout直接跳出到上层函数。</p>
+<pre><code>stepout
+&gt; main.main() E:/workspace/go/src/github.com/golang/example/hello/hello.go:26 (PC: 0x4af2d4)
+Values returned:
+        ~r1: &quot;Hello, Go examples!&quot;
+
+    21:
+    22:         &quot;github.com/golang/example/stringutil&quot;
+    23: )
+    24:
+    25: func main() {
+=&gt;  26:         fmt.Println(stringutil.Reverse(&quot;!selpmaxe oG ,olleH&quot;))
+    27: }
+</code></pre><p>这样，又回到了我们的main函数。</p>
+<p><strong>k）使用clear清除指定断点</strong></p>
+<p>想清除某个断点，可以使用clear命令，下面我们清除reverse.go:24这个断点，然后再查看所有断点。</p>
+<pre><code>clear 2
+Breakpoint 2 cleared at 0x4af162 for github.com/golang/example/stringutil.Reverse() E:/workspace/go/src/github.com/golang/example/stringutil/reverse.go:24
+bp
+Breakpoint unrecovered-panic at 0x42f4b0 for runtime.fatalpanic() D:/soft/go/location/src/runtime/panic.go:690 (0)
+        print runtime.curg._panic.arg
+Breakpoint 1 at 0x4af2aa for main.main() E:/workspace/go/src/github.com/golang/example/hello/hello.go:25 (1)
+</code></pre><p>可以看到只剩下hello.go:25这一个手动设置的断点了。</p>
+<p>若想清除所有断点，可以使用clearall。</p>
+<pre><code>clearall
+Breakpoint 1 cleared at 0x4af2aa for main.main() E:/workspace/go/src/github.com/golang/example/hello/hello.go:25
+bp
+Breakpoint unrecovered-panic at 0x42f4b0 for runtime.fatalpanic() D:/soft/go/location/src/runtime/panic.go:690 (0)
+        print runtime.curg._panic.arg
+</code></pre><p><strong>l）使用restart或r重新进入调试</strong></p>
+<p>若想重新进入一次新的调试，无须退出程序再次执行dlv debug。</p>
+<p>可以使用restart或r命令：</p>
+<pre><code>r
+Process restarted with PID 8008
+</code></pre><p>这样即可以重新开始了。</p>
+<p>本文仅介绍了一些主要的调试命令，全部调试命令可以参阅<a href="https://github.com/go-delve/delve/blob/master/Documentation/cli/README.md">该地址</a>。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1]  <!-- raw HTML omitted --><a href="https://github.com/go-delve/delve">https://github.com/go-delve/delve</a><!-- raw HTML omitted --></p>
+<p>[2]  <!-- raw HTML omitted --><a href="https://www.jamessturtevant.com/posts/Using-the-Go-Delve-Debugger-from-the-command-line/">https://www.jamessturtevant.com/posts/Using-the-Go-Delve-Debugger-from-the-command-line/</a><!-- raw HTML omitted --></p>
+<p>[3]  <!-- raw HTML omitted --><a href="https://blog.gopheracademy.com/advent-2015/debugging-with-delve/">https://blog.gopheracademy.com/advent-2015/debugging-with-delve/</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            <a href="/tags/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">#工具使用</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

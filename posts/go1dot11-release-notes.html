@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Go 1.11 Release Notes 要点整理 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Go 1.11 Release Notes 要点整理</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年10月05日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>Go 1.11，在Go 1.10发布半年后如期而至。多数变化在工具链实现、运行时及库上面。该版本继续秉承Go 1兼容性准则。期待几乎所有的程序均可像之前一样编译及运行。</p>
+<p><strong>1 移植</strong></p>
+<ul>
+<li>WebAssembly
+Go 1.11对WebAssembly（js/wasm）加入试验性支持。
+目前，编译为一个WebAssembly模块的Go程序，包括支持goroutine调度的go运行时、垃圾收集器，map等。这样即造成目标二进制文件最小接近2 MB（压缩后 500 KB）。Go程序可以使用syscall/js试验性包来调用JavaScript。二进制大小的优化及与其它语言的交互还未排进优先事项，但可能会在后续的版本解决。</li>
+</ul>
+<p>所有新加了GOOS变量值&quot;js&quot;及GOARCH变量值&quot;wasm&rdquo;,被命名为*_js.go或*_wasm.go的go文件将被Go工具忽略（除了GOOS/GOARCH设定的情况）。若现有程序包含满足该命名方式的文件，需要重命名。</p>
+<p>关于Go WebAssembly的使用，请移步“<a href="/posts/golang-webassembly.html">Go WebAssembly初探</a>”。</p>
+<p><strong>2 工具</strong></p>
+<ul>
+<li>
+<p>模块、包版本化，及依赖管理
+Go 1.11对模块增加了初步支持。使用模块，开发者不再限定于在GOPATH内开发，版本依赖信息显式且轻量，构建更可信且更可重现。详情请参阅“<a href="/posts/golang-modules.html">Golang Modules</a>”。</p>
+</li>
+<li>
+<p>引用路径限制
+因Go模块支持对命令行操作中的@符号赋予了特殊含义，所以，go命令目前不允许引用路径中使用@符号。此类引用路径已不被go get所允许，该限制仅会影响构建自定义引用路径的场景。</p>
+</li>
+<li>
+<p>包加载
+新包<code>golang.org/x/tools/go/packages</code>对源码包的定位及加载提供一个简单的API。尽管其非标准库的一部分，对许多任务，其已有效替代了go/build包（API无法全力支持模块）。因其运行诸如go list的额外查询命令来获取包信息，使得分析工具的构建与诸如Bazel及Buck等可选构建系统的合力工作表现更佳。</p>
+</li>
+<li>
+<p>构建缓存
+Go 1.11将会是最后一个支持设置环境变量GOCACHE=off（取消构建缓存选项，由Go 1.10引入）的版本。自Go 1.12起，作为趋向移除$GOPATH/pkg的一步，构建缓存是需要的。如上描述的模块及包加载支持已需要构建缓存开启。</p>
+</li>
+<li>
+<p>编译器工具链
+目前，更多函数中意于默认内敛，包含调用panic的函数。</p>
+</li>
+</ul>
+<p>编译器工具链目前支持<a href="https://golang.org/cmd/compile/#hdr-Compiler_Directives">line原语</a>的列信息。</p>
+<p>一个新的包导出数据格式已被引入。除了对大型Go工程的构建次数加速，其对终端用户应是透明的。若其引起问题，可以在使用go tool构建二进制时，传入<code>gcflags=all=-iexport=false</code>来关闭该功能。</p>
+<p>编译器目前禁止在类型选择语句中有未使用的变量声明。（诸如如下的x变量）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">v</span> <span style="color:#66d9ef">interface</span>{}) {
+    <span style="color:#66d9ef">switch</span> <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">v</span>.(<span style="color:#66d9ef">type</span>) {
+    }
+}
+</code></pre></div><ul>
+<li>调试
+编译器目前对优化后的二进制生成更精确的调试信息，包含变量位置信息、行号及断点位置。其可用来调试不使用-N -l编译的二进制。调试信息的质量仍然有限，有一些是基础的，还有一些会在后续版本改进。</li>
+</ul>
+<p>因调试器会生成更扩展更精确的调试信息，DWARF部分目前已默认压缩。其对绝大多数ELF工具（诸如位于Linux及*BSD的调试器）是透明的，且被Delve调试器的各平台所支持，但macOS及Windows的本地工具支持有限。取消DWARF压缩，构建二进制时，可以对go tool传入<code>-ldflags=-compressdwarf=false</code>。</p>
+<p>Go 1.11对调试器内部调用Go函数增加了试验性支持。这是很有用的，诸如停在某个断点调用String方法。该功能目前仅支持Delve 1.1.0及以上版本。</p>
+<ul>
+<li>测试
+自Go 1.10起，go test命令在即将被测试的包上运行go vet，以检测测试前的问题。因vet在运行前对代码进行类型检查，类型检查不通过的用例将会失败。特别是，使用Go 1.10编译的（编译器错误的接受了该场景），闭包内部含有未使用变量的用例，目前会失败。</li>
+</ul>
+<p>用在go test的-memprofile标记目前默认为“allocs”分析，记录自测试开始的总分配字节（包含垃圾收集字节）。</p>
+<ul>
+<li>Vet
+当被分析的包未通过类型检查时，go vet会报一个致命错误（之前仅打印一句警告）。</li>
+</ul>
+<p>此外，go vet对printf的格式检查更健壮。诸如，如下代码会报错。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// test.go
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">wrapper</span>(<span style="color:#a6e22e">s</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">args</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">interface</span>{}) {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#a6e22e">s</span>, <span style="color:#a6e22e">args</span><span style="color:#f92672">...</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">wrapper</span>(<span style="color:#e6db74">&#34;%s&#34;</span>, <span style="color:#ae81ff">42</span>)
+}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-s" data-lang="s"><span style="color:#f92672">$</span> go vet test.go
+<span style="color:#75715e"># command-line-arguments</span>
+./test.go<span style="color:#f92672">:</span><span style="color:#ae81ff">10</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2</span><span style="color:#f92672">:</span> wrapper format %s has arg <span style="color:#ae81ff">42</span> of wrong type int
+</code></pre></div><ul>
+<li>
+<p>Trace
+使用新包runtime/trace的用户API，用户可以记录Trace执行时的应用级信息，且可给相关的goroutine分组。go tool trace还可将这些信息可视化。</p>
+</li>
+<li>
+<p>Cgo
+自Go 1.10起，cgo已将一些C指针类型转换为Go类型uintptr。这些类型包含Darwin核心框架的CFTypeRef层次结构及Java JNI接口的jobject层次结构。在Go 1.11，已进行多项改进来检测这些类型。使用这些类型的代码可能需要更新。</p>
+</li>
+<li>
+<p>Go命令
+GOFLAGS环境变量目前可能会被用于设置go命令的默认标记。其在有些场景是很有用的。在有些因DWARF而链接很慢的系统，用户可能会默认设置-ldflags=-w。对于模块，用户或持续集成系统若想使用vendor模式，可以默认设置-mod=vendor。</p>
+</li>
+<li>
+<p>Godoc
+Go 1.11将会是支持godoc命令行的最后一个版本。未来版本，godoc仅是一个web服务，用户可以使用go doc作命令行帮助。</p>
+</li>
+<li>
+<p>Run
+go run命令目前允许传入一个单一的引用路径，一个目录名称，或匹配一个包的模式。这样即允许go run pkg或go run dir，甚至go run .。</p>
+</li>
+</ul>
+<p><strong>3 运行时</strong></p>
+<p>目前，运行时使用一个稀疏堆的布局，所以没有了Go堆大小的上限（之前上限为512GiB）。这样修复了少数情形“地址空间冲突”问题（混合Go/C二进制或使用-race编译的二进制情形）。</p>
+<p>在macOS及iOS系统，运行时目前使用libSystem.dylib代替直接调用内核。这将使Go二进制与未来的macOS及iOS的版本更兼容。syscall包仍然采用直接系统调用，计划在未来修复。</p>
+<p><strong>4 性能</strong></p>
+<p>math/big包有多项性能改进，同时，针对GOARCH=arm64有多项性能改进。</p>
+<ul>
+<li>编译器工具链
+编译器目前优化了针对如下方式的map清理操作：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">k</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">m</span> {
+    delete(<span style="color:#a6e22e">m</span>, <span style="color:#a6e22e">k</span>)
+}
+</code></pre></div><p>同时，编译器还优化了针对如下方式的slice扩展：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">append(<span style="color:#a6e22e">s</span>, make([]<span style="color:#a6e22e">T</span>, <span style="color:#a6e22e">n</span>)<span style="color:#f92672">...</span>)
+</code></pre></div><p>编译器目前在边界检查及分支淘汰上表现更佳。目前编译器会识别传递性联系，如：若i&lt;j 且 j&lt;len(s)，则其会使用该事实略过对s[i]的检查。其还会懂一点诸如s[i-10]的简单算术，进而识别循环中更多归纳的情形。进而，编译器目前使用边界信息对移位操作作更积极的优化。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/doc/go1.11">https://golang.org/doc/go1.11</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

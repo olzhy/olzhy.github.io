@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Go 1.1 Release Notes 研读 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Go 1.1 Release Notes 研读</h2>
+        <div class="mb-3 post-meta">
+          
+          2019年01月16日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><strong>1 Go 1.1 简介</strong></p>
+<p>Go 1.1在编译器、核心库，运行时方面做了很多工作，重点在性能上作了改进。</p>
+<p><strong>2 语言级变化</strong></p>
+<ul>
+<li>Integer division by zero
+在Go 1，除0是一个运行时panic错误，在Go 1.1，是一个编译器错误。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">x</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">x</span><span style="color:#f92672">/</span><span style="color:#ae81ff">0</span>
+}
+</code></pre></div><ul>
+<li>Method values
+Go 1.1引入了方法值，即一个需与指定接收值绑定的函数。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">p</span> []<span style="color:#66d9ef">byte</span>) (<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>, <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">p</span>)
+}
+</code></pre></div><ul>
+<li>Return requirements
+Go 1.1之前，对带返回值的函数在函数尾部必须有显式的return语句或panic调用。Go 1.1引入了结束语句的概念，<!-- raw HTML omitted --><a href="https://golang.org/ref/spec#Terminating_statements">https://golang.org/ref/spec#Terminating_statements</a><!-- raw HTML omitted -->，如无限循环、分支语句在每个分支都返回了结果等，去掉了必须在尾部加return的限制。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">loop</span>() <span style="color:#66d9ef">int</span> {
+    <span style="color:#66d9ef">for</span> {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#ae81ff">1</span>)
+        <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span>)
+    }
+}
+</code></pre></div><p><strong>3 实现及工具级变化</strong></p>
+<ul>
+<li>
+<p>Status of gccgo
+GCC的发布日程可能较Go的发布日程会有些许延后。我们期望4.8.2版本的GCC会对Go 1.1提供完整的实现。</p>
+</li>
+<li>
+<p>Command-line flag parsing
+gc工具链与传统Unix标记解析作了分离，编译器与链接器使用相同的命令行标记解析规则作为Go的标记包。</p>
+</li>
+<li>
+<p>Size of int on 64-bit platforms
+之前的Go实现使int与uint在所有系统均为32位。当前gc与gccgo使int与uint在64位系统均为64位。因Go不允许数值类型的隐式转换，所以常规程序不受影响，但之前将int、uint假定为32位程序的运行结果可能会受影响。</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> ^uint32(<span style="color:#ae81ff">0</span>) <span style="color:#75715e">// x is 0xffffffff
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> int(<span style="color:#a6e22e">x</span>)     <span style="color:#75715e">// i is -1 on 32-bit systems, 0xffffffff on 64-bit
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>)
+</code></pre></div><ul>
+<li>
+<p>Heap size on 64-bit architectures
+64位体系结构的堆大小已由几GB扩展到了几十GB，32位体系结构的堆大小未有变化。</p>
+</li>
+<li>
+<p>Unicode
+为使UTF-16表示的代码点大于65535，Unicode定义了surrogate halves。</p>
+</li>
+<li>
+<p>Race detector
+本版go tool增加了竞争检测器，以便找出程序在对变量并发访问时引起的bug（至少有一个访问为写）。构建或测试时使用-race标记，如go test -race。</p>
+</li>
+<li>
+<p>The gc assemblers
+因int在64位体系结构变为了64位（<!-- raw HTML omitted -->representation of functions<!-- raw HTML omitted -->），在gc工具链中，函数参数在栈上的位置有了变化，以汇编语言编写的函数至少需修正下帧的指针offset。</p>
+</li>
+<li>
+<p>Changes to the go command
+为方便使用Go的新手，go命令有几项优化。</p>
+</li>
+</ul>
+<p>a）在测试、编译，运行时，当所需的包未找到时，go命令会给出包括搜索路径列表等更详尽的错误提示。</p>
+<pre><code>$ go build foo/quxx
+can't load package: package foo/quxx: cannot find package &quot;foo/quxx&quot; in any of:
+/home/you/go/src/pkg/foo/quxx (from $GOROOT)
+/home/you/src/foo/quxx (from $GOPATH)
+</code></pre><p>b）使用go get命令时，不再允许将$GOROOT作为默认的包下载路径，必须指定合法的$GOPATH。</p>
+<pre><code>$ GOPATH= go get code.google.com/p/foo/quxx
+package code.google.com/p/foo/quxx: cannot download, $GOPATH not set. For more details see: go help gopath
+</code></pre><p>c）若$GOPATH设置与$GOROOT相同，使用go get也会报错。</p>
+<pre><code>$ GOPATH=$GOROOT go get code.google.com/p/foo/quxx
+warning: GOPATH set to GOROOT (/home/you/go) has no effect
+package code.google.com/p/foo/quxx: cannot download, $GOPATH must not be set to $GOROOT. For more details see: go help gopath
+</code></pre><ul>
+<li>Changes to the go test command
+为了便于profile信息的分析，go test命令运行时若开启profile搜集，生成的二进制文件不再被删除（如：执行如下命令会生成mypackage.test文件）。目前go test支持搜集profile信息以便找出goroutine阻塞的地方。</li>
+</ul>
+<pre><code>$ go test -cpuprofile cpuprof.out mypackage
+</code></pre><ul>
+<li>
+<p>Changes to the go fix command
+go fix不再应用于修正Go 1之前的代码，请使用Go 1.0工具链（go tool fix）来转换Go 1.0之前的代码。</p>
+</li>
+<li>
+<p>Build constraints
+<!-- raw HTML omitted -->Build Constraints<!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>Additional platforms
+Go 1.1工具链对freebsd/arm、netbsd/386、netbsd/amd64、netbsd/arm、openbsd/386及openbsd/amd64等平台增加了试验性支持。</p>
+</li>
+<li>
+<p>Cross compilation
+交叉编译时，默认关闭cgo支持，若需开启，请设置CGO_ENABLED=1。</p>
+</li>
+</ul>
+<p><strong>4 性能相关</strong></p>
+<p>使用Go 1.1 gc工具链编译的代码会有显著提升。下面列出一些显著的性能提升点。</p>
+<p>a）gc编译器在32位intel体系结构的浮点运算有显著提升。</p>
+<p>b）gc编译器在诸如append及接口转换等运行时操作的性能提升上做了很多工作。</p>
+<p>c）新的map实现在节省内存及CPU上有很大提升。</p>
+<p>d）垃圾搜集器在多核计算机执行更加并行化，降低了延迟。</p>
+<p>e）垃圾搜集器更精确，特别在32位系统上，仅使用很少的CPU总时间即可以显著减少堆大小。</p>
+<p>f）将运行时与网络相关的库更紧密的组合，使得网络操作所需的上下文切换更少了。</p>
+<p><strong>5 标准库的几处变化</strong></p>
+<ul>
+<li>bufio.Scanner
+为使诸如逐行读取、按空格分割读取等常规读取操作更便捷，Go 1.1引入了Scanner。当然，也可以提供SplitFunc来对输入文本自定义分割方式。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">scanner</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">bufio</span>.<span style="color:#a6e22e">NewScanner</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stdin</span>)
+<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">scanner</span>.<span style="color:#a6e22e">Scan</span>() {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">scanner</span>.<span style="color:#a6e22e">Text</span>()) <span style="color:#75715e">// Println will add back the final &#39;\n&#39;
+</span><span style="color:#75715e"></span>}
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">scanner</span>.<span style="color:#a6e22e">Err</span>(); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Fprintln</span>(<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stderr</span>, <span style="color:#e6db74">&#34;reading standard input:&#34;</span>, <span style="color:#a6e22e">err</span>)
+}
+</code></pre></div><ul>
+<li>
+<p>net
+<!-- raw HTML omitted --><a href="https://golang.org/doc/go1.1#net">https://golang.org/doc/go1.1#net</a><!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>reflect
+Go 1.1可以对reflect包使用select语句。使用Value.Convert或Type.ConvertibleTo方法可以对Value进行断言或类型转换。方便调用可以使用包装函数MakeFunc。还有一些适用的函数ChanOf、MapOf及SliceOf可以对已有类型进行构造。</p>
+</li>
+<li>
+<p>time
+Go 1.1目前时间可以达到纳秒级精度。此外增加了YearDay方法，Timer增加了Reset方法等。</p>
+</li>
+<li>
+<p>New packages
+Go 1.1引入了三个新包。</p>
+</li>
+</ul>
+<p>a）go/format包便于程序使用go fmt命令的格式化能力。</p>
+<p>b）net/http/cookiejar包提供了对HTTP cookie的基础管理能力。</p>
+<p>c）runtime/race提供了对数据竞争检测的底层工具。</p>
+<ul>
+<li>Minor changes to the library
+a）bytes包新加了TrimPrefix及TrimSuffi函数。</li>
+</ul>
+<p>b）database/sql新加了测试连接状态的Ping方法。</p>
+<p>c）encoding/json包的Decoder新加了获取其缓存区剩余数据的Buffered方法。</p>
+<p>d）go/ast包新加了CommentMap类型及相关方法以便抓取及处理Go语言的注释。</p>
+<p>e）os/signal包新加了Stop函数，以停止后续信号量对channel的传入。</p>
+<p>f）regexp包新加了Regexp.Split，便于根据正则将字符串分割为slice。</p>
+<p>g）sort包新加了Reverse函数。</p>
+<p>h）strings包新加了TrimPrefix与TrimSuffix函数。</p>
+<p>详细请参看：<!-- raw HTML omitted --><a href="https://golang.org/doc/go1.1#minor_library_changes">https://golang.org/doc/go1.1#minor_library_changes</a><!-- raw HTML omitted --></p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <!-- raw HTML omitted --><a href="https://golang.org/doc/go1.1">https://golang.org/doc/go1.1</a><!-- raw HTML omitted --></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

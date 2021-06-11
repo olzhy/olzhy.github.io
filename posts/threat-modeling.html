@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>威胁建模 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>威胁建模</h2>
+        <div class="mb-3 post-meta">
+          
+          2020年04月19日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p>威胁建模是一个识别潜在威胁的过程。通过威胁建模以期找出攻击者的画像及其最可能的攻击路线，以及最易遭受攻击的资产。所以威胁建模做的即是找到最易攻击的地方并制定出应对方案。</p>
+<p>概念上讲，威胁建模就在我们的日常生活中，只是我们未察觉而已。上班早高峰规避危险的操作及地方等以防可能出现的事故。在操场玩耍的孩子们找出最佳路径直奔目的地以规避校霸围追堵截。在更正式的场景，威胁建模从远古起即已用于军事防卫等备战规划上了。</p>
+<h3 id="威胁建模的演进">威胁建模的演进</h3>
+<p>主要有如下几个。</p>
+<p>1999，微软提出STRIDE模型识别攻击。</p>
+<ul>
+<li>S - Spoofing identity      身份欺骗</li>
+<li>T - Tampering with data    数据篡改</li>
+<li>R - Repudiation            抵赖</li>
+<li>I - Information disclosure 信息暴露</li>
+<li>D - Denial of service      拒绝服务</li>
+<li>E - Elevation of privilege 特权提升</li>
+</ul>
+<p>2014，Ryan提出DML（Detection Maturity Level，检测成熟等级）模型。该模型认为威胁者是一个威胁场景的实例，而一个威胁场景是指一个特定攻击者在脑海有了一个特定的攻击目标后使用各种策略以达到该目标。
+目标以及策略表示DML模型的最高语义学等级；而TTP（Tactics, Techniques and Procedures 手段，技术及程序）表示中间的语义学等级；攻击者使用的工具表示DML模型的最低语义学等级。</p>
+<h3 id="威胁建模的方法">威胁建模的方法</h3>
+<p>威胁建模可以独立的使用如下几个方法，即：以资产为中心，以攻击者为中心，还有以软件为中心。下面是比较著名的四种威胁建模方法。</p>
+<ul>
+<li>STRIDE</li>
+</ul>
+<p>微软1999年提出的该方法可为开发者提供找出“我们产品所面临威胁”的一个助记符。与此衍生出诸多模型，实践，数据流图等。</p>
+<ul>
+<li>P.A.S.T.A.</li>
+</ul>
+<p>PASTA（The Process for Attack Simulation and Threat Analysis，模拟攻击及威胁分析）是一个七步过程，以风险为中心的方法论。是一个动态威胁识别，威胁列举及评分的过程。</p>
+<ul>
+<li>Trike</li>
+</ul>
+<p>Trike是一个将威胁模型看作风险管理工具的方法论。</p>
+<ul>
+<li>VAST</li>
+</ul>
+<p>VAST（Visual, Agile, and Simple Threat modeling 可视化，敏捷及简化威胁建模）。是一个将威胁建模贯穿整个SDLC（软件开发生命周期）且与敏捷软件开发无缝集成的方法论。</p>
+<h3 id="常用的威胁建模流程">常用的威胁建模流程</h3>
+<p>威胁建模的第一步是进行应用及基础设施的可视化表示。将应用及基础设施梳理划分成各个模块的目的是便于分析。划分完成并可视化表示后，即可以进行威胁识别及进行潜在威胁的列举。再后来进行威胁发生的风险评估，威胁的优先级评估，从而基于各种方法制定出合适的应对措施。
+威胁的识别及列举可以从以攻击为中心的方式或从以资产为中心的方式来开展。前者注重找出可能的攻击类型以作应对；后者注重找出受保护的资产以防攻击。当然，两种方法各有利弊。</p>
+<p><strong>基于数据流程图的可视化表示</strong></p>
+<p>上述诸如STRIDE，PASTA，Trike建模方法都使用了DFD（data flow diagrams，数据流程图）来进行可视化表示。DFD是一个让系统工程师从上层来看一个应用的数据是如何流动，存储及操作的工具。DFD有五种特有符号：数据流，数据存储，过程，交互者，信任边界。
+一旦一个系统被划分为这五个部分，安全专家即可对所有已知威胁类别进行识别以找出该系统的威胁切入点。一旦找到潜在威胁，即可对其进行分析及控制。</p>
+<p><strong>基于过程流程图的可视化表示</strong></p>
+<p>上述VAST建模方法使用了不同的方式，其将ATM（application threat models，应用威胁模型）与OTM（infrastructure threat models，基础设施威胁模型）进行了区分。ATM使用PFD（process flow diagrams，过程流程图）来进行创建。
+过程流程图将应用划分为各种特性或用例，而每个特性又可由页面及代码块来构成，最后特性通过交互协议连接起来。这样，一个应用的过程流程图即是一个用户如何沿着各种特性移动的一张地图。</p>
+<p>OTM则以类似于传统DFD的端到端的数据流图进行创建。端到端的数据流图将一个系统划分成各种独立共用的组件，然后，组件间又通过线路或协议进行通信。</p>
+<p>一旦ATM及OTM构造好，则可进行潜在威胁识别，枚举，优先级划分，从而进行风险评估及安全控制。</p>
+<blockquote>
+<p>参考资料</p>
+<p>[1] <a href="https://en.wikipedia.org/wiki/Threat_model">https://en.wikipedia.org/wiki/Threat_model</a></p>
+</blockquote>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1/">#架构设计</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

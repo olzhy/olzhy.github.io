@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ruby on 磊磊落落</title>
+    <link>https://olzhy.github.io/tags/ruby/</link>
+    <description>Recent content in Ruby on 磊磊落落</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 22 Oct 2017 13:28:51 +0000</lastBuildDate>
+    
+	<atom:link href="https://olzhy.github.io/tags/ruby/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>根据遍历结果反向构建树</title>
+      <link>https://olzhy.github.io/posts/reverse-build-tree.html</link>
+      <pubDate>Sun, 22 Oct 2017 13:28:51 +0000</pubDate>
+      
+      <guid>https://olzhy.github.io/posts/reverse-build-tree.html</guid>
+      <description>业务中也许会遇到反向构建树的情形，如从外部工具获取到依赖关系、行政区划，组织架构等文本数据时，如何去反向构建树。我们以“获取到了树的深度遍历结果，然后将树结构构建出来，最后用JSON格式输出”，来模拟此类树的反向构建过程。本文采用Ruby作为描述语言。
+1） 已获取的树的遍历结果文本
+company +- org-1 +- org-2 | \- org-2.</description>
+    </item>
+    
+  </channel>
+</rss>

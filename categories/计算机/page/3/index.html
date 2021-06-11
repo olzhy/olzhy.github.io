@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>计算机 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto px-0">
+        <h2 class="mb-4"><span class="text-primary">计算机</span></h2>
+        <div class="bg-white shadow block">
+          
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/istio-request-routing.html">Istio流量管理之请求路由</a></h2>
+  <div class="mb-3 post-meta">
+    2020年12月21日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>在上文“Istio安装使用”中，我们对Istio进行了安装，并对Bookinfo样例进行了部署测试。本文接着上文，对Istio流量管理中的请求路由进行概念学习及样例测试。
+我们知道，Istio通过Envoy数据面拦截了所有服务实例的进出流量。这样基于Istio服务网格即可以实现诸多常规方式难以实现的流量管理策略，诸如灰度发布，A/B测试，按比率分流等。
+Istio主要提供两个通过YAML配置的自定义资源来实现流量管理：Virtual Service及Destination Rule。这样即做到流量管理与上游请求服务及下游被请求服务解耦。Virtual Service主要用来配置流量如何流动（即定义符合哪些规则的流量打到哪些服务子集上），而Destination Rule则主要用来定义具体的服务子集。</p>
+  <a href="https://olzhy.github.io/posts/istio-request-routing.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/istio-get-started.html">Istio安装使用</a></h2>
+  <div class="mb-3 post-meta">
+    2020年12月16日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>本文所使用的操作系统为macOS 11.1，使用Docker Desktop 3.0.1自带的Kubernetes(v1.19.3) 作为部署环境。</p>
+  <a href="https://olzhy.github.io/posts/istio-get-started.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/api-gateway-and-service-mesh.html">API Gateway与Service Mesh有什么不同？</a></h2>
+  <div class="mb-3 post-meta">
+    2020年12月14日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>一般的认为是：API Gateway用来处理南北向流量，Service Mesh用来处理东西向流量。这样的区分方式并不准确。下面会递进式分析两者的使用场景及异同点，以期通过本文可以明白何时使用API Gateway，何时使用Service Mesh？</p>
+  <a href="https://olzhy.github.io/posts/api-gateway-and-service-mesh.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/why-istio-back-to-monolithic-architecture.html">为什么Istio重回单体架构？</a></h2>
+  <div class="mb-3 post-meta">
+    2020年12月09日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>随着应用规模的不断扩大，单体架构已不能承载企业越来越多的业务需求，微服务架构随之兴起。微服务给我们带来诸多益处的同时也带来诸多挑战，其根源即是复杂性的提升。为了解决微服务带来的诸多问题，其中便催生了服务网格的流行。但2020年初，业内最知名的服务网格实现Istio却反其道而行之，由微服务架构重回单体架构，其原因是什么呢？可能是一个契机，让我们重新审思微服务架构带来的好处及问题。
+1 微服务架构有什么优势？ 将一个复杂的单体应用切分为按领域细分的微服务后，可以让团队聚焦所关注的领域，做到相互独立，彼此不受影响。其带来的优势主要有：
+ 彼此独立交付，快速迭代  各自解耦的微服务，可以让彼此间有明确的边界，各自可以采用不同的语言或技术栈，基于轻量协议（HTTP，RPC等）进行交互。每个微服务可以拥有自己的生命周期，无须相互协调或等待，做到彼此独立交付，相互不受影响。因粒度小，迭代快，从总体看，可以做到并行开发，流水线式产出。</p>
+  <a href="https://olzhy.github.io/posts/why-istio-back-to-monolithic-architecture.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/what-is-a-service-mesh.html">什么是服务网格？</a></h2>
+  <div class="mb-3 post-meta">
+    2020年12月07日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 什么是服务网格？ 服务网格是分布式软件系统内部用于管理所有“服务到服务”通信的一个系统。
+聊服务网格为什么会出现之前，可以聊聊服务架构的演进过程。起初，我们使用一个单体应用来提供服务。 比如我们在做一个电商系统，采用典型的MVC三层架构，在单体架构中，组成这个系统的购物车功能，库存查询功能，订单功能等都是这个服务内部的一个函数或接口。所以这些操作都是进程内的函数调用，不涉及诸如RPC等服务与服务的跨进程通信。但随着时间的增加，我们发现单体架构越来越不能满足我们的需求，比如用户访问暴增，业务逻辑愈加复杂，一个单体的服务已不能满足功能及性能的要求。我们需要将其按业务领域拆分为几个独立的服务来对外提供服务，这就是微服务架构。比如原来的购物车功能，库存查询功能，订单功能被拆分为独立的服务。这时接收到一个购物请求，我们需要分别查询不同的微服务来进行业务处理，这就涉及跨进程通信。</p>
+  <a href="https://olzhy.github.io/posts/what-is-a-service-mesh.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          <article class="mb-5">
+  <h2 class="h4"><a class="post-title" href="https://olzhy.github.io/posts/perceptron-python-implementation.html">感知机算法及Python实现</a></h2>
+  <div class="mb-3 post-meta">
+    2020年10月10日  
+    <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+    
+  </div>
+  <p>1 何为感知机？ 感知机是一个单层人工神经网络，是一个用于二分类的算法，其也是线性分类器的一种。
+其可被抽象为下图所示模型，即一个神经元接收到来自n个其它神经元的输入信号，对这些输入信号，通过带权值的连接进行计算（各个连接线的权值与对应输入值相乘，然后进行累加），然后判断计算出来的累加值是否超过阈值（Threshold），若等于或超过阈值，则输出y为1，表示该神经元激活，否则输出y为-1表示该神经元抑制。
+所以，感知机模型可被描述为：</p>
+  <a href="https://olzhy.github.io/posts/perceptron-python-implementation.html" class="btn btn-sm btn-transparent pl-0">阅读更多</a>
+</article>
+
+          
+          
+          <div class="mt-5">
+            <!-- pagination -->
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center align-items-center">
+                
+                
+                <li class="page-item">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/page/2/" class="page-link">
+                    &laquo;
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/" class="page-link">
+                    1
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/page/2/" class="page-link">
+                    2
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item page-item active ">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/page/3/" class="page-link">
+                    3
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/page/4/" class="page-link">
+                    4
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/page/5/" class="page-link">
+                    5
+                  </a>
+                </li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="page-item">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/page/4/" class="page-link">
+                    &raquo;
+                  </a>
+                </li>
+                
+              </ul>
+            </nav>
+            
+            <!-- /pagination -->
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>

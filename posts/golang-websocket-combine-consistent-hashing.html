@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-cn"><head>
+  <meta charset="utf-8">
+  <title>Golang websocket结合一致性哈希算法构建高并发推送服务 - 磊磊落落</title>
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name='keywords' content="Golang , Python , 云原生 , 机器学习 , LeetCode , 技术博客">
+  <meta name="description"
+    content="磊磊落落，是本人用于记录内心波澜，分享读书感想，思考人生哲学，关注社会百态，梳理计算机专业知识的纯原创站点。">
+  
+  <meta name="author" content="磊磊落落">
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/css/larry-custom.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://olzhy.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://olzhy.github.io/images/favicon.png " type="image/x-icon">
+
+  
+  
+  
+
+  
+  
+  <!--MathJax-->
+  
+
+<script type="text/javascript" async src="/js/mathjax/2.7.8/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        extensions: ["AMSmath.js", "AMSsymbols.js"]
+      }
+    }
+  });
+
+  MathJax.Hub.Queue(function () {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<style>
+  code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+  }
+</style>
+  
+
+  
+</head>
+<body>
+    
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=" height="0"
+            width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+
+<!-- navigation -->
+<header class="fixed-top navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+      <a class="navbar-brand" href="https://olzhy.github.io/">磊磊落落</a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/"></a>
+          </li>
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AF%BB%E4%B9%A6/">读书</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%A7%82%E5%BD%B1/">观影</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E7%BB%83%E5%AD%97/">练字</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://olzhy.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a>
+          </li>
+          
+          
+        </ul>
+        
+        <!-- search -->
+        <div class="search">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://olzhy.github.io//search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="键入关键字后回车...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation --> <div class="py-5 d-none d-lg-block"></div> 
+
+<section class="section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto block shadow mb-5">
+        <h2>Golang websocket结合一致性哈希算法构建高并发推送服务</h2>
+        <div class="mb-3 post-meta">
+          
+          2018年09月02日 
+          <a href="/categories/%e8%ae%a1%e7%ae%97%e6%9c%ba">计算机</a>
+          
+          
+        </div>
+        
+        <div class="content mb-5">
+          <p><strong>1 场景介绍</strong></p>
+<p>web应用中，常有业务状态需要实时更新的场景。如一个较长的后台任务，从浏览器用户触发执行到执行完成可能需几十秒的时间，这时前端需隔几秒请求一次后台，查询任务执行进度。此种方式是长轮询的方式，是存在一定弊端的，增加了后台服务的负载，若并发操作量太大，后台压力会成倍激增。业界常采用http1.1的websocket扩展协议与浏览器建立长连接来实现实时业务状态更新。</p>
+<p><strong>2 实现方案</strong></p>
+<p>本文采用golang实现一个长连接服务，对外提供两个接口，一个是基于http的rest消息发送接口，一个是基于websocket的cient接入接口，如下图所示。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2018/09/comet-api.png" alt="" /></p>
+<p>为使前端的接入更简单，从建立连接到用户关闭浏览器，中间前端无须发送消息来告知服务器client是否下线。我们将检测放在后台，后台采用定时心跳方式保持对client的监听，若心跳失败，则将该client剔除。如下图所示。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2018/09/comet-heartbeat.png" alt="" /></p>
+<p><strong>3 golang实现代码</strong></p>
+<p>comet服务内有两个模块，http server负责接收消息，comet server负责维护websocket client，每个client启用一个go routine对客户端保持心跳检测。</p>
+<p>3.1 核心模块</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">comet</span>
+
+<span style="color:#f92672">import</span> (
+    <span style="color:#e6db74">&#34;encoding/json&#34;</span>
+    <span style="color:#e6db74">&#34;log&#34;</span>
+    <span style="color:#e6db74">&#34;time&#34;</span>
+
+    <span style="color:#e6db74">&#34;golang.org/x/net/websocket&#34;</span>
+)
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">HttpServer</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">wsServer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WsServer</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">WsServer</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Clients</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>][]<span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>
+    <span style="color:#a6e22e">AddCli</span>  <span style="color:#66d9ef">chan</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>
+    <span style="color:#a6e22e">DelCli</span>  <span style="color:#66d9ef">chan</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>
+    <span style="color:#a6e22e">Message</span> <span style="color:#66d9ef">chan</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Message</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Client</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">UserId</span>    <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">Timestamp</span> <span style="color:#66d9ef">int64</span>
+    <span style="color:#a6e22e">conn</span>      <span style="color:#f92672">*</span><span style="color:#a6e22e">websocket</span>.<span style="color:#a6e22e">Conn</span>
+    <span style="color:#a6e22e">wsServer</span>  <span style="color:#f92672">*</span><span style="color:#a6e22e">WsServer</span>
+}
+
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Message</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">UserId</span>  <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;user_id&#34;`</span>
+    <span style="color:#a6e22e">Message</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`json:&#34;message&#34;`</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewWsServer</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">WsServer</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">WsServer</span>{
+        make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>][]<span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>),
+        make(<span style="color:#66d9ef">chan</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>),
+        make(<span style="color:#66d9ef">chan</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>),
+        make(<span style="color:#66d9ef">chan</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Message</span>, <span style="color:#ae81ff">1000</span>),
+    }
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewHttpServer</span>(<span style="color:#a6e22e">wsServer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WsServer</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">HttpServer</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">HttpServer</span>{<span style="color:#a6e22e">wsServer</span>}
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">httpServer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">HttpServer</span>) <span style="color:#a6e22e">SendMessage</span>(<span style="color:#a6e22e">userId</span>, <span style="color:#a6e22e">message</span> <span style="color:#66d9ef">string</span>) {
+    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;message reveived, user_id: %s, message: %s&#34;</span>, <span style="color:#a6e22e">userId</span>, <span style="color:#a6e22e">message</span>)
+    <span style="color:#a6e22e">httpServer</span>.<span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">Message</span> <span style="color:#f92672">&lt;-</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">Message</span>{<span style="color:#a6e22e">userId</span>, <span style="color:#a6e22e">message</span>}
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">wsServer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WsServer</span>) <span style="color:#a6e22e">SendMessage</span>(<span style="color:#a6e22e">userId</span>, <span style="color:#a6e22e">message</span> <span style="color:#66d9ef">string</span>) {
+    <span style="color:#a6e22e">clients</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">Clients</span>[<span style="color:#a6e22e">userId</span>]
+    <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">clients</span>) &gt; <span style="color:#ae81ff">0</span> {
+        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">c</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">clients</span> {
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Write</span>([]byte(<span style="color:#a6e22e">message</span>))
+        }
+        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;message success sent to client, user_id: %s&#34;</span>, <span style="color:#a6e22e">userId</span>)
+    } <span style="color:#66d9ef">else</span> {
+        <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;client not found, user_id: %s&#34;</span>, <span style="color:#a6e22e">userId</span>)
+    }
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">wsServer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WsServer</span>) <span style="color:#a6e22e">addClient</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>) {
+    <span style="color:#a6e22e">clients</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">Clients</span>[<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">UserId</span>]
+    <span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">Clients</span>[<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">UserId</span>] = append(<span style="color:#a6e22e">clients</span>, <span style="color:#a6e22e">c</span>)
+    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;a client added, userId: %s, timestamp: %d&#34;</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">UserId</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Timestamp</span>)
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">wsServer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WsServer</span>) <span style="color:#a6e22e">delClient</span>(<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>) {
+    <span style="color:#a6e22e">clients</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">Clients</span>[<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">UserId</span>]
+    <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">clients</span>) &gt; <span style="color:#ae81ff">0</span> {
+        <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">client</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">clients</span> {
+            <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">Timestamp</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Timestamp</span> {
+                <span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">Clients</span>[<span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">UserId</span>] = append(<span style="color:#a6e22e">clients</span>[:<span style="color:#a6e22e">i</span>], <span style="color:#a6e22e">clients</span>[<span style="color:#a6e22e">i</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>:]<span style="color:#f92672">...</span>)
+                <span style="color:#66d9ef">break</span>
+            }
+        }
+    }
+    <span style="color:#66d9ef">if</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">==</span> len(<span style="color:#a6e22e">clients</span>) {
+        delete(<span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">Clients</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">UserId</span>)
+    }
+    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;a client deleted, user_id: %s, timestamp: %d&#34;</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">UserId</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Timestamp</span>)
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">wsServer</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WsServer</span>) <span style="color:#a6e22e">Start</span>() {
+    <span style="color:#66d9ef">for</span> {
+        <span style="color:#66d9ef">select</span> {
+        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">msg</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">Message</span>:
+            <span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">SendMessage</span>(<span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">UserId</span>, <span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">Message</span>)
+        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">c</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">AddCli</span>:
+            <span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">addClient</span>(<span style="color:#a6e22e">c</span>)
+        <span style="color:#66d9ef">case</span> <span style="color:#a6e22e">c</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">DelCli</span>:
+            <span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">delClient</span>(<span style="color:#a6e22e">c</span>)
+
+        }
+    }
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>) <span style="color:#a6e22e">heartbeat</span>() <span style="color:#66d9ef">error</span> {
+    <span style="color:#a6e22e">millis</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>().<span style="color:#a6e22e">UnixNano</span>() <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000000</span>
+    <span style="color:#a6e22e">heartbeat</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">struct</span> {
+        <span style="color:#a6e22e">Heartbeat</span> <span style="color:#66d9ef">int64</span> <span style="color:#e6db74">`json:&#34;heartbeat&#34;`</span>
+    }{<span style="color:#a6e22e">millis</span>}
+    <span style="color:#a6e22e">bytes</span>, <span style="color:#a6e22e">_</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">json</span>.<span style="color:#a6e22e">Marshal</span>(<span style="color:#a6e22e">heartbeat</span>)
+    <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">conn</span>.<span style="color:#a6e22e">Write</span>(<span style="color:#a6e22e">bytes</span>)
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Client</span>) <span style="color:#a6e22e">Listen</span>() {
+    <span style="color:#66d9ef">for</span> {
+        <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">heartbeat</span>()
+        <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">nil</span> <span style="color:#f92672">!=</span> <span style="color:#a6e22e">err</span> {
+            <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;client heartbeat error, user_id: %v, timestamp: %d, err: %s&#34;</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">UserId</span>, <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">Timestamp</span>, <span style="color:#a6e22e">err</span>)
+            <span style="color:#a6e22e">c</span>.<span style="color:#a6e22e">wsServer</span>.<span style="color:#a6e22e">DelCli</span> <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">c</span>
+            <span style="color:#66d9ef">return</span>
+        }
+        <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Sleep</span>(<span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Second</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">5</span>)
+    }
+}
+</code></pre></div><p>3.2 完整代码</p>
+<p><!-- raw HTML omitted --><a href="https://github.com/olzhy/comet">https://github.com/olzhy/comet</a><!-- raw HTML omitted --></p>
+<p><strong>4 一致性哈希包装</strong></p>
+<p>考虑到单服务的同时在线人数支持是有限的，所以在其上层用一致性哈希算法包装。这样同一user_id建立连接会打到同一台后台服务器，给此user_id发送消息也会打到同样的服务器。这样后台部署多个comet服务形成一个集群即可支撑高并发消息推送场景。如下图所示，最外层nginx挂接公网域名，对外提供基于wss的消息接收接口及基于http的消息发送接口。中间采用haproxy对user_id参数作一致性哈希转发，对同一user_id的操作会打到同一台comet server。底层扩展为多台comet server即可构建一个高并发的消息推送服务。</p>
+<p><img loading="lazy" src="https://olzhy.github.io/static/images/uploads/2018/09/comet-with-nginx-1.png" alt="" /></p>
+<p> </p>
+<p> </p>
+<p>2018.09.02</p>
+<p>大连</p>
+
+        </div>
+        <div class="content-footer">
+          <div class="post-tags">
+            <a href="/tags/golang/">#Golang</a>
+            <a href="/tags/%E7%AE%97%E6%B3%95/">#算法</a>
+            </div></div>
+      </div>
+      
+
+      
+      <div class="col-lg-8 mx-auto block shadow">
+        
+        <div align="center">
+    <table>
+        <tr>
+            <b style="color:#e8505b">若我的文章对您有帮助，欢迎小额打赏，以支持我更好的写作，<a href="/thanks">Thanks!</a></b>
+        </tr>
+        <tr>
+            <td align="center"><b>微信</b></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td align="center"><b>支付宝</b></td>
+        </tr>
+        <tr>
+            <td><img src="/static/images/self/wechat.png" style="width:120px;height:120px" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><img src="/static/images/self/alipay.png" style="width:120px;height:120px" /></td>
+        </tr>
+    </table>
+</div>
+      </div>
+      
+
+      
+    </div>
+  </div>
+</section>
+
+
+<footer class="py-4 bg-light border-top">
+  <div class="container">
+    <div class="row justify-content-between text-center align-items-center">
+      <div class="col-lg-4 text-center text-lg-left mb-4 mb-lg-0">
+      </div>
+      <div class="col-lg-4 text-center mb-4 mb-lg-0">
+        <ul class="list-inline mb-0">
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/leetcode-golang-implementations">LeetCode</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/about">关于本站</a></li>
+          
+          <li class="list-inline-item"><a class="text-dark d-block p-2" href="https://olzhy.github.io/links">友情链接</a></li>
+          
+        </ul>
+      </div>
+      <div class="col-lg-4 text-lg-right text-center mb-4 mb-lg-0">
+        <ul class="list-inline social-icon mb-0">
+          
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <span>Thanks <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/themefisher/northendlab-hugo">NorthendLab</a> | <a href="http://beian.miit.gov.cn/state/outPortal/loginPortal.action">晋ICP备08100400号-4</a> | <a href="https://www.leileiluoluo.com/">leileiluoluo.com</a>©2021</span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script>
+  var indexURL = "https://olzhy.github.io/index.json"
+</script>
+
+
+<!-- JS Plugins -->
+
+<script src="https://olzhy.github.io/js/jquery.min.js"></script>
+
+<script src="https://olzhy.github.io/js/bootstrap.min.js"></script>
+
+<script src="https://olzhy.github.io/js/fuse.min.js"></script>
+
+<script src="https://olzhy.github.io/js/mark.js"></script>
+
+<script src="https://olzhy.github.io/js/search.js"></script>
+
+
+<!-- Main Script -->
+
+<script src="https://olzhy.github.io/js/script.min.js"></script>
+
+<!-- google analitycs -->
+</body>
+
+</html>
